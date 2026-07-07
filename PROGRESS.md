@@ -61,6 +61,17 @@
 - 本地 dev server 實測：評價/佈告欄顯示正常空狀態（非錯誤），console 0 error，Supabase 讀取路徑全通
 - ⚠️ 尚待使用者手動：Supabase Authentication → Google provider 啟用 + URL Configuration（Site URL / Redirect URLs）；完成前線上「使用 Google 登入」會失敗
 
+## 2026-07-07 — Google OAuth redirect_uri_mismatch 除錯
+
+- 使用者實測登入 → Google 回 400 redirect_uri_mismatch（錯誤詳情顯示送出的 redirect_uri 為正確的 Supabase callback）
+- Supabase 端驗證全過：settings 顯示 google:true、/authorize 302 至 accounts.google.com（client_id 785350789128-dvctg...）
+- 經瀏覽器直查 Google Cloud Console（專案 study-in-germany-501702）：
+  - 僅一個 OAuth 用戶端，即 Supabase 使用中的那個 → 排除改錯用戶端
+  - 「已授權的重新導向 URI」欄位內容逐字正確
+  - **根因：該筆 URI 未按「儲存」**，一直停留在編輯狀態
+- 按下儲存 → Console 確認「OAuth 用戶端已儲存」（生效需 5 分鐘～數小時，通常數分鐘）
+- 教訓：curl 測 /authorize 302 to Google 無錯誤 ≠ redirect_uri 已註冊——未登入請求會先被導去登入頁，URI 驗證發生在使用者登入後，外部探測會出現假陰性
+
 ### 已知注意事項
 - listings 的 `listings_public_read` policy（expires_at > NOW()）對所有 SELECT 生效
   → **本人在 /my-posts 也看不到自己已過期的貼文**（依提供之 SQL 原樣實作，未擅改）
