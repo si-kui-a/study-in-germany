@@ -47,6 +47,20 @@
 - ⚠️ **repo Secrets（SUPABASE_URL / SUPABASE_ANON_KEY）尚未設定**：build 不會失敗，但目前線上頁面在 supabase.ts 擲出 env 缺失錯誤（設計如此）。使用者設定 Secrets 後需再跑一次 workflow
 - 注意：SSH host alias `github.com-deutsch-weg` 綁的是另一個專案 `lilichen-F/deutsch-weg`（德語學習站），與本專案無關，未使用
 
+## 2026-07-07 — Secrets 設定與正式上線驗證
+
+- gh CLI 2.96.0 安裝完成，使用者以瀏覽器流程完成 `gh auth login`（scopes: gist, read:org, repo, workflow）
+- 使用者提供新版 API keys：`sb_publishable_...`（前端用）與 `sb_secret_...`（**未使用**，已提醒 server-only + 建議 rotate，因曾貼於對話）
+- `gh secret set`：SUPABASE_URL = https://httksnqnxaeacmockphr.supabase.co、SUPABASE_ANON_KEY = sb_publishable_...（06:48 UTC）
+- `.env.local` 更新為真實值（gitignore 排除，未入庫）
+- **Supabase 端驗證**（curl REST API）：
+  - school_reviews / listings / profiles 三表皆存在且公開可讀（HTTP 200）→ 使用者已執行 schema.sql
+  - 匿名 INSERT school_reviews → HTTP 401, code 42501 "violates row-level security policy" ✅ RLS 生效
+- workflow run 28847315180：build ✅ deploy ✅
+- 線上 bundle（assets/index-C685tH5_.js）確認含注入的 Supabase URL
+- 本地 dev server 實測：評價/佈告欄顯示正常空狀態（非錯誤），console 0 error，Supabase 讀取路徑全通
+- ⚠️ 尚待使用者手動：Supabase Authentication → Google provider 啟用 + URL Configuration（Site URL / Redirect URLs）；完成前線上「使用 Google 登入」會失敗
+
 ### 已知注意事項
 - listings 的 `listings_public_read` policy（expires_at > NOW()）對所有 SELECT 生效
   → **本人在 /my-posts 也看不到自己已過期的貼文**（依提供之 SQL 原樣實作，未擅改）
