@@ -7,4 +7,10 @@ import tailwindcss from '@tailwindcss/vite'
 export default defineConfig({
   base: './',
   plugins: [react(), tailwindcss()],
+  define: {
+    __APP_VERSION__: JSON.stringify(
+      new Date().toISOString().slice(0, 10) + '-' +
+      (process.env.GITHUB_SHA?.slice(0, 7) ?? 'local')
+    ),
+  },
 })

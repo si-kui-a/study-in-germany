@@ -5,6 +5,8 @@ import { LISTING_TYPE_LABEL } from '../lib/types';
 import BoardList from '../components/BoardList';
 import BoardForm from '../components/BoardForm';
 import AuthGate from '../components/AuthGate';
+import { MOCK_MODE, mockLog } from '../lib/mockMode';
+import { MOCK_LISTINGS } from '../lib/mockData';
 
 type Filter = 'all' | ListingType;
 
@@ -17,6 +19,12 @@ export default function Board() {
   const load = useCallback(async () => {
     setLoading(true);
     setErr(null);
+    if (MOCK_MODE) {
+      mockLog('board', 'using MOCK_LISTINGS');
+      setListings(MOCK_LISTINGS);
+      setLoading(false);
+      return;
+    }
     const { data, error } = await supabase
       .from('listings')
       .select('*')

@@ -7,6 +7,7 @@ import { LISTING_TYPE_LABEL } from '../lib/types';
 import type { Listing, School, SchoolReview } from '../lib/types';
 import { deletePhoto } from '../lib/storage';
 import schools from '../data/schools.json';
+import { MOCK_MODE, mockLog } from '../lib/mockMode';
 
 function schoolName(schoolId: string): string {
   return (schools as School[]).find((s) => s.id === schoolId)?.name_zh ?? schoolId;
@@ -23,6 +24,13 @@ function MyPostsContent() {
     if (!user) return;
     setLoading(true);
     setErr(null);
+    if (MOCK_MODE) {
+      mockLog('my-posts', 'using empty MOCK data for guest view');
+      setReviews([]);
+      setListings([]);
+      setLoading(false);
+      return;
+    }
     const [reviewsRes, listingsRes] = await Promise.all([
       supabase
         .from('school_reviews')

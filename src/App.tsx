@@ -2,6 +2,7 @@ import { HashRouter, Route, Routes } from 'react-router-dom';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import ErrorBoundary from './components/ErrorBoundary';
+import MockBanner from './components/MockBanner';
 import Home from './pages/Home';
 import Schools from './pages/Schools';
 import SchoolDetail from './components/SchoolDetail';
@@ -9,13 +10,23 @@ import Board from './pages/Board';
 import Privacy from './pages/Privacy';
 import MyPosts from './pages/MyPosts';
 import Faq from './pages/Faq';
+import NotFound from './pages/NotFound';
 
 export default function App() {
   return (
     <HashRouter>
       <div className="min-h-screen flex flex-col">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2
+                     focus:z-50 focus:bg-brand-burgundy focus:text-white
+                     focus:px-4 focus:py-2 focus:rounded-lg focus:no-underline"
+        >
+          跳至主內容
+        </a>
+        <MockBanner />
         <Header />
-        <main className="flex-1 container-content py-8">
+        <main id="main-content" className="flex-1 container-content py-8">
           <ErrorBoundary>
             <Routes>
               <Route path="/" element={<Home />} />
@@ -25,9 +36,7 @@ export default function App() {
               <Route path="/faq" element={<Faq />} />
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/my-posts" element={<MyPosts />} />
-              <Route path="*" element={
-                <div className="text-center py-20 text-content-secondary">找不到頁面。</div>
-              } />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </ErrorBoundary>
         </main>

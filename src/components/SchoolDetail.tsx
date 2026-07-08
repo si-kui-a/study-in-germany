@@ -7,6 +7,8 @@ import type { School, SchoolReview } from '../lib/types';
 import AuthGate from './AuthGate';
 import ReviewForm from './ReviewForm';
 import ReviewList from './ReviewList';
+import { MOCK_MODE, mockLog } from '../lib/mockMode';
+import { MOCK_REVIEWS } from '../lib/mockData';
 
 export default function SchoolDetail() {
   const { id } = useParams<{ id: string }>();
@@ -20,6 +22,12 @@ export default function SchoolDetail() {
     if (!id) return;
     setLoading(true);
     setErr(null);
+    if (MOCK_MODE) {
+      mockLog('school-detail', `using MOCK_REVIEWS for ${id}`);
+      setReviews(MOCK_REVIEWS.filter((r) => r.school_id === id));
+      setLoading(false);
+      return;
+    }
     const { data, error } = await supabase
       .from('school_reviews')
       .select('*')
