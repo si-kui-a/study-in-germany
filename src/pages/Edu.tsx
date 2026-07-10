@@ -48,11 +48,12 @@ export default function Edu() {
               className="card-interactive p-5 no-underline
                          flex flex-col justify-between aspect-[4/3]"
             >
-              <div className="text-module-edu w-14 h-14">
+              <div className="text-module-edu w-20 h-20 sm:w-24 sm:h-24
+                              mt-auto mb-3 mx-auto flex items-center justify-center">
                 <EduTopicIcon slug={t.slug} className="w-full h-full" />
               </div>
 
-              <div className="space-y-1">
+              <div className="space-y-1 text-center">
                 <div className="text-base font-semibold text-content-primary">
                   {t.title}
                 </div>

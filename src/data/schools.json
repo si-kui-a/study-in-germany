@@ -7,7 +7,8 @@
     "city_key": "berlin",
     "level": "A1–C2",
     "website": "https://www.goethe.de/ins/de/de/sta/ber.html",
-    "note": "官方德國文化中心，教學品質穩定，證書國際認可度最高，適合需要 APS 或簽證用語言證明的學生。約 €1,200–1,500 / 4 週密集班。"
+    "note": "官方德國文化中心，教學品質穩定，證書國際認可度最高，適合需要 APS 或簽證用語言證明的學生。約 €1,200–1,500 / 4 週密集班。",
+    "accommodation": null
   },
   {
     "id": "goethe-muenchen",
@@ -17,7 +18,8 @@
     "city_key": "munich",
     "level": "A1–C2",
     "website": "https://www.goethe.de/ins/de/de/sta/mue.html",
-    "note": "慕尼黑校區，鄰近大學區，設備新，寄宿家庭與宿舍資源多，但生活費在全德屬最高一級。約 €1,300–1,600 / 4 週密集班。"
+    "note": "慕尼黑校區，鄰近大學區，設備新，寄宿家庭與宿舍資源多，但生活費在全德屬最高一級。約 €1,300–1,600 / 4 週密集班。",
+    "accommodation": "提供寄宿家庭與宿舍安排資源"
   },
   {
     "id": "did-frankfurt",
@@ -27,7 +29,8 @@
     "city_key": "frankfurt",
     "level": "A1–C1",
     "website": "https://www.did.de",
-    "note": "連鎖語言學校，價格中等，開課頻率高（每週一皆可插班），適合時程彈性的申請者。約 €800–1,100 / 4 週密集班。"
+    "note": "連鎖語言學校，價格中等，開課頻率高（每週一皆可插班），適合時程彈性的申請者。約 €800–1,100 / 4 週密集班。",
+    "accommodation": null
   },
   {
     "id": "fu-sprachenzentrum",
@@ -37,7 +40,8 @@
     "city_key": "berlin",
     "level": "A1–C1",
     "website": "https://www.sprachenzentrum.fu-berlin.de",
-    "note": "大學附設語言中心，價格最低（約 €300–600 / 學期），但名額有限且通常需持有大學入學許可或交換身分。"
+    "note": "大學附設語言中心，價格最低（約 €300–600 / 學期），但名額有限且通常需持有大學入學許可或交換身分。",
+    "accommodation": null
   },
   {
     "id": "carl-duisberg-koeln",
@@ -46,6 +50,7 @@
     "city": "Köln",
     "level": "A1–C2",
     "website": "https://www.carl-duisberg.de",
-    "note": "老牌語言機構，TestDaF 考場之一，考前衝刺班口碑好，宿舍可代訂。約 €900–1,250 / 4 週密集班。"
+    "note": "老牌語言機構，TestDaF 考場之一，考前衝刺班口碑好，宿舍可代訂。約 €900–1,250 / 4 週密集班。",
+    "accommodation": "可代訂宿舍"
   }
 ]

@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
-import type { Listing, ListingType } from '../lib/types';
-import { LISTING_TYPE_LABEL } from '../lib/types';
+import type { Listing } from '../lib/types';
 import BoardList from '../components/BoardList';
 import BoardForm from '../components/BoardForm';
 import AuthGate from '../components/AuthGate';
@@ -12,8 +11,10 @@ import { useToast } from '../lib/toast';
 import { translateError } from '../lib/errorMessages';
 import { MOCK_MODE, mockLog } from '../lib/mockMode';
 import { MOCK_LISTINGS } from '../lib/mockData';
+import { boardTypeOf, isDiscussion, BOARD_TYPE_LABEL } from '../lib/board';
+import type { BoardType } from '../lib/board';
 
-type Filter = 'all' | ListingType;
+type Filter = 'all' | BoardType;
 
 export default function Board() {
   const { push } = useToast();
@@ -49,13 +50,19 @@ export default function Board() {
 
   useEffect(() => { load(); }, [load]);
 
-  const filtered = listings.filter((l) => filter === 'all' || l.type === filter);
+  const filtered = listings.filter((l) => {
+    if (filter === 'all') return true;
+    if (filter === 'discussion') return isDiscussion(l);
+    if (isDiscussion(l)) return false;
+    return boardTypeOf(l) === filter;
+  });
 
   const filters: { key: Filter; label: string }[] = [
     { key: 'all', label: '全部' },
-    { key: 'secondhand', label: LISTING_TYPE_LABEL.secondhand },
-    { key: 'rental_offer', label: LISTING_TYPE_LABEL.rental_offer },
-    { key: 'rental_seek', label: LISTING_TYPE_LABEL.rental_seek },
+    { key: 'secondhand', label: BOARD_TYPE_LABEL.secondhand },
+    { key: 'rental_offer', label: BOARD_TYPE_LABEL.rental_offer },
+    { key: 'rental_seek', label: BOARD_TYPE_LABEL.rental_seek },
+    { key: 'discussion', label: BOARD_TYPE_LABEL.discussion },
   ];
 
   return (
@@ -63,7 +70,7 @@ export default function Board() {
       <div>
         <h1 className="text-2xl font-semibold">生活佈告欄</h1>
         <p className="text-sm text-content-secondary mt-1">
-          二手交易、出租、求租。三類皆可附照片，貼文預設 60 天後自動下架。
+          二手交易、出租、求租、討論區。貼文預設 60 天後自動下架。
         </p>
       </div>
 

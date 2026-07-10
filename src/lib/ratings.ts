@@ -57,12 +57,12 @@ export const RATING_DIMENSIONS: RatingDimensionMeta[] = [
  * 從 5 維計算 overall
  * 忽略 undefined/null 值 · 只算已填的維度
  * 若一個都沒填 → 回 0
- * 四捨五入到 0.5
+ * 保留 1 位小數（Phase V：輸入改整星後不再 rounding 到 0.5）
  */
 export function calculateOverall(stars: Partial<Record<RatingDimension, number>>): number {
   const values = RATING_DIMENSIONS.map((d) => stars[d.key])
     .filter((v): v is number => typeof v === 'number' && v > 0);
   if (values.length === 0) return 0;
   const avg = values.reduce((s, v) => s + v, 0) / values.length;
-  return Math.round(avg * 2) / 2;
+  return Math.round(avg * 10) / 10; // 保留 1 位小數 · 顯示如 4.3
 }

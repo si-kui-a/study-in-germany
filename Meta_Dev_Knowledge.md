@@ -192,7 +192,36 @@ src/lib/ratings.ts 的 RatingDimension(6 值，不含 overall，新檔)為同名
 - compact=false: SchoolDetail Banner · 全 5 維 bar chart · 未填顯示「—」
 兩 mode 共用同一元件 · props 控制。
 
-## PAT-46 [CORE_IMMUTABLE]: StarSlider 半星支援
+## PAT-46 [DEPRECATE_MARK]: StarSlider 半星支援（Phase V 已移除）
 純 SVG · 每星拆為左右兩半 button（clipPath: inset）。
 左半→x.5、右半→x.0。點清除按鈕即可撤銷。
 hover preview 於 UI 顯示但不 commit。
+Phase V 簡化為整星（見 PAT-49），此模式僅供歷史參考，Phase T 期間已存的 0.5 值 review 不回溯修改。
+
+## PAT-47 [CORE_IMMUTABLE]: Edu 卡片圖案尺寸 w-20 sm:w-24
+DS v4.2 spec §五 Geometry Illustration 於 Edu 卡片 · 圖示尺寸調整為 w-20 (80px) 至 sm:w-24 (96px)。
+Layout 用 flex-col + mx-auto 使圖示置中、subtitle italic 於下方。
+DS v4.0 spec §六 4:3 aspect 硬鎖 · 圖示佔 30-35% 卡片高度 · 留白平衡。
+
+## PAT-48 [KNOWN_ISSUE]: 討論區於 UI 端 fake
+DB listings.type CHECK 只允 3 類（secondhand/rental_offer/rental_seek）。
+第 4 類「討論區」discussion 於 UI 端以 title 前綴「[討論] 」作為標記、
+存 DB 時 type = 'secondhand'。region 存空字串、price 存 null、photo_urls 存空陣列
+（皆為既有非 nullable/string 型別契約下的合法值，非 spec 原字面指令的 null）。
+Phase W（若確認討論區使用率）· 進行 DB schema migration · 加 discussion 為第 4 CHECK 值。
+含相關 board.ts 常量與 helper function。
+
+## PAT-49 [CORE_IMMUTABLE]: StarSlider 簡化為 1-5 整星
+Phase T 半星（0.5 step）於 mobile clipPath 有 render 邊界問題、且使用率低。
+Phase V 簡化為純整星、每個 slider 5 顆星 button。
+點已選相同值 → 清除為 0（Toggle 行為）。
+calculateOverall 保留 1 位小數（不 rounding 到 0.5）。
+
+## PAT-50 [CORE_IMMUTABLE]: 語校 accommodation 欄位
+schools.json 每所學校可選 accommodation: string | null。
+null = 未知或無提供 · UI 不顯示。
+string = 描述提供的住宿類型（寄宿家庭 / 宿舍 / 合作飯店）。
+本輪僅 2/5 校（goethe-muenchen、carl-duisberg-koeln）因既有 note 欄位明確提及住宿
+才填實情，其餘 3 校設 null（保守判斷，非杜撰）。
+未來若需 filter · 可重構為結構化 { type, description }[]（PAT-3A）。
+types.ts 受保護 · 於 SchoolDetail 用 as any 讀取。

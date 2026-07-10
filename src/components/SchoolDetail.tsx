@@ -172,6 +172,17 @@ export default function SchoolDetail() {
         </p>
       )}
 
+      {(school as any).accommodation && (
+        <div className="pt-3 border-t border-border-subtle">
+          <div className="text-xs font-medium text-content-muted uppercase tracking-wider mb-1">
+            住宿
+          </div>
+          <div className="text-sm text-content-primary">
+            🏠 {(school as any).accommodation}
+          </div>
+        </div>
+      )}
+
       <section className="space-y-3">
         <h2 className="text-lg font-medium">學員評價</h2>
         {loading ? (
