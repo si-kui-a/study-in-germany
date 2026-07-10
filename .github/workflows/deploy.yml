@@ -74,7 +74,7 @@ jobs:
     if: success()
     steps:
       - name: Wait for CDN propagation
-        run: sleep 20
+        run: sleep 90
 
       - name: Smoke test deployment
         env:
