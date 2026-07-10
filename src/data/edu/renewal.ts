@@ -34,9 +34,9 @@ export const renewalWorkflow: WorkflowTopic = {
       meta: { docs_count: 2, priority: 'required' },
       outcome: ['證明續簽期間有足夠生活費'],
       detail: {
-        documents: ['新的封鎖帳戶或財力擔保', '銀行對帳單'],
+        documents: ['新的限制提領帳戶（Sperrkonto）或財力擔保', '銀行對帳單'],
         procedure: [
-          '若靠 Sperrkonto:需新一年金額到位 · 建議 Termin 前 4-6 週匯入',
+          '若靠限制提領帳戶:需新一年金額到位 · 建議 Termin 前 4-6 週匯入',
           '若靠家人擔保:資助信 + 資助人稅單',
           '若有工作:勞動合約 + 3 個月稅單',
           '個人帳戶最近 3 個月流水 · 顯示無異常大額支出',
@@ -44,7 +44,7 @@ export const renewalWorkflow: WorkflowTopic = {
         common_mistakes: [
           '認為第一次辦理過就不用再證明財力(每次都要)',
           '資料只交德文 · 官員要英文備份時沒有',
-          'Sperrkonto 新一年金額到帳晚 · 需要重排 Termin',
+          '限制提領帳戶新一年金額到帳晚 · 需要重排 Termin',
         ],
         official_sources: [],
       },
@@ -166,22 +166,38 @@ export const renewalWorkflow: WorkflowTopic = {
       detail: {
         documents: ['護照', '過期居留卡 / 簽證', '正在申請的證明(Termin 收據)'],
         procedure: [
-          '什麼情況會用到:',
-          '  · 簽證/居留卡到期 · 但延簽 Termin 尚未到',
-          '  · 延簽已辦但新卡尚未寄到',
-          '  · Ausländerbehörde 處理延誤',
-          '如何取得:',
-          '  1. 到 Ausländerbehörde 現場排隊 · 不需 Termin',
-          '  2. 說明狀況並提供上述文件',
-          '  3. 現場繳費 €13-100 · 拿到過渡證明',
-          '有效期:',
-          '  · 通常 1-3 個月',
-          '  · 可延續至正式新卡發出',
-          '⚠️ 重要:',
-          '  · Fiktionsbescheinigung 賦予暫時居留 · 但功能受限',
-          '  · 不能出境後再入境(部分邦准許 · 需詢問)',
-          '  · 可繼續工作和上學 · 有時銀行 · 保險會要求',
-          '  · 建議永遠備一份影本',
+          {
+            text: '什麼情況會用到：',
+            items: [
+              '簽證/居留卡到期，但延簽 Termin 尚未到',
+              '延簽已辦但新卡尚未寄到',
+              'Ausländerbehörde 處理延誤',
+            ],
+          },
+          {
+            text: '如何取得：',
+            items: [
+              '到 Ausländerbehörde 現場排隊，不需 Termin',
+              '說明狀況並提供上述文件',
+              '現場繳費 €13-100，拿到過渡證明',
+            ],
+          },
+          {
+            text: '有效期：',
+            items: [
+              '通常 1-3 個月',
+              '可延續至正式新卡發出',
+            ],
+          },
+          {
+            text: '⚠️ 重要：',
+            items: [
+              '賦予暫時居留，但功能受限',
+              '不能出境後再入境（部分邦准許，需詢問）',
+              '可繼續工作和上學，有時銀行、保險會要求',
+              '建議永遠備一份影本',
+            ],
+          },
         ],
         common_mistakes: [
           '以為簽證過期就是非法 · 沒去辦 Fiktionsbescheinigung 就走',

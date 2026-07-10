@@ -130,3 +130,19 @@ Phase B.3 引入 · Phase C.1 已無業務使用（Edu 改 workflow 型別，con
 application step 2 明列:台灣學生一般不需 APS。
 例外情況:於中國大陸受教育的台灣學生 · 或行政疏失時的補件。
 從此 · workflow 資料檔不再假設「所有華人需 APS」。
+
+## PAT-36 [CORE_IMMUTABLE]: WorkflowStep procedure 支援 nested
+ProcedureItem 型別可為 string 或 { text, items[] }。
+渲染於 WorkflowCard 中，nested item 用 <ul list-disc> 呈現於 <li> 內。
+避免整段內容全被編號為單一 flat list，資訊層次清楚。
+
+## PAT-37 [CORE_IMMUTABLE]: 德文專有名詞首次出現原則
+每主題檔內同一個德文專有名詞：
+- 第一次出現時附中文說明或於 title_de 呈現
+- 之後所有 procedure / common_mistakes 內優先用中文，功能性識別詞（如 Termin、SCHUFA 等常出現於德國官方表單上的詞）可視語境保留
+- 例外：Meta location 內若是官方機構名（Bürgeramt / Ausländerbehörde）保留德文
+專有名詞英文縮寫（APS、DSH、GDPR）於全站首次出現時附一次全稱，之後可直接用縮寫。
+
+## PAT-38 [CORE_IMMUTABLE]: 限制提領帳戶用詞統一
+全站不使用「封鎖帳戶」，一律「限制提領帳戶」。
+Sperrkonto 於視覺上為「限制提領帳戶（Sperrkonto）」形式首次出現，之後只用中文。

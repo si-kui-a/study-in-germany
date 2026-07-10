@@ -132,23 +132,23 @@ export const exitWorkflow: WorkflowTopic = {
     },
     {
       step: 6,
-      title_zh: '取回 Sperrkonto 餘款',
+      title_zh: '取回限制提領帳戶餘款',
       title_de: 'Sperrkonto 提領',
       meta: { timing: '離境前 1-2 週', priority: 'required' },
-      outcome: ['取回剩餘的封鎖帳戶款項'],
+      outcome: ['取回剩餘的限制提領帳戶款項'],
       detail: {
-        documents: ['護照', 'Abmeldebescheinigung', 'Sperrkonto 開戶證明'],
+        documents: ['護照', 'Abmeldebescheinigung', '限制提領帳戶開戶證明'],
         procedure: [
-          '通知 Sperrkonto 服務商離境',
-          '提供 Abmeldebescheinigung',
-          '要求提前解除封鎖',
+          '通知限制提領帳戶服務商離境',
+          '提供離境確認書',
+          '要求提前解除提領限制',
           '確認轉帳到你的台灣或其他國家帳戶',
           '有時可能需付手續費',
           '確保帳戶清空',
         ],
         common_mistakes: [
-          '忘了 Sperrkonto 有餘額 · 離開後才發現',
-          '沒解除封鎖 · 錢卡在帳戶',
+          '忘了限制提領帳戶有餘額 · 離開後才發現',
+          '沒解除提領限制 · 錢卡在帳戶',
           '轉帳資訊填錯',
         ],
         official_sources: [
@@ -173,11 +173,15 @@ export const exitWorkflow: WorkflowTopic = {
           '登入 ELSTER 線上申報',
           '或委託稅務顧問(離境者常見選擇)',
           '準備所有票據',
-          '可扣抵費用:',
-          '  · 工作相關花費',
-          '  · 教育費用',
-          '  · 私人保險',
-          '  · 慈善捐款',
+          {
+            text: '可扣抵費用：',
+            items: [
+              '工作相關花費',
+              '教育費用',
+              '私人保險',
+              '慈善捐款',
+            ],
+          },
           '結算通常 4-8 週處理',
           '退稅款直接匯到指定帳戶',
         ],
@@ -200,13 +204,21 @@ export const exitWorkflow: WorkflowTopic = {
       detail: {
         documents: [],
         procedure: [
-          '後付合約:',
-          '  · 需書面通知(信件 · 或 App 內註銷)',
-          '  · 通常需要 3 個月前通知',
-          '  · 剩餘合約期需付完',
-          'Prepaid:',
-          '  · 直接停用即可',
-          '  · 可留下號碼 12 個月備用(部分營運商)',
+          {
+            text: '後付合約：',
+            items: [
+              '需書面通知（信件或 App 內註銷）',
+              '通常需要 3 個月前通知',
+              '剩餘合約期需付完',
+            ],
+          },
+          {
+            text: '預付卡：',
+            items: [
+              '直接停用即可',
+              '可留下號碼 12 個月備用（部分營運商）',
+            ],
+          },
         ],
         common_mistakes: [
           '合約沒解除 · 未來仍收費',

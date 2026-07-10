@@ -98,10 +98,26 @@ export default function WorkflowCard({ step }: Props) {
           {step.detail.procedure.length > 0 && (
             <section>
               <h4 className="text-sm font-semibold text-content-primary mb-2">辦理流程</h4>
-              <ol className="space-y-1 pl-5 list-decimal text-sm text-content-secondary">
-                {step.detail.procedure.map((p, i) => (
-                  <li key={i} className="leading-relaxed">{p}</li>
-                ))}
+              <ol className="space-y-2 pl-5 list-decimal text-sm text-content-secondary marker:text-content-muted">
+                {step.detail.procedure.map((p, i) => {
+                  if (typeof p === 'string') {
+                    return (
+                      <li key={i} className="leading-relaxed">{p}</li>
+                    );
+                  }
+                  return (
+                    <li key={i} className="leading-relaxed">
+                      <div>{p.text}</div>
+                      {p.items.length > 0 && (
+                        <ul className="mt-1.5 pl-4 space-y-1 list-disc marker:text-content-muted">
+                          {p.items.map((sub, j) => (
+                            <li key={j} className="text-content-secondary">{sub}</li>
+                          ))}
+                        </ul>
+                      )}
+                    </li>
+                  );
+                })}
               </ol>
             </section>
           )}

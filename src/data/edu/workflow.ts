@@ -33,9 +33,15 @@ export interface OfficialSource {
   url: string;
 }
 
+/** 單行陳述句，或「主項 + 子項」分組（子項以 disc list 呈現）。 */
+export type ProcedureItem = string | {
+  text: string;
+  items: string[];
+};
+
 export interface WorkflowStepDetail {
   documents: string[];
-  procedure: string[];
+  procedure: ProcedureItem[];
   common_mistakes: string[];
   official_sources: OfficialSource[];
 }
