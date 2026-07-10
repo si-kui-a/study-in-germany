@@ -8,11 +8,12 @@ import BoardIcon from '../assets/icons/BoardIcon';
 import FaqIcon from '../assets/icons/FaqIcon';
 import MyPostsIcon from '../assets/icons/MyPostsIcon';
 import EduIcon from '../assets/icons/EduIcon';
+import RecommendationIcon from '../assets/icons/RecommendationIcon';
 import BellIcon from '../assets/icons/BellIcon';
 
 /**
- * DS v4.1 Portal 首頁（B.1 Hero + B.2 Morandi/5卡/HotSchools 整合）
- * 結構：Hero 天際線 → Portal (5 卡) → 熱門語校 → 最新公告
+ * DS v4.1 Portal 首頁（B.1 Hero + B.2 Morandi 整合 · Phase G 擴為 6 卡）
+ * 結構：Hero 天際線 → Portal (6 卡，兩列 3+3) → 熱門語校 → 最新公告
  */
 export default function Home() {
   return (
@@ -22,7 +23,7 @@ export default function Home() {
       {/* Portal */}
       <section>
         <div className="text-xs text-content-muted mb-4 uppercase tracking-wider">Portal</div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-3 gap-4">
           <PortalCard
             to="/schools"
             title="語言學校"
@@ -36,16 +37,22 @@ export default function Home() {
             icon={<BoardIcon className="w-full h-full" />}
           />
           <PortalCard
-            to="/faq"
-            title="常見問答"
-            description="簽證、健保、限制提領帳戶、生活疑問"
-            icon={<FaqIcon className="w-full h-full" />}
-          />
-          <PortalCard
             to="/edu"
             title="學用板塊"
             description="簽證、落地、延簽、獎學金、政策"
             icon={<EduIcon className="w-full h-full" />}
+          />
+          <PortalCard
+            to="/recommendation"
+            title="推薦"
+            description="德國好物、方案、優惠"
+            icon={<RecommendationIcon className="w-full h-full" />}
+          />
+          <PortalCard
+            to="/faq"
+            title="常見問答"
+            description="簽證、健保、限制提領帳戶、生活疑問"
+            icon={<FaqIcon className="w-full h-full" />}
           />
           <PortalCard
             to="/my-posts"

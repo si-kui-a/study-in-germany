@@ -15,6 +15,7 @@ import MyPosts from './pages/MyPosts';
 import Faq from './pages/Faq';
 import Edu from './pages/Edu';
 import EduTopic from './pages/EduTopic';
+import Recommendation from './pages/Recommendation';
 import NotFound from './pages/NotFound';
 
 export default function App() {
@@ -43,6 +44,7 @@ export default function App() {
               <Route path="/faq" element={<Faq />} />
               <Route path="/edu" element={<Edu />} />
               <Route path="/edu/:slug" element={<EduTopic />} />
+              <Route path="/recommendation" element={<Recommendation />} />
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/my-posts" element={<MyPosts />} />
               <Route path="*" element={<NotFound />} />

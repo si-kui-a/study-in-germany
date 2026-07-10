@@ -55,6 +55,11 @@
 | PAT-51 | CORE_IMMUTABLE | schools.json 擴充至 17 所（WebSearch 逐校查證，不確定一律 null） |
 | PAT-52 | CORE_IMMUTABLE | 使用者建議系統：GitHub Issues 整合（零 DB / 零新服務） |
 | PAT-53 | CORE_IMMUTABLE | LICENSE 策略：MIT，未來付費功能另存閉源專案 |
+| PAT-54 | CORE_IMMUTABLE | Edu WorkflowStep +references[] +updated_at（AST 腳本機械生成） |
+| PAT-55 | CORE_IMMUTABLE | Schools 篩選 UI：城市 + 住宿雙 dropdown，SchoolList 改受控元件 |
+| PAT-56 | CORE_IMMUTABLE | School 連結雙軌：Google Maps + 官網並列 |
+| PAT-57 | CORE_IMMUTABLE | Portal 6 卡佈局：兩列 3+3，新增「推薦」/recommendation placeholder |
+| PAT-58 | KNOWN_ISSUE | schools.json URL 死鏈稽核：2 校修正、2 校疑似環境網路限制待覆核 |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance

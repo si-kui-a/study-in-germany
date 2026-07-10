@@ -138,16 +138,6 @@ export default function SchoolDetail() {
                   · {reviews.length} 則評價
                 </span>
               )}
-              {school.website && (
-                <a
-                  href={school.website}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-xs"
-                >
-                  官方網站 ↗
-                </a>
-              )}
             </div>
 
             {reviews.length > 0 && (
@@ -182,6 +172,34 @@ export default function SchoolDetail() {
           </div>
         </div>
       )}
+
+      {/* 連結區塊 · Google Maps + 官網並列（PAT-56） */}
+      <div className="flex flex-wrap gap-3 text-xs">
+        <a
+          href={`https://www.google.com/maps/search/${encodeURIComponent(`${school.name_zh} ${school.city}`)}`}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1
+                     px-3 py-1.5 rounded-lg border border-border-subtle
+                     hover:border-brand-gold hover:text-brand-burgundy
+                     no-underline transition-colors"
+        >
+          📍 Google 地圖 ↗
+        </a>
+        {school.website && (
+          <a
+            href={school.website}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1
+                       px-3 py-1.5 rounded-lg border border-border-subtle
+                       hover:border-brand-gold hover:text-brand-burgundy
+                       no-underline transition-colors"
+          >
+            🌐 官網 ↗
+          </a>
+        )}
+      </div>
 
       <section className="space-y-3">
         <h2 className="text-lg font-medium">學員評價</h2>

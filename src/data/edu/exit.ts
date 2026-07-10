@@ -29,6 +29,10 @@ export const exitWorkflow: WorkflowTopic = {
           { name: 'Berlin Ausländerbehörde', url: 'https://www.berlin.de/einwanderung/' },
         ],
       },
+      references: [
+        'Berlin Ausländerbehörde 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 2,
@@ -57,6 +61,10 @@ export const exitWorkflow: WorkflowTopic = {
           { name: 'Berlin Abmeldung', url: 'https://service.berlin.de/dienstleistung/120336/' },
         ],
       },
+      references: [
+        'Berlin Abmeldung 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 3,
@@ -79,6 +87,10 @@ export const exitWorkflow: WorkflowTopic = {
           { name: 'Rundfunkbeitrag · 註銷', url: 'https://www.rundfunkbeitrag.de/' },
         ],
       },
+      references: [
+        'Rundfunkbeitrag · 註銷 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 4,
@@ -103,6 +115,10 @@ export const exitWorkflow: WorkflowTopic = {
           { name: 'TK 註銷保單', url: 'https://www.tk.de/' },
         ],
       },
+      references: [
+        'TK 註銷保單 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 5,
@@ -129,6 +145,10 @@ export const exitWorkflow: WorkflowTopic = {
           { name: 'N26 關閉指南', url: 'https://n26.com/' },
         ],
       },
+      references: [
+        'N26 關閉指南 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 6,
@@ -155,6 +175,10 @@ export const exitWorkflow: WorkflowTopic = {
           { name: 'Fintiba 離境', url: 'https://www.fintiba.com/' },
         ],
       },
+      references: [
+        'Fintiba 離境 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 7,
@@ -194,6 +218,10 @@ export const exitWorkflow: WorkflowTopic = {
           { name: 'ELSTER 稅務系統', url: 'https://www.elster.de/' },
         ],
       },
+      references: [
+        'ELSTER 稅務系統 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 8,
@@ -228,6 +256,10 @@ export const exitWorkflow: WorkflowTopic = {
           { name: 'O2 解約流程', url: 'https://www.o2.de/' },
         ],
       },
+      references: [
+        'O2 解約流程 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 9,
@@ -255,6 +287,8 @@ export const exitWorkflow: WorkflowTopic = {
         ],
         official_sources: [],
       },
+      references: [],
+      updated_at: '2024-01',
     },
   ],
   general_notes: [

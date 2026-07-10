@@ -58,6 +58,12 @@ export const arrivalWorkflow: WorkflowTopic = {
           { name: 'Studentenwerk 學生宿舍', url: 'https://www.studentenwerke.de/' },
         ],
       },
+      references: [
+        'wg-gesucht.de 官方資訊',
+        'immobilienscout24 官方資訊',
+        'Studentenwerk 學生宿舍 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 2,
@@ -116,6 +122,10 @@ export const arrivalWorkflow: WorkflowTopic = {
           { name: '德國租屋法規 · Mieterschutzbund', url: 'https://www.mieterbund.de/' },
         ],
       },
+      references: [
+        '德國租屋法規 · Mieterschutzbund 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 3,
@@ -172,6 +182,10 @@ export const arrivalWorkflow: WorkflowTopic = {
           { name: 'Meldegesetz 戶籍法概覽', url: 'https://www.bmi.bund.de/' },
         ],
       },
+      references: [
+        'Meldegesetz 戶籍法概覽 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 4,
@@ -202,6 +216,11 @@ export const arrivalWorkflow: WorkflowTopic = {
           { name: 'München Bürgerbüro', url: 'https://muenchen.de/de/rathaus/verwaltung/kreisverwaltungsreferat/buergerbuero' },
         ],
       },
+      references: [
+        'Berlin Bürgeramt 官方資訊',
+        'München Bürgerbüro 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 5,
@@ -225,6 +244,11 @@ export const arrivalWorkflow: WorkflowTopic = {
           { name: 'Sparkasse', url: 'https://www.sparkasse.de/' },
         ],
       },
+      references: [
+        'N26 官方資訊',
+        'Sparkasse 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 6,
@@ -248,6 +272,11 @@ export const arrivalWorkflow: WorkflowTopic = {
           { name: 'AOK 公保', url: 'https://www.aok.de/' },
         ],
       },
+      references: [
+        'TK 公保 官方資訊',
+        'AOK 公保 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 7,
@@ -269,6 +298,10 @@ export const arrivalWorkflow: WorkflowTopic = {
           { name: 'Bundeszentralamt für Steuern', url: 'https://www.bzst.de/' },
         ],
       },
+      references: [
+        'Bundeszentralamt für Steuern 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 8,
@@ -291,6 +324,10 @@ export const arrivalWorkflow: WorkflowTopic = {
           { name: 'Aldi Talk', url: 'https://www.alditalk.de/' },
         ],
       },
+      references: [
+        'Aldi Talk 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 9,
@@ -313,6 +350,10 @@ export const arrivalWorkflow: WorkflowTopic = {
           { name: 'Rundfunkbeitrag', url: 'https://www.rundfunkbeitrag.de/' },
         ],
       },
+      references: [
+        'Rundfunkbeitrag 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
   ],
   general_notes: [

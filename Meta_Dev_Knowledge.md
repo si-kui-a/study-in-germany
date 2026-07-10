@@ -253,3 +253,46 @@ SchoolDetail 頁「回報建議」+ Schools 列表「提交新學校」皆跳 is
 ## PAT-53 [CORE_IMMUTABLE]: LICENSE 策略
 MIT · 全部 v0.7.x 程式碼開源，LICENSE 檔於 repo 根目錄（著作權年份以檔案建立當下年份為準）。
 未來付費進階服務將另存為閉源專案、不合入本 repo。README 授權段落明列開源範圍。
+
+## PAT-54 [CORE_IMMUTABLE]: Edu WorkflowStep references + updated_at
+每 step 加 optional 欄位：
+- references: string[] · 條列資料來源
+- updated_at: string · 'YYYY-MM' 或 'YYYY-MM-DD' 格式
+
+WorkflowCard 於 meta 區塊顯示「📅 更新於 · 🔗 N 來源」小字、
+於 Accordion 尾加「資料來源」第 5 區塊列出全部 references。
+
+Phase F 保守起點：references 直接由 official_sources[].name 生成（機械轉換，
+用 TypeScript compiler API 解析 AST 定位插入點後文字插入，避免手動編輯 53 個
+step 的抄寫錯誤），updated_at 統一 '2024-01'。official_sources 為空的 step，
+references 為 []。Lily 之後可校正實際更新日期與 references 詳細度。
+
+## PAT-55 [CORE_IMMUTABLE]: Schools 篩選 UI · 城市 + 住宿雙 dropdown
+Schools 頁頂部 filter bar：
+- 城市 select · 動態 collect 資料中的 city 值
+- 住宿 select · 三選一：任意 / 提供 / 不提供
+篩選結果數即時顯示於右側「共 N 所」。
+純 client filter · 無 fetch overhead。SchoolList 改為受控元件（接收 schools
+prop），不再自行 import schools.json。
+
+## PAT-56 [CORE_IMMUTABLE]: School 連結雙軌 · Google Maps + 官網
+於 SchoolDetail 移除散布於 Banner meta 列的 website 顯示、統一於資訊區塊底部並列：
+- Google Maps 連結 · 用 name_zh + city 作為 search query
+- 官網連結 · 若 website 為 null 則不顯示官網 button
+
+## PAT-57 [CORE_IMMUTABLE]: Portal 6 卡佈局 · 兩列 3+3
+grid-cols-2（mobile）/ sm:grid-cols-3 / lg:grid-cols-3（從 lg:grid-cols-5 改為
+lg:grid-cols-3，讓 6 卡在桌面版也維持兩列 3+3，非單列 5+1）。
+卡片順序：語校 / 佈告欄 / 學用 / 推薦 / FAQ / 我的資料。
+第 6 卡「推薦」/recommendation 為 Phase G 新路由，內容為 placeholder，
+子分類骨架已定義（通用/簽證/落地/學程/獎學金/台灣海外方案），內容留待後續 Phase。
+
+## PAT-58 [KNOWN_ISSUE]: schools.json URL 死鏈稽核（Phase G）
+逐校 curl 檢查 17 所學校網址：
+- goethe-berlin/goethe-muenchen 原 URL（/sta/ber.html、/sta/mue.html）回 404，
+  Goethe 官網已改版為 /ort/ber.html、/ort/mue.html 新路徑，已修正並驗證 200
+- carl-duisberg-koeln、berlitz-berlin 於本機檢查環境回連線層失敗（非 HTTP 404，
+  TLS handshake 未完成）——判斷為環境網路限制而非真死鏈（兩者皆為知名機構，
+  Phase E 已用 WebSearch 個別確認存在），維持現況未改動，記為待 Lily 之後
+  於一般網路環境重新確認
+- 其餘 13 所皆回 200，無需處理

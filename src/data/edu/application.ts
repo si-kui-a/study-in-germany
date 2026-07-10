@@ -53,6 +53,11 @@ export const applicationWorkflow: WorkflowTopic = {
           { name: 'uni-assist', url: 'https://www.uni-assist.de/' },
         ],
       },
+      references: [
+        'DAAD 課程搜尋 官方資訊',
+        'uni-assist 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 2,
@@ -95,6 +100,10 @@ export const applicationWorkflow: WorkflowTopic = {
           { name: 'APS 說明 · 台灣學生豁免', url: 'https://www.aps.org.cn/zh/studium-in-deutschland/nicht-chinesische-zeugnisse-und-leistungsnachweise' },
         ],
       },
+      references: [
+        'APS 說明 · 台灣學生豁免 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 3,
@@ -118,6 +127,11 @@ export const applicationWorkflow: WorkflowTopic = {
           { name: 'telc 官方', url: 'https://www.telc.net/' },
         ],
       },
+      references: [
+        'TestDaF 官方 官方資訊',
+        'telc 官方 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 4,
@@ -149,6 +163,10 @@ export const applicationWorkflow: WorkflowTopic = {
           { name: 'DAAD 課程資料庫', url: 'https://www2.daad.de/deutschland/studienangebote/international-programmes/en/' },
         ],
       },
+      references: [
+        'DAAD 課程資料庫 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 5,
@@ -173,6 +191,10 @@ export const applicationWorkflow: WorkflowTopic = {
           { name: 'uni-assist', url: 'https://www.uni-assist.de/' },
         ],
       },
+      references: [
+        'uni-assist 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 6,
@@ -193,6 +215,8 @@ export const applicationWorkflow: WorkflowTopic = {
         ],
         official_sources: [],
       },
+      references: [],
+      updated_at: '2024-01',
     },
     {
       step: 7,
@@ -213,6 +237,8 @@ export const applicationWorkflow: WorkflowTopic = {
         ],
         official_sources: [],
       },
+      references: [],
+      updated_at: '2024-01',
     },
   ],
   general_notes: [

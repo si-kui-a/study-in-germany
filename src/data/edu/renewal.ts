@@ -27,6 +27,10 @@ export const renewalWorkflow: WorkflowTopic = {
           { name: 'Berlin 移民局', url: 'https://www.berlin.de/einwanderung/' },
         ],
       },
+      references: [
+        'Berlin 移民局 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 2,
@@ -48,6 +52,8 @@ export const renewalWorkflow: WorkflowTopic = {
         ],
         official_sources: [],
       },
+      references: [],
+      updated_at: '2024-01',
     },
     {
       step: 3,
@@ -67,6 +73,8 @@ export const renewalWorkflow: WorkflowTopic = {
         ],
         official_sources: [],
       },
+      references: [],
+      updated_at: '2024-01',
     },
     {
       step: 4,
@@ -96,6 +104,8 @@ export const renewalWorkflow: WorkflowTopic = {
         ],
         official_sources: [],
       },
+      references: [],
+      updated_at: '2024-01',
     },
     {
       step: 5,
@@ -116,6 +126,8 @@ export const renewalWorkflow: WorkflowTopic = {
         ],
         official_sources: [],
       },
+      references: [],
+      updated_at: '2024-01',
     },
     {
       step: 6,
@@ -135,6 +147,8 @@ export const renewalWorkflow: WorkflowTopic = {
         ],
         official_sources: [],
       },
+      references: [],
+      updated_at: '2024-01',
     },
     {
       step: 7,
@@ -156,6 +170,10 @@ export const renewalWorkflow: WorkflowTopic = {
           { name: 'Make it in Germany · Bluecard', url: 'https://www.make-it-in-germany.com/en/visa-residence/eu-blue-card' },
         ],
       },
+      references: [
+        'Make it in Germany · Bluecard 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 8,
@@ -208,6 +226,10 @@ export const renewalWorkflow: WorkflowTopic = {
           { name: 'BAMF · Fiktionsbescheinigung', url: 'https://www.bamf.de/' },
         ],
       },
+      references: [
+        'BAMF · Fiktionsbescheinigung 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
   ],
   general_notes: [

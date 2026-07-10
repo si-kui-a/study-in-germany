@@ -57,6 +57,7 @@ export default function Header() {
             <NavLink to="/schools" className={navClass}>語校</NavLink>
             <NavLink to="/board" className={navClass}>佈告欄</NavLink>
             <NavLink to="/edu" className={navClass}>學用</NavLink>
+            <NavLink to="/recommendation" className={navClass}>推薦</NavLink>
             <NavLink to="/faq" className={navClass}>FAQ</NavLink>
             <NavLink to="/my-posts" className={navClass}>我的</NavLink>
             <NavLink to="/privacy" className={navClass}>隱私</NavLink>

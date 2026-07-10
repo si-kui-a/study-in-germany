@@ -52,6 +52,17 @@ export default function WorkflowCard({ step }: Props) {
         </div>
       )}
 
+      {(step.updated_at || (step.references && step.references.length > 0)) && (
+        <div className="flex flex-wrap gap-x-3 gap-y-1 text-xs text-content-muted">
+          {step.updated_at && (
+            <span>📅 更新於 {step.updated_at}</span>
+          )}
+          {step.references && step.references.length > 0 && (
+            <span>🔗 {step.references.length} 來源</span>
+          )}
+        </div>
+      )}
+
       {/* Outcome */}
       {step.outcome.length > 0 && (
         <div className="pt-2 space-y-1">
@@ -152,6 +163,25 @@ export default function WorkflowCard({ step }: Props) {
                   </li>
                 ))}
               </ul>
+            </section>
+          )}
+
+          {/* 資料來源 */}
+          {step.references && step.references.length > 0 && (
+            <section className="pt-3 border-t border-border-subtle">
+              <h4 className="text-sm font-semibold text-content-primary mb-2">
+                資料來源
+              </h4>
+              <ul className="space-y-1 pl-4 list-disc text-sm text-content-secondary">
+                {step.references.map((ref, i) => (
+                  <li key={i}>{ref}</li>
+                ))}
+              </ul>
+              {step.updated_at && (
+                <div className="mt-2 text-xs text-content-muted">
+                  本步驟資訊最後審核於 {step.updated_at}
+                </div>
+              )}
             </section>
           )}
         </div>

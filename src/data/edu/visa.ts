@@ -38,6 +38,11 @@ export const visaWorkflow: WorkflowTopic = {
           },
         ],
       },
+      references: [
+        '德國聯邦外交部簽證資訊 官方資訊',
+        '德國在台協會 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 2,
@@ -64,6 +69,11 @@ export const visaWorkflow: WorkflowTopic = {
           { name: 'uni-assist', url: 'https://www.uni-assist.de/' },
         ],
       },
+      references: [
+        'DAAD 語校搜尋 官方資訊',
+        'uni-assist 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 3,
@@ -113,6 +123,13 @@ export const visaWorkflow: WorkflowTopic = {
           { name: 'Deutsche Bank Sperrkonto', url: 'https://www.deutsche-bank.de/pk/konten-und-karten/konten/sperrkonto.html' },
         ],
       },
+      references: [
+        'Fintiba 官方資訊',
+        'Expatrio 官方資訊',
+        'Coracle 官方資訊',
+        'Deutsche Bank Sperrkonto 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 4,
@@ -170,6 +187,12 @@ export const visaWorkflow: WorkflowTopic = {
           { name: 'TK 公保', url: 'https://www.tk.de/' },
         ],
       },
+      references: [
+        'Mawista 官方資訊',
+        'Care Concept 官方資訊',
+        'TK 公保 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 5,
@@ -199,6 +222,10 @@ export const visaWorkflow: WorkflowTopic = {
           },
         ],
       },
+      references: [
+        '德國在台協會 · 簽證預約 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 6,
@@ -244,6 +271,10 @@ export const visaWorkflow: WorkflowTopic = {
           },
         ],
       },
+      references: [
+        '在台協會簽證文件清單 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 7,
@@ -286,6 +317,10 @@ export const visaWorkflow: WorkflowTopic = {
           { name: '德國在台協會 · 位置', url: 'https://taipei.diplo.de/tw-zh/vertretungen' },
         ],
       },
+      references: [
+        '德國在台協會 · 位置 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 8,
@@ -307,6 +342,8 @@ export const visaWorkflow: WorkflowTopic = {
         ],
         official_sources: [],
       },
+      references: [],
+      updated_at: '2024-01',
     },
   ],
   general_notes: [

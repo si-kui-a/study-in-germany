@@ -62,6 +62,11 @@ export const policyWorkflow: WorkflowTopic = {
           { name: 'DAAD · 學分認可', url: 'https://www.daad.de/en/study-and-research-in-germany/plan-your-studies/' },
         ],
       },
+      references: [
+        'Bologna Process 官方 官方資訊',
+        'DAAD · 學分認可 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 2,
@@ -88,6 +93,10 @@ export const policyWorkflow: WorkflowTopic = {
           { name: 'DAAD 語言證書比較', url: 'https://www.daad.de/en/study-and-research-in-germany/plan-your-studies/language-requirements/' },
         ],
       },
+      references: [
+        'DAAD 語言證書比較 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 3,
@@ -110,6 +119,10 @@ export const policyWorkflow: WorkflowTopic = {
           { name: 'DAAD 學費資訊', url: 'https://www.daad.de/en/study-and-research-in-germany/plan-your-studies/tuition-fees/' },
         ],
       },
+      references: [
+        'DAAD 學費資訊 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 4,
@@ -161,6 +174,11 @@ export const policyWorkflow: WorkflowTopic = {
           { name: 'IHK · Duale Studium 職缺', url: 'https://www.ihk.de/' },
         ],
       },
+      references: [
+        'BIBB 職業教育 官方資訊',
+        'IHK · Duale Studium 職缺 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 5,
@@ -235,6 +253,11 @@ export const policyWorkflow: WorkflowTopic = {
           { name: 'Anerkennung in Deutschland', url: 'https://www.anerkennung-in-deutschland.de/' },
         ],
       },
+      references: [
+        'anabin 資料庫 官方資訊',
+        'Anerkennung in Deutschland 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
     {
       step: 6,
@@ -257,6 +280,10 @@ export const policyWorkflow: WorkflowTopic = {
           { name: 'BAMF 學生工作規則', url: 'https://www.bamf.de/' },
         ],
       },
+      references: [
+        'BAMF 學生工作規則 官方資訊',
+      ],
+      updated_at: '2024-01',
     },
   ],
   general_notes: [

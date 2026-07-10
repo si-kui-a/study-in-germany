@@ -60,6 +60,9 @@ export interface WorkflowStep {
   meta: WorkflowStepMeta;
   outcome: string[];
   detail: WorkflowStepDetail;
+  /** DS v4.2 資料來源與更新日期（Phase F 加入） */
+  references?: string[];
+  updated_at?: string; // ISO format 'YYYY-MM' or 'YYYY-MM-DD'
 }
 
 export interface WorkflowTopic {
