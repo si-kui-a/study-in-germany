@@ -60,6 +60,8 @@
 | PAT-56 | CORE_IMMUTABLE | School 連結雙軌：Google Maps + 官網並列 |
 | PAT-57 | CORE_IMMUTABLE | Portal 6 卡佈局：兩列 3+3，新增「推薦」/recommendation placeholder |
 | PAT-58 | KNOWN_ISSUE | schools.json URL 死鏈稽核：2 校修正、2 校疑似環境網路限制待覆核 |
+| PAT-60 | CORE_IMMUTABLE | Recommendation 資料契約：無時效性原則，逐項 WebSearch 查證 |
+| PAT-61 | CORE_IMMUTABLE | Recommendation 6 子分類拆檔管理 |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance

@@ -1,0 +1,66 @@
+[
+  {
+    "id": "gen-db",
+    "category": "general",
+    "title": "Deutsche Bahn 官方 App",
+    "description": "德國國鐵官方 App，全德鐵路時刻表、購票、即時延誤資訊。搭火車必備。",
+    "tags": ["交通", "App", "官方"],
+    "url": "https://www.bahn.de/service/mobile/db-navigator"
+  },
+  {
+    "id": "gen-bahncard",
+    "category": "general",
+    "title": "BahnCard 折扣卡",
+    "description": "德鐵發行的年度折扣卡。BahnCard 25 / 50 / 100 有不同折扣級別，適合常搭火車的人。",
+    "tags": ["交通", "折扣"],
+    "url": "https://www.bahn.de/angebot/bahncard"
+  },
+  {
+    "id": "gen-google-maps",
+    "category": "general",
+    "title": "Google 地圖 · 大眾運輸",
+    "description": "德國大眾運輸整合完整。輸入目的地即可查公車、地鐵、電車、火車最佳路線。",
+    "tags": ["交通", "App"],
+    "url": "https://maps.google.com/"
+  },
+  {
+    "id": "gen-n26",
+    "category": "general",
+    "title": "N26 手機銀行",
+    "description": "純網路銀行，手機 App 開戶，免除傳統銀行 SCHUFA 障礙。適合剛落地學生。",
+    "tags": ["銀行", "App"],
+    "url": "https://n26.com/"
+  },
+  {
+    "id": "gen-revolut",
+    "category": "general",
+    "title": "Revolut · 多幣別金融卡",
+    "description": "支援台幣入金、歐元使用、匯率透明。適合台德兩地金流需求。",
+    "tags": ["銀行", "App", "多幣別"],
+    "url": "https://www.revolut.com/"
+  },
+  {
+    "id": "gen-reddit-germany",
+    "category": "general",
+    "title": "Reddit r/germany",
+    "description": "英文為主的德國生活論壇，各種疑難雜症、生活體驗、政策討論皆有社群回應。",
+    "tags": ["論壇", "社群", "英文"],
+    "url": "https://www.reddit.com/r/germany/"
+  },
+  {
+    "id": "gen-reddit-de",
+    "category": "general",
+    "title": "Reddit r/de",
+    "description": "德文為主的德國本地論壇，比 r/germany 更貼近本地觀點，適合練德文閱讀。",
+    "tags": ["論壇", "社群", "德文"],
+    "url": "https://www.reddit.com/r/de/"
+  },
+  {
+    "id": "gen-lieferando",
+    "category": "general",
+    "title": "Lieferando · 外送平台",
+    "description": "德國最大外送平台，涵蓋範圍廣，多數餐廳都在上面。",
+    "tags": ["外送", "App"],
+    "url": "https://www.lieferando.de/"
+  }
+]

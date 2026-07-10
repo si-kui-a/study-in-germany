@@ -1,0 +1,50 @@
+[
+  {
+    "id": "edu-uni-assist",
+    "category": "edu",
+    "title": "uni-assist · 學程申請",
+    "description": "多數德國大學的統一遞件平台，國際學生申請必經路徑。",
+    "tags": ["申請", "官方"],
+    "url": "https://www.uni-assist.de/"
+  },
+  {
+    "id": "edu-daad-programs",
+    "category": "edu",
+    "title": "DAAD · 課程資料庫",
+    "description": "德國學術交流總署的完整課程資料庫，可依領域、語言、學位篩選。",
+    "tags": ["課程", "官方"],
+    "url": "https://www2.daad.de/deutschland/studienangebote/international-programmes/en/"
+  },
+  {
+    "id": "edu-study-in-germany",
+    "category": "edu",
+    "title": "Study in Germany 官方",
+    "description": "德國學術交流總署主辦的留學生入口網站，官方資訊與流程指南。",
+    "tags": ["官方", "指南"],
+    "url": "https://www.study-in-germany.de/"
+  },
+  {
+    "id": "edu-testdaf",
+    "category": "edu",
+    "title": "TestDaF · 德語考試",
+    "description": "全德通用的德語入學考試，各大學普遍認可，可於錄取前先考。",
+    "tags": ["語言考試", "德文"],
+    "url": "https://www.testdaf.de/"
+  },
+  {
+    "id": "edu-telc",
+    "category": "edu",
+    "title": "telc · 語言考試",
+    "description": "另一個大學入學認可的德語考試選項，考試時間較彈性。",
+    "tags": ["語言考試", "德文"],
+    "url": "https://www.telc.net/"
+  },
+  {
+    "id": "edu-anabin",
+    "category": "edu",
+    "title": "anabin · 學歷資料庫",
+    "description": "德國文化部長聯席會議（KMK）的學歷資料庫，可查詢台灣學歷對應德國認可等級。",
+    "tags": ["學歷", "官方"],
+    "url": "https://anabin.kmk.org/anabin.html"
+  }
+]

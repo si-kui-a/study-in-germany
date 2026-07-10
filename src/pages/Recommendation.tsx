@@ -1,9 +1,29 @@
 import { Link } from 'react-router-dom';
 import RecommendationIcon from '../assets/icons/RecommendationIcon';
+import { RECOMMENDATION_CATEGORIES } from '../lib/recommendation';
+import generalData from '../data/recommendations/general.json';
+import visaData from '../data/recommendations/visa.json';
+import arrivalData from '../data/recommendations/arrival.json';
+import eduData from '../data/recommendations/edu.json';
+import scholarshipData from '../data/recommendations/scholarship.json';
+import taiwanData from '../data/recommendations/taiwan.json';
+
+const COUNT_MAP: Record<string, number> = {
+  general: generalData.length,
+  visa: visaData.length,
+  arrival: arrivalData.length,
+  edu: eduData.length,
+  scholarship: scholarshipData.length,
+  taiwan: taiwanData.length,
+};
+
+const SUGGEST_ISSUE_URL = `https://github.com/lilichen-F/study-in-germany/issues/new?${new URLSearchParams(
+  { title: '[推薦] ', labels: 'recommendation' }
+).toString()}`;
 
 /**
- * Phase G · 推薦專區 placeholder
- * 內容於後續 Phase 補完 · 子分類：通用推薦 + 各板塊專門推薦
+ * DS v4.2 · 推薦專區 Hub
+ * 6 個子分類卡矩陣（3×2 或 2×3 依螢幕）
  */
 export default function Recommendation() {
   return (
@@ -19,46 +39,51 @@ export default function Recommendation() {
           推薦專區
         </h1>
         <p className="text-sm text-content-secondary mt-3 max-w-2xl leading-relaxed">
-          蒐集德國 / 歐洲 / 台灣好物、好用工具、方案、優惠。
-          分為「通用推薦」與各板塊的專門推薦區。
+          給留德新手與在德華人的實用工具、方案、平台清單。
+          內容以可查證的官方連結為主，不寫時效性資訊（價格、優惠碼）。
+          正式使用前請至各平台查詢最新細節。
         </p>
       </div>
 
-      <div className="card bg-brand-gold-soft border-brand-gold/30">
-        <div className="text-sm font-medium text-content-primary mb-2">
-          🚧 內容正在整理中
-        </div>
-        <p className="text-sm text-content-secondary leading-relaxed">
-          此板塊將於後續版本補完。目前規劃的子分類：
-        </p>
-        <div className="pt-3 grid grid-cols-2 sm:grid-cols-3 gap-3 text-xs">
-          {[
-            { label: '通用推薦', hint: '好物、優惠、工具' },
-            { label: '簽證相關', hint: 'Sperrkonto、保險' },
-            { label: '落地相關', hint: '銀行、SIM、家具' },
-            { label: '學程相關', hint: 'uni-assist、DAAD' },
-            { label: '獎學金', hint: '各獎學金資料庫' },
-            { label: '台灣海外方案', hint: '銀行、電信、保險' },
-          ].map((s) => (
-            <div
-              key={s.label}
-              className="p-3 rounded-lg border border-border-subtle bg-surface-card"
-            >
-              <div className="font-medium text-content-primary">{s.label}</div>
-              <div className="text-content-muted mt-0.5">{s.hint}</div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {RECOMMENDATION_CATEGORIES.map((c) => (
+          <Link
+            key={c.key}
+            to={`/recommendation/${c.key}`}
+            className="card-interactive block p-5 no-underline aspect-[4/3]
+                       flex flex-col justify-between"
+          >
+            <div className="text-3xl" aria-hidden>{c.emoji}</div>
+            <div>
+              <div className="font-semibold text-content-primary">{c.title}</div>
+              <div className="text-xs text-content-muted mt-1 leading-relaxed">
+                {c.subtitle}
+              </div>
+              <div className="pt-2 flex items-center justify-between text-xs">
+                <span className="text-content-secondary">
+                  {COUNT_MAP[c.key]} 項
+                </span>
+                <span className="text-brand-burgundy font-medium">進入 →</span>
+              </div>
             </div>
-          ))}
-        </div>
+          </Link>
+        ))}
       </div>
 
-      <div className="card bg-surface-section max-w-2xl">
+      <div className="card bg-brand-gold-soft border-brand-gold/30 max-w-2xl">
         <div className="text-sm font-medium text-content-primary mb-2">
           📝 有推薦想貢獻？
         </div>
         <p className="text-sm text-content-secondary leading-relaxed">
           歡迎於{' '}
-          <Link to="/board">佈告欄</Link>{' '}
-          分享你的推薦，或於 GitHub Issue 提交。留言功能將於後續版本上線。
+          <a
+            href={SUGGEST_ISSUE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            GitHub Issue
+          </a>{' '}
+          提交你認為有用的工具、方案、平台。審核後會加入清單。
         </p>
       </div>
     </div>

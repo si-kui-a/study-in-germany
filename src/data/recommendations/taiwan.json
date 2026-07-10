@@ -1,0 +1,50 @@
+[
+  {
+    "id": "tw-esunbank",
+    "category": "taiwan",
+    "title": "玉山銀行 · 留學金融服務",
+    "description": "教育部留學貸款承辦銀行之一，提供存款餘額財力證明、外幣帳戶與海外匯款服務。",
+    "tags": ["銀行", "財力證明", "台灣"],
+    "url": "https://www.esunbank.com.tw/"
+  },
+  {
+    "id": "tw-taishinbank",
+    "category": "taiwan",
+    "title": "台新銀行",
+    "description": "台灣主要銀行之一，提供外幣帳戶、海外匯款等服務，可用於留學相關財力需求。",
+    "tags": ["銀行", "台灣"],
+    "url": "https://www.taishinbank.com.tw/"
+  },
+  {
+    "id": "tw-cht-overseas",
+    "category": "taiwan",
+    "title": "中華電信 · 海外方案",
+    "description": "中華電信提供的國際漫遊、海外月租方案，銜接台灣舊門號。",
+    "tags": ["電信", "台灣", "漫遊"],
+    "url": "https://www.cht.com.tw/"
+  },
+  {
+    "id": "tw-fet-overseas",
+    "category": "taiwan",
+    "title": "遠傳電信 · 海外方案",
+    "description": "遠傳電信的國際漫遊與海外月租方案。",
+    "tags": ["電信", "台灣", "漫遊"],
+    "url": "https://www.fetnet.net/"
+  },
+  {
+    "id": "tw-taipei-office-berlin",
+    "category": "taiwan",
+    "title": "駐德國台北代表處",
+    "description": "台灣在德國的官方辦事處，護照補發、公證、緊急事務處理。柏林為主館，法蘭克福與慕尼黑另設辦事處。",
+    "tags": ["官方", "台灣", "領事"],
+    "url": "https://www.roc-taiwan.org/de/"
+  },
+  {
+    "id": "tw-moe-scholarship",
+    "category": "taiwan",
+    "title": "教育部 · 留學貸款專區",
+    "description": "台灣教育部主辦的留學生就學貸款方案，適合家庭經濟資源有限者。",
+    "tags": ["貸款", "官方", "台灣"],
+    "url": "https://depart.moe.edu.tw/ed2500/Content_List.aspx?n=E0E936B8395696D7"
+  }
+]

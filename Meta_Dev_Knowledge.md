@@ -296,3 +296,20 @@ lg:grid-cols-3，讓 6 卡在桌面版也維持兩列 3+3，非單列 5+1）。
   Phase E 已用 WebSearch 個別確認存在），維持現況未改動，記為待 Lily 之後
   於一般網路環境重新確認
 - 其餘 13 所皆回 200，無需處理
+
+## PAT-60 [CORE_IMMUTABLE]: Recommendation 資料契約 · 無時效性原則
+每 Recommendation 為可長期查證的公開實體（官方網站、大型平台等）。
+不寫時效性資訊：價格 · 優惠碼 · 月費 · 特定活動日期。
+使用者可自行至各官方連結查最新細節。
+Phase H 建檔時以 WebSearch 逐一查證較不確定的項目：
+- Coracle（限制提領帳戶服務商）查得目前暫停受理新申請 → 排除，不寫入不穩定服務
+- Care Concept 確認為獨立公司（非 Mawista 子品牌）→ 保留
+- anabin、駐德國台北代表處、教育部留學貸款專區、三大德國政治基金會（Studienstiftung/KAS/Böll）URL 皆逐一查證
+- 台新銀行「留學方案」細節未查得具體佐證 → 描述改保守用詞，不宣稱有專屬留學方案
+維護原則：官方 URL 若失效 · 於 GitHub Issue 收報後審核 · 更新或刪除該項。
+（原標 PAT-58，撞既有死鏈稽核 PAT-58 → 順延 60。）
+
+## PAT-61 [CORE_IMMUTABLE]: Recommendation 6 子分類 · 拆檔管理
+按子分類拆為 6 個 JSON 檔（general/visa/arrival/edu/scholarship/taiwan）於 src/data/recommendations/。
+Hub 頁自動 count items · 子分類頁載入單一 JSON。
+未來加分類 · 於 RECOMMENDATION_CATEGORIES 追加 + 新增對應 JSON 檔。
