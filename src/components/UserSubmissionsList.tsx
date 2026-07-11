@@ -102,6 +102,18 @@ export default function UserSubmissionsList({
             <p className="text-sm text-content-secondary leading-relaxed whitespace-pre-wrap">
               {s.content}
             </p>
+            {s.target_url && (
+              <a
+                href={s.target_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-xs text-brand-burgundy no-underline
+                           hover:text-brand-burgundy-hover
+                           inline-flex items-center gap-1"
+              >
+                🔗 相關連結 ↗
+              </a>
+            )}
           </article>
         ))}
       </div>

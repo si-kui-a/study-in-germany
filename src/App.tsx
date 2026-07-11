@@ -12,6 +12,7 @@ import SchoolDetail from './components/SchoolDetail';
 import Board from './pages/Board';
 import Privacy from './pages/Privacy';
 import MyPosts from './pages/MyPosts';
+import MyProfile from './pages/MyProfile';
 import Faq from './pages/Faq';
 import Edu from './pages/Edu';
 import EduTopic from './pages/EduTopic';
@@ -49,6 +50,7 @@ export default function App() {
               <Route path="/recommendation/:slug" element={<RecommendationCategory />} />
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/my-posts" element={<MyPosts />} />
+              <Route path="/my-profile" element={<MyProfile />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </ErrorBoundary>

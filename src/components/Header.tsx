@@ -60,6 +60,7 @@ export default function Header() {
             <NavLink to="/recommendation" className={navClass}>推薦</NavLink>
             <NavLink to="/faq" className={navClass}>FAQ</NavLink>
             <NavLink to="/my-posts" className={navClass}>我的</NavLink>
+            <NavLink to="/my-profile" className={navClass}>編輯個人資料</NavLink>
             <NavLink to="/privacy" className={navClass}>隱私</NavLink>
           </nav>
 

@@ -24,6 +24,7 @@ export default function SubmissionForm({
   const { push } = useToast();
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [url, setUrl] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
   const canSubmit = title.trim().length >= 2 && content.trim().length >= 5;
@@ -38,6 +39,7 @@ export default function SubmissionForm({
       user_id: user?.id ?? null,
       submission_type: submissionType,
       target_id: targetId ?? null,
+      target_url: url.trim() || null,
       title: title.trim(),
       content: content.trim(),
     });
@@ -55,6 +57,7 @@ export default function SubmissionForm({
     push('success', '提交完成 · 我們會盡快審核');
     setTitle('');
     setContent('');
+    setUrl('');
     onSubmitted?.();
   };
 
@@ -87,6 +90,23 @@ export default function SubmissionForm({
         <div className="text-xs text-content-muted text-right">
           {title.length} / 100
         </div>
+      </div>
+
+      <div className="space-y-1.5">
+        <label className="text-sm font-medium text-content-primary">
+          相關連結 <span className="text-content-muted">（選填 · 官網 / 佐證 URL）</span>
+        </label>
+        <input
+          type="url"
+          value={url}
+          onChange={(e) => setUrl(e.target.value)}
+          maxLength={500}
+          placeholder="https://..."
+          className="w-full px-3 py-2 rounded-lg
+                     bg-surface-canvas border border-border-subtle
+                     text-sm text-content-primary
+                     focus:outline-none focus:border-brand-burgundy"
+        />
       </div>
 
       <div className="space-y-1.5">

@@ -11,6 +11,7 @@ export interface UserSubmission {
   user_id: string | null;
   submission_type: SubmissionType;
   target_id: string | null;
+  target_url: string | null;
   title: string;
   content: string;
   status: SubmissionStatus;

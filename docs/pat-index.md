@@ -74,6 +74,12 @@
 | PAT-71 | CORE_IMMUTABLE | UserSubmissionsList 通用元件（含已知分類篩選落差） |
 | PAT-72 | CORE_IMMUTABLE | listings type 擴為 6 類（含 3 個 discussion 子類） |
 | PAT-73 | CORE_IMMUTABLE | Board Hierarchical Filter UI（討論展開次級篩選） |
+| PAT-74 | CORE_IMMUTABLE | SubmissionForm target_url 選填連結 |
+| PAT-75 | CORE_IMMUTABLE | profiles 擴展：registration_seq + badges |
+| PAT-76 | CORE_IMMUTABLE | avatars Storage bucket：公開讀 + 本人寫，5MB 上限 |
+| PAT-77 | CORE_IMMUTABLE | display_name 3 種選項（google/anonymous/custom） |
+| PAT-78 | CORE_IMMUTABLE | Board contact_info 改為 optional |
+| PAT-79 | CORE_IMMUTABLE | useContributions Hook（Phase K-2 徽章判定資料源） |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance

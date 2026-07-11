@@ -175,3 +175,50 @@ ALTER TABLE public.listings ADD CONSTRAINT listings_type_check
     'discussion_study',
     'discussion_longterm'
   ));
+
+-- ==========================================
+-- Phase K-1 · user_submissions 加 target_url（optional 外部連結）
+-- ==========================================
+
+ALTER TABLE public.user_submissions ADD COLUMN IF NOT EXISTS target_url TEXT;
+ALTER TABLE public.user_submissions ADD CONSTRAINT user_submissions_target_url_check
+  CHECK (target_url IS NULL OR (char_length(target_url) <= 500 AND target_url LIKE 'http%'));
+
+-- ==========================================
+-- Phase K-1 · profiles 擴展
+-- + registration_seq · auto-increment 註冊序號
+-- + badges · JSONB 徽章清單（Phase K-2 用）
+-- ==========================================
+
+CREATE SEQUENCE IF NOT EXISTS profiles_registration_seq_seq;
+
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS registration_seq BIGINT;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS badges JSONB DEFAULT '[]'::jsonb;
+
+UPDATE public.profiles
+  SET registration_seq = nextval('profiles_registration_seq_seq')
+  WHERE registration_seq IS NULL;
+
+ALTER TABLE public.profiles
+  ALTER COLUMN registration_seq SET DEFAULT nextval('profiles_registration_seq_seq');
+
+-- ==========================================
+-- Phase K-1 · avatars Storage bucket
+-- ==========================================
+
+INSERT INTO storage.buckets (id, name, public)
+  VALUES ('avatars', 'avatars', true)
+  ON CONFLICT (id) DO NOTHING;
+
+-- 只有本人可上傳/修改自己資料夾內的頭像
+DROP POLICY IF EXISTS "avatars_user_owned_write" ON storage.objects;
+CREATE POLICY "avatars_user_owned_write" ON storage.objects
+  FOR ALL
+  USING (bucket_id = 'avatars' AND auth.uid()::text = (storage.foldername(name))[1])
+  WITH CHECK (bucket_id = 'avatars' AND auth.uid()::text = (storage.foldername(name))[1]);
+
+-- 公開讀（任何人都能看頭像）
+DROP POLICY IF EXISTS "avatars_public_read" ON storage.objects;
+CREATE POLICY "avatars_public_read" ON storage.objects
+  FOR SELECT
+  USING (bucket_id = 'avatars');

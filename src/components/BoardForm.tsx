@@ -37,7 +37,6 @@ export default function BoardForm({ onSubmitted }: Props) {
     title.trim().length <= 100 &&
     description.trim().length >= 5 &&
     description.trim().length <= 2000 &&
-    contact.trim().length > 0 &&
     !submitting;
 
   const handleSubmit = async (e: FormEvent) => {
@@ -55,7 +54,7 @@ export default function BoardForm({ onSubmitted }: Props) {
       title: title.trim(),
       description: description.trim(),
       price: isDiscussion ? null : price.trim() || null,
-      contact_info: contact.trim(),
+      contact_info: contact.trim() || null,
       photo_urls: isDiscussion ? [] : photos,
     });
     setSubmitting(false);
@@ -181,13 +180,15 @@ export default function BoardForm({ onSubmitted }: Props) {
       {!isDiscussion && <PhotoUploader value={photos} onChange={setPhotos} />}
 
       <div>
-        <label className="label" htmlFor="contact">聯絡方式（將公開顯示）</label>
+        <label className="label" htmlFor="contact">
+          聯絡方式 <span className="text-content-muted">（選填 · 例如 email / IG / Telegram）</span>
+        </label>
         <input
           id="contact"
           className="input"
           value={contact}
           onChange={(e) => setContact(e.target.value)}
-          placeholder="Telegram @xxx / Email"
+          placeholder="留空表示不留聯絡方式（討論類貼文常見）"
         />
       </div>
 
