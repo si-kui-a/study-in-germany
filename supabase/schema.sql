@@ -302,3 +302,60 @@ CREATE POLICY "reports_anon_insert" ON public.reports
 -- ==========================================
 
 ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS deletion_requested_at TIMESTAMPTZ;
+
+-- ==========================================
+-- Phase Q · listing_likes 表（1/2）
+-- ==========================================
+
+CREATE TABLE IF NOT EXISTS public.listing_likes (
+  id BIGSERIAL PRIMARY KEY,
+  listing_id BIGINT NOT NULL REFERENCES public.listings(id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  UNIQUE (listing_id, user_id)
+);
+
+CREATE INDEX IF NOT EXISTS listing_likes_listing_idx ON public.listing_likes (listing_id);
+CREATE INDEX IF NOT EXISTS listing_likes_user_idx ON public.listing_likes (user_id);
+
+ALTER TABLE public.listing_likes ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "listing_likes_auth_insert" ON public.listing_likes;
+CREATE POLICY "listing_likes_auth_insert" ON public.listing_likes
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "listing_likes_public_read" ON public.listing_likes;
+CREATE POLICY "listing_likes_public_read" ON public.listing_likes
+  FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "listing_likes_own_delete" ON public.listing_likes;
+CREATE POLICY "listing_likes_own_delete" ON public.listing_likes
+  FOR DELETE USING (auth.uid() = user_id);
+
+-- ==========================================
+-- Phase Q · listing_comments 表（2/2）
+-- ==========================================
+
+CREATE TABLE IF NOT EXISTS public.listing_comments (
+  id BIGSERIAL PRIMARY KEY,
+  listing_id BIGINT NOT NULL REFERENCES public.listings(id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  content TEXT NOT NULL CHECK (char_length(content) >= 1 AND char_length(content) <= 500),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE INDEX IF NOT EXISTS listing_comments_listing_idx ON public.listing_comments (listing_id, created_at);
+
+ALTER TABLE public.listing_comments ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "listing_comments_auth_insert" ON public.listing_comments;
+CREATE POLICY "listing_comments_auth_insert" ON public.listing_comments
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "listing_comments_public_read" ON public.listing_comments;
+CREATE POLICY "listing_comments_public_read" ON public.listing_comments
+  FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "listing_comments_own_delete" ON public.listing_comments;
+CREATE POLICY "listing_comments_own_delete" ON public.listing_comments
+  FOR DELETE USING (auth.uid() = user_id);

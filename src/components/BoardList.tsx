@@ -6,6 +6,8 @@ import PhotoGallery from './PhotoGallery';
 import UserAvatar from './UserAvatar';
 import FollowButton from './FollowButton';
 import ReportButton from './ReportButton';
+import LikeButton from './LikeButton';
+import CommentSection from './CommentSection';
 import type { BadgeId } from '../lib/badges';
 import { boardTypeOf, isDiscussion, isDiscussionType, stripDiscussionPrefix, BOARD_TYPE_LABEL } from '../lib/board';
 
@@ -112,6 +114,11 @@ export default function BoardList({ listings, onDeleted, badgesMap }: Props) {
             <div className="mt-2 text-xs text-content-muted">
               到期：{new Date(l.expires_at).toLocaleDateString('zh-Hant')}
             </div>
+
+            <div className="flex items-center gap-3 mt-2 pt-2 border-t border-border-subtle">
+              <LikeButton listingId={String(l.id)} />
+            </div>
+            <CommentSection listingId={String(l.id)} />
           </div>
         );
       })}
