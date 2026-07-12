@@ -110,6 +110,8 @@
 | PAT-107 | CORE_IMMUTABLE | 追蹤動態獨立頁面：/following（抽取自 MyProfile） |
 | PAT-108 | CORE_IMMUTABLE | GitHub 帳號改名：lilichen-F → si-kui-a + deploy.yml 修正 |
 | PAT-109 | CORE_IMMUTABLE | schools.json Batch 2 匯入（27→52 所，跳過 5 筆重複） |
+| PAT-110 | CORE_IMMUTABLE | 隱私政策 GDPR 更新（8 表逐項列出；贊助/服務條款 2 節待補） |
+| PAT-111 | CORE_IMMUTABLE | 城市圖示擴充：18 城（400×300 天際線家族，非 60×60 Geometry） |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance

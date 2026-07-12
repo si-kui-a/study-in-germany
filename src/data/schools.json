@@ -10,7 +10,9 @@
     "note": "官方德國文化中心，教學品質穩定，證書國際認可度最高，適合需要 APS 或簽證用語言證明的學生。約 €1,200–1,500 / 4 週密集班。",
     "accommodation": null,
     "founded_year": null,
-    "accreditation": ["Goethe-Zertifikat"],
+    "accreditation": [
+      "Goethe-Zertifikat"
+    ],
     "price_hint": "€1,200–1,500 / 4 週密集班"
   },
   {
@@ -24,7 +26,9 @@
     "note": "慕尼黑校區，鄰近大學區，設備新，寄宿家庭與宿舍資源多，但生活費在全德屬最高一級。約 €1,300–1,600 / 4 週密集班。",
     "accommodation": "提供寄宿家庭與宿舍安排資源",
     "founded_year": null,
-    "accreditation": ["Goethe-Zertifikat"],
+    "accreditation": [
+      "Goethe-Zertifikat"
+    ],
     "price_hint": "€1,300–1,600 / 4 週密集班"
   },
   {
@@ -60,12 +64,15 @@
     "name_zh": "卡爾杜伊斯堡中心 科隆",
     "name_de": "Carl Duisberg Centren Köln",
     "city": "Köln",
+    "city_key": "koeln",
     "level": "A1–C2",
     "website": "https://www.carl-duisberg.de",
     "note": "老牌語言機構，TestDaF 考場之一，考前衝刺班口碑好，宿舍可代訂。約 €900–1,250 / 4 週密集班。",
     "accommodation": "可代訂宿舍",
     "founded_year": null,
-    "accreditation": ["TestDaF"],
+    "accreditation": [
+      "TestDaF"
+    ],
     "price_hint": "€900–1,250 / 4 週密集班"
   },
   {
@@ -93,7 +100,9 @@
     "note": "官方德國文化中心法蘭克福分校，鄰近 Konstablerwache 交通樞紐，提供新移民免費融入活動。",
     "accommodation": null,
     "founded_year": null,
-    "accreditation": ["Goethe-Zertifikat"],
+    "accreditation": [
+      "Goethe-Zertifikat"
+    ],
     "price_hint": null
   },
   {
@@ -107,7 +116,9 @@
     "note": "官方德國文化中心杜塞道夫分校，鄰近中央車站，提供 A1–C2 官方認證課程。",
     "accommodation": null,
     "founded_year": null,
-    "accreditation": ["Goethe-Zertifikat"],
+    "accreditation": [
+      "Goethe-Zertifikat"
+    ],
     "price_hint": null
   },
   {
@@ -135,7 +146,11 @@
     "note": "國際連鎖語言學校柏林分校，telc / TestDaF / DTZ 官方考場，位於 Kleiststraße。",
     "accommodation": null,
     "founded_year": null,
-    "accreditation": ["telc", "TestDaF", "DTZ"],
+    "accreditation": [
+      "telc",
+      "TestDaF",
+      "DTZ"
+    ],
     "price_hint": null
   },
   {
@@ -171,6 +186,7 @@
     "name_zh": "F+U 教育集團 海德堡",
     "name_de": "F+U Academy of Languages Heidelberg",
     "city": "Heidelberg",
+    "city_key": "heidelberg",
     "level": "A1–C2",
     "website": "https://www.fuu.de/sprachen/",
     "note": "海德堡舊城中心語言學院，年服務逾 12,000 名學生（含柏林分校），提供多種密集與晚間課程。",
@@ -204,7 +220,10 @@
     "note": "柏林獨立語言暨藝術文化學院，telc 官方考場，柏林參議院教育局與 FaDaF 認證。",
     "accommodation": null,
     "founded_year": null,
-    "accreditation": ["telc", "FaDaF"],
+    "accreditation": [
+      "telc",
+      "FaDaF"
+    ],
     "price_hint": null
   },
   {
@@ -218,7 +237,10 @@
     "note": "1983 年成立，柏林自有校園（含合作飯店住宿），TestDaF 與 telc 官方考場，多次獲 Star School Germany 獎。",
     "accommodation": "自有校園含合作飯店住宿選項",
     "founded_year": 1983,
-    "accreditation": ["TestDaF", "telc"],
+    "accreditation": [
+      "TestDaF",
+      "telc"
+    ],
     "price_hint": null
   },
   {
@@ -254,12 +276,15 @@
     "name_zh": "Sprachschule Aktiv 斯圖加特",
     "name_de": "Sprachschule Aktiv Stuttgart",
     "city": "Stuttgart",
+    "city_key": "stuttgart",
     "level": "A1–C2",
     "website": "https://www.sprachschule-aktiv.de",
     "note": "Franchise 語言學校連鎖，telc 認證考場。",
     "accommodation": "WG、寄宿家庭、飯店協助安排",
     "founded_year": 2001,
-    "accreditation": ["telc"],
+    "accreditation": [
+      "telc"
+    ],
     "price_hint": null
   },
   {
@@ -267,12 +292,15 @@
     "name_zh": "Sprachschule Aktiv 科隆",
     "name_de": "Sprachschule Aktiv Köln",
     "city": "Köln",
+    "city_key": "koeln",
     "level": "A1–C2",
     "website": "https://www.sprachschule-aktiv.de",
     "note": "Franchise 語言學校連鎖，telc 認證考場。",
     "accommodation": "寄宿家庭、WG、學生宿舍、飯店/民宿",
     "founded_year": 2001,
-    "accreditation": ["telc"],
+    "accreditation": [
+      "telc"
+    ],
     "price_hint": null
   },
   {
@@ -280,12 +308,15 @@
     "name_zh": "Sprachschule Aktiv 波昂",
     "name_de": "Sprachschule Aktiv Bonn",
     "city": "Bonn",
+    "city_key": "bonn",
     "level": "A1–C2",
     "website": "https://www.sprachschule-aktiv.de",
     "note": "Franchise 語言學校連鎖，telc 認證考場。",
     "accommodation": "寄宿家庭、學生宿舍、WG",
     "founded_year": 2001,
-    "accreditation": ["telc"],
+    "accreditation": [
+      "telc"
+    ],
     "price_hint": null
   },
   {
@@ -299,7 +330,12 @@
     "note": "老牌語言學院，全德僅 Berlin/Konstanz 兩處為成人常年校區。",
     "accommodation": "校內住宿（單/雙人房、附衛浴、全食宿）、寄宿家庭",
     "founded_year": null,
-    "accreditation": ["FDSV", "TestDaF考場", "TestAS考場", "telc考場(A1-C1 Hochschule)"],
+    "accreditation": [
+      "FDSV",
+      "TestDaF考場",
+      "TestAS考場",
+      "telc考場(A1-C1 Hochschule)"
+    ],
     "price_hint": null
   },
   {
@@ -313,7 +349,9 @@
     "note": "國際語言學校品牌，telc 官方考場。",
     "accommodation": null,
     "founded_year": null,
-    "accreditation": ["telc"],
+    "accreditation": [
+      "telc"
+    ],
     "price_hint": null
   },
   {
@@ -321,12 +359,15 @@
     "name_zh": "Alpadia 弗萊堡",
     "name_de": "Alpadia Freiburg",
     "city": "Freiburg",
+    "city_key": "freiburg",
     "level": "A1–C2",
     "website": "https://alpadia.com",
     "note": "國際語言學校品牌，telc 官方考場。",
     "accommodation": "寄宿家庭、WG、學生宿舍",
     "founded_year": null,
-    "accreditation": ["telc"],
+    "accreditation": [
+      "telc"
+    ],
     "price_hint": null
   },
   {
@@ -340,7 +381,14 @@
     "note": "原 F+U Academy of Languages Berlin（2021 更名），AZAV 認證。",
     "accommodation": "校內宿舍（單/雙人房）、寄宿家庭、合作 Hostel",
     "founded_year": null,
-    "accreditation": ["TestDaF考場", "telc考場", "TOEFL考場", "telc Kompetenzzentrum Hochschule", "DIN EN ISO 9001", "AZAV"],
+    "accreditation": [
+      "TestDaF考場",
+      "telc考場",
+      "TOEFL考場",
+      "telc Kompetenzzentrum Hochschule",
+      "DIN EN ISO 9001",
+      "AZAV"
+    ],
     "price_hint": null
   },
   {
@@ -348,12 +396,20 @@
     "name_zh": "Alpha Aktiv 語言學院 海德堡",
     "name_de": "Alpha Aktiv Language Academy Heidelberg",
     "city": "Heidelberg",
+    "city_key": "heidelberg",
     "level": "A1–C2",
     "website": "https://alpha-heidelberg.de",
     "note": "AZAV + DIN EN ISO 9001 認證。",
     "accommodation": "Apartment、學生宿舍（校方安排）",
     "founded_year": null,
-    "accreditation": ["telc", "TestDaF", "TestAS", "TOEFL", "AZAV", "DIN EN ISO 9001"],
+    "accreditation": [
+      "telc",
+      "TestDaF",
+      "TestAS",
+      "TOEFL",
+      "AZAV",
+      "DIN EN ISO 9001"
+    ],
     "price_hint": null
   },
   {
@@ -361,6 +417,7 @@
     "name_zh": "Horizonte 語言學校 雷根斯堡",
     "name_de": "Horizonte Regensburg",
     "city": "Regensburg",
+    "city_key": "regensburg",
     "level": "A1–C2",
     "website": null,
     "note": "位於市中心，官網未查證。",
@@ -380,7 +437,9 @@
     "note": "telc 官方授權考場四城之一（B1/B2）。",
     "accommodation": null,
     "founded_year": null,
-    "accreditation": ["telc官方授權考場(B1/B2)"],
+    "accreditation": [
+      "telc官方授權考場(B1/B2)"
+    ],
     "price_hint": null
   },
   {
@@ -394,7 +453,9 @@
     "note": "telc 官方授權考場四城之一（B1/B2）。",
     "accommodation": null,
     "founded_year": null,
-    "accreditation": ["telc官方授權考場(B1/B2)"],
+    "accreditation": [
+      "telc官方授權考場(B1/B2)"
+    ],
     "price_hint": null
   },
   {
@@ -402,12 +463,15 @@
     "name_zh": "DeutschAkademie 漢堡",
     "name_de": "DeutschAkademie Hamburg",
     "city": "Hamburg",
+    "city_key": "hamburg",
     "level": "A1–C2",
     "website": null,
     "note": "telc 官方授權考場四城之一（B1/B2）。",
     "accommodation": null,
     "founded_year": null,
-    "accreditation": ["telc官方授權考場(B1/B2)"],
+    "accreditation": [
+      "telc官方授權考場(B1/B2)"
+    ],
     "price_hint": null
   },
   {
@@ -429,6 +493,7 @@
     "name_zh": "BWS Germanlingua 科隆",
     "name_de": "BWS Germanlingua Köln",
     "city": "Köln",
+    "city_key": "koeln",
     "level": "A1–C2",
     "website": null,
     "note": "住宿：校方自有合租公寓/studio + 第三方寄宿家庭/飯店代訂；僅提供 telc/Goethe 備考課程，非官方考場。",
@@ -456,6 +521,7 @@
     "name_zh": "Sprachschule Aktiv 埃森",
     "name_de": "Sprachschule Aktiv Essen",
     "city": "Essen",
+    "city_key": "essen",
     "level": "A1–C2",
     "website": "https://www.sprachschule-aktiv.de",
     "note": "Franchise 語言學校連鎖。",
@@ -483,6 +549,7 @@
     "name_zh": "Sprachschule Aktiv 紐倫堡",
     "name_de": "Sprachschule Aktiv Nürnberg",
     "city": "Nürnberg",
+    "city_key": "nuernberg",
     "level": "A1–C2",
     "website": "https://www.sprachschule-aktiv.de",
     "note": "Franchise 語言學校連鎖。",
@@ -496,6 +563,7 @@
     "name_zh": "Sprachschule Aktiv 萊比錫",
     "name_de": "Sprachschule Aktiv Leipzig",
     "city": "Leipzig",
+    "city_key": "leipzig",
     "level": "A1–C2",
     "website": "https://sprachschule-aktiv-leipzig.de",
     "note": "Franchise 語言學校連鎖。",
@@ -509,6 +577,7 @@
     "name_zh": "Sprachschule Aktiv 德勒斯登",
     "name_de": "Sprachschule Aktiv Dresden",
     "city": "Dresden",
+    "city_key": "dresden",
     "level": "A1–C2",
     "website": "https://www.sprachschule-aktiv.de",
     "note": "Franchise 語言學校連鎖；住宿協助服務存在但具體形式未列舉，信心度為邊緣案例。",
@@ -522,6 +591,7 @@
     "name_zh": "Sprachschule Aktiv 不萊梅",
     "name_de": "Sprachschule Aktiv Bremen",
     "city": "Bremen",
+    "city_key": "bremen",
     "level": "A1–C2",
     "website": "https://sprachschule-aktiv-bremen.de",
     "note": "Franchise 語言學校連鎖；地址 Pieperstraße 1-3, 28195 Bremen。",
@@ -535,6 +605,7 @@
     "name_zh": "Sprachschule Aktiv 漢諾威",
     "name_de": "Sprachschule Aktiv Hannover",
     "city": "Hannover",
+    "city_key": "hannover",
     "level": "A1–C2",
     "website": "https://sprachschule-aktiv-hannover.de",
     "note": "Franchise 語言學校連鎖；信心度為邊緣案例（僅頁面標題確認 WG，細節未展開）。",
@@ -548,6 +619,7 @@
     "name_zh": "Sprachschule Aktiv 杜伊斯堡",
     "name_de": "Sprachschule Aktiv Duisburg",
     "city": "Duisburg",
+    "city_key": "duisburg",
     "level": "A1–C2",
     "website": "https://www.sprachschule-aktiv.de",
     "note": "Franchise 語言學校連鎖。",
@@ -561,6 +633,7 @@
     "name_zh": "Sprachschule Aktiv 多特蒙德",
     "name_de": "Sprachschule Aktiv Dortmund",
     "city": "Dortmund",
+    "city_key": "dortmund",
     "level": "A1–C2",
     "website": "https://sprachschule-aktiv-dortmund.de",
     "note": "Franchise 語言學校連鎖。",
@@ -574,6 +647,7 @@
     "name_zh": "Sprachschule Aktiv 亞琛",
     "name_de": "Sprachschule Aktiv Aachen",
     "city": "Aachen",
+    "city_key": "aachen",
     "level": "A1–C2",
     "website": "https://www.sprachschule-aktiv.de",
     "note": "Franchise 語言學校連鎖。",
@@ -629,6 +703,7 @@
     "name_zh": "Sprachschule Aktiv 漢堡",
     "name_de": "Sprachschule Aktiv Hamburg",
     "city": "Hamburg",
+    "city_key": "hamburg",
     "level": "A1–C2",
     "website": "https://www.sprachschule-aktiv.de",
     "note": "Franchise 語言學校連鎖。",
@@ -642,12 +717,15 @@
     "name_zh": "Sprachschule Aktiv 曼海姆",
     "name_de": "Sprachschule Aktiv Mannheim",
     "city": "Mannheim",
+    "city_key": "mannheim",
     "level": "A1–C2",
     "website": "https://sprachschule-aktiv-mannheim.de",
     "note": "Franchise 語言學校連鎖；地址 Q4 9, 68161 Mannheim；telc 官方授權考場，91% 通過率宣稱。",
     "accommodation": "Studentenwohnheim、WG、Gastfamilie、Hotelzimmer（校方協助搜尋，第三方）",
     "founded_year": null,
-    "accreditation": ["telc官方授權考場"],
+    "accreditation": [
+      "telc官方授權考場"
+    ],
     "price_hint": null
   },
   {
@@ -655,6 +733,7 @@
     "name_zh": "Sprachschule Aktiv 卡爾斯魯厄",
     "name_de": "Sprachschule Aktiv Karlsruhe",
     "city": "Karlsruhe",
+    "city_key": "karlsruhe",
     "level": "A1–C2",
     "website": "https://sprachschule-aktiv-karlsruhe.de",
     "note": "Franchise 語言學校連鎖；地址 Kriegsstraße 154, 76133 Karlsruhe。",
@@ -668,6 +747,7 @@
     "name_zh": "Sprachschule Aktiv 弗萊堡",
     "name_de": "Sprachschule Aktiv Freiburg",
     "city": "Freiburg",
+    "city_key": "freiburg",
     "level": "A1–C2",
     "website": "https://sprachschule-aktiv-freiburg.de",
     "note": "Franchise 語言學校連鎖。",
@@ -681,12 +761,16 @@
     "name_zh": "TANDEM 科隆",
     "name_de": "TANDEM Cologne",
     "city": "Köln",
+    "city_key": "koeln",
     "level": "A1–C2",
     "website": "https://www.tandem-koeln.de",
     "note": "住宿為校方媒合之第三方寄宿家庭。",
     "accommodation": "私人寄宿家庭（校方媒合安排）",
     "founded_year": null,
-    "accreditation": ["telc官方考場(A1-C1 Hochschule)", "TestDaF官方考場"],
+    "accreditation": [
+      "telc官方考場(A1-C1 Hochschule)",
+      "TestDaF官方考場"
+    ],
     "price_hint": null
   },
   {
@@ -694,12 +778,16 @@
     "name_zh": "Perfekt Deutsch 多特蒙德",
     "name_de": "Perfekt Deutsch Dortmund",
     "city": "Dortmund",
+    "city_key": "dortmund",
     "level": "A1–C2",
     "website": "https://www.perfekt-deutsch.de",
     "note": "住宿可經校方預訂（第三方）。",
     "accommodation": "校方媒合住宿（第三方，經校方預訂）",
     "founded_year": null,
-    "accreditation": ["telc官方考場(多級)", "TestDaF官方考場"],
+    "accreditation": [
+      "telc官方考場(多級)",
+      "TestDaF官方考場"
+    ],
     "price_hint": null
   }
 ]
