@@ -2,7 +2,7 @@ import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/useAuth';
-import { BOARD_TYPE_LABEL, BOARD_TYPE_HINT, isDiscussionType } from '../lib/board';
+import { BOARD_TYPE_LABEL, BOARD_TYPE_HINT, isDiscussionType, EXPIRING_TYPES, EXPIRY_DAYS } from '../lib/board';
 import type { BoardType } from '../lib/board';
 import PrivacyNotice from './PrivacyNotice';
 import PhotoUploader from './PhotoUploader';
@@ -13,7 +13,13 @@ interface Props {
 
 const MAIN_CATEGORIES: BoardType[] = ['secondhand', 'rental_offer', 'rental_seek', 'discussion'];
 
-const DISCUSSION_SUBCATEGORIES: BoardType[] = ['discussion', 'discussion_study', 'discussion_longterm'];
+const DISCUSSION_SUBCATEGORIES: BoardType[] = [
+  'discussion',
+  'discussion_study',
+  'discussion_longterm',
+  'discussion_food',
+  'discussion_taiwan_restaurant',
+];
 
 export default function BoardForm({ onSubmitted }: Props) {
   const { user } = useAuth();
@@ -29,6 +35,7 @@ export default function BoardForm({ onSubmitted }: Props) {
   const [err, setErr] = useState<string | null>(null);
 
   const isDiscussion = isDiscussionType(type);
+  const isExpiringType = EXPIRING_TYPES.includes(type);
 
   const canSubmit =
     consent &&
@@ -47,6 +54,13 @@ export default function BoardForm({ onSubmitted }: Props) {
 
     // Phase J-3 起 listings.type CHECK 已含 discussion 子類，直接存真實 type，
     // 不再需要 Phase V 的 title prefix hack（PAT-72）
+    // Phase R 起顯式設定 expires_at：商業類 90 天到期、討論全類 null（永久，
+    // 需搭配 schema.sql 本輪修正過的 listings_public_read policy 才能正確顯示，
+    // 見 PAT-101）
+    const expiresAt = isExpiringType
+      ? new Date(Date.now() + EXPIRY_DAYS * 24 * 60 * 60 * 1000).toISOString()
+      : null;
+
     const { error } = await supabase.from('listings').insert({
       user_id: user.id,
       type,
@@ -56,6 +70,7 @@ export default function BoardForm({ onSubmitted }: Props) {
       price: isDiscussion ? null : price.trim() || null,
       contact_info: contact.trim() || null,
       photo_urls: isDiscussion ? [] : photos,
+      expires_at: expiresAt,
     });
     setSubmitting(false);
     if (error) {
@@ -196,9 +211,13 @@ export default function BoardForm({ onSubmitted }: Props) {
 
       {err && <div className="text-sm text-state-danger">送出失敗：{err}</div>}
 
-      <div className="flex items-center justify-between">
-        <div className="text-xs text-content-muted">貼文於 60 天後自動下架。</div>
-        <button type="submit" disabled={!canSubmit} className="btn-primary">
+      <div className="flex items-center justify-between gap-3">
+        <div className="text-xs text-content-muted">
+          {isExpiringType
+            ? `此類型貼文將於 ${EXPIRY_DAYS} 天後自動下架（可於「我的貼文」續期）`
+            : '討論類貼文永久保留，不會自動下架'}
+        </div>
+        <button type="submit" disabled={!canSubmit} className="btn-primary shrink-0">
           {submitting ? '送出中…' : '公開發布'}
         </button>
       </div>

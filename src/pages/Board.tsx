@@ -17,7 +17,13 @@ import { fetchBadgesMap } from '../lib/badges';
 import type { BadgeId } from '../lib/badges';
 
 type MainFilter = 'all' | 'secondhand' | 'rental_offer' | 'rental_seek' | 'discussion';
-type SubFilter = 'all_discussion' | 'discussion' | 'discussion_study' | 'discussion_longterm';
+type SubFilter =
+  | 'all_discussion'
+  | 'discussion'
+  | 'discussion_study'
+  | 'discussion_longterm'
+  | 'discussion_food'
+  | 'discussion_taiwan_restaurant';
 
 const MAIN_FILTERS: { key: MainFilter; label: string }[] = [
   { key: 'all', label: '全部' },
@@ -32,6 +38,8 @@ const SUB_FILTERS: { key: SubFilter; label: string }[] = [
   { key: 'discussion', label: '一般' },
   { key: 'discussion_study', label: '學習' },
   { key: 'discussion_longterm', label: '長居' },
+  { key: 'discussion_food', label: '美食' },
+  { key: 'discussion_taiwan_restaurant', label: '台灣餐廳' },
 ];
 
 export default function Board() {
@@ -72,7 +80,16 @@ export default function Board() {
 
   useEffect(() => { load(); }, [load]);
 
-  const filtered = listings.filter((l) => {
+  // Phase R：listings_public_read RLS 本輪改為 expires_at IS NULL OR ... OR
+  // auth.uid() = user_id（見 schema.sql），本人自己已過期的商業類貼文會被
+  // 查詢回傳（供 MyPosts 續期使用），但主列表不應顯示任何人的過期貼文
+  // （含自己的），故於此另外做一層 client-side 過濾。
+  const isExpired = (l: Listing) =>
+    !!l.expires_at && new Date(l.expires_at).getTime() < Date.now();
+
+  const visibleListings = listings.filter((l) => !isExpired(l));
+
+  const filtered = visibleListings.filter((l) => {
     if (mainFilter === 'all') return true;
     if (mainFilter === 'discussion') {
       if (subFilter === 'all_discussion') return isDiscussion(l);
@@ -87,7 +104,8 @@ export default function Board() {
       <div>
         <h1 className="text-2xl font-semibold">生活佈告欄</h1>
         <p className="text-sm text-content-secondary mt-1">
-          二手交易、出租、求租、討論（一般／學習／長居）。貼文預設 60 天後自動下架。
+          二手交易、出租、求租、討論（一般／學習／長居／美食／台灣餐廳）。
+          二手交易／出租／求租 90 天後自動下架（可續期），討論類永久保留。
         </p>
       </div>
 
@@ -132,14 +150,14 @@ export default function Board() {
           <SkeletonList n={3} />
         ) : err ? (
           <div className="text-sm text-state-danger">讀取失敗：{err}</div>
-        ) : listings.length === 0 ? (
+        ) : visibleListings.length === 0 ? (
           <EmptyState
             icon={<BoardIcon className="w-full h-full" />}
             title="目前沒有貼文"
             description="登入後可刊登第一則出租、求租或二手交易資訊。"
           />
         ) : (
-          <BoardList listings={filtered} onDeleted={load} badgesMap={badgesMap} />
+          <BoardList listings={filtered} onDeleted={load} onRenewed={load} badgesMap={badgesMap} />
         )}
       </section>
 

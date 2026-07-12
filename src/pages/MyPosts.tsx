@@ -7,9 +7,9 @@ import { useToast } from '../lib/toast';
 import { translateError } from '../lib/errorMessages';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/useAuth';
-import { LISTING_TYPE_LABEL } from '../lib/types';
 import type { Listing, School, SchoolReview } from '../lib/types';
 import { deletePhoto } from '../lib/storage';
+import { EXPIRY_DAYS, BOARD_TYPE_LABEL, boardTypeOf } from '../lib/board';
 import schools from '../data/schools.json';
 import { MOCK_MODE, mockLog } from '../lib/mockMode';
 
@@ -78,6 +78,20 @@ function MyPostsContent() {
     setListings((prev) => prev.filter((x) => x.id !== l.id));
   };
 
+  const renewListing = async (l: Listing) => {
+    const newExpiresAt = new Date(
+      Date.now() + EXPIRY_DAYS * 24 * 60 * 60 * 1000
+    ).toISOString();
+    const { error } = await supabase
+      .from('listings')
+      .update({ expires_at: newExpiresAt })
+      .eq('id', l.id);
+    if (error) { alert(`續期失敗：${error.message}`); return; }
+    setListings((prev) =>
+      prev.map((x) => (x.id === l.id ? { ...x, expires_at: newExpiresAt } : x))
+    );
+  };
+
   if (loading) return <SkeletonList n={2} />;
   if (err) return <div className="text-sm text-state-danger">載入失敗：{err}</div>;
 
@@ -143,24 +157,37 @@ function MyPostsContent() {
               <div key={l.id} className="card flex items-start justify-between gap-4">
                 <div className="min-w-0">
                   <span className="px-2 py-0.5 rounded bg-brand-gold/15 text-brand-burgundy text-xs font-medium">
-                    {LISTING_TYPE_LABEL[l.type]}
+                    {BOARD_TYPE_LABEL[boardTypeOf(l)]}
                   </span>
                   <p className="mt-1 text-sm font-medium text-content-primary">{l.title}</p>
                   <p className="mt-1 line-clamp-2 text-sm text-content-secondary">
                     {l.description}
                   </p>
                   <p className="mt-1 text-xs text-content-muted">
-                    {new Date(l.created_at).toLocaleDateString('zh-Hant')} · 有效至{' '}
-                    {new Date(l.expires_at).toLocaleDateString('zh-Hant')}
+                    {new Date(l.created_at).toLocaleDateString('zh-Hant')}
+                    {l.expires_at
+                      ? ` · 有效至 ${new Date(l.expires_at).toLocaleDateString('zh-Hant')}`
+                      : ' · 永久保留'}
                     {l.photo_urls.length > 0 && ` · ${l.photo_urls.length} 張照片`}
                   </p>
                 </div>
-                <button
-                  onClick={() => deleteListing(l)}
-                  className="btn-danger text-xs px-2 py-1 shrink-0"
-                >
-                  刪除
-                </button>
+                <div className="flex flex-col items-end gap-1.5 shrink-0">
+                  {l.expires_at && (
+                    <button
+                      type="button"
+                      onClick={() => renewListing(l)}
+                      className="text-xs text-brand-burgundy hover:text-brand-burgundy-hover"
+                    >
+                      續期 {EXPIRY_DAYS} 天
+                    </button>
+                  )}
+                  <button
+                    onClick={() => deleteListing(l)}
+                    className="btn-danger text-xs px-2 py-1"
+                  >
+                    刪除
+                  </button>
+                </div>
               </div>
             ))}
           </div>

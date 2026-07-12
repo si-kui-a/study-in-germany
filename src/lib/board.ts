@@ -4,7 +4,9 @@ export type BoardType =
   | 'rental_seek'
   | 'discussion'
   | 'discussion_study'
-  | 'discussion_longterm';
+  | 'discussion_longterm'
+  | 'discussion_food'
+  | 'discussion_taiwan_restaurant';
 
 export const BOARD_TYPE_LABEL: Record<BoardType, string> = {
   secondhand: '二手交易',
@@ -13,6 +15,8 @@ export const BOARD_TYPE_LABEL: Record<BoardType, string> = {
   discussion: '一般討論',
   discussion_study: '學習討論',
   discussion_longterm: '長居討論',
+  discussion_food: '美食',
+  discussion_taiwan_restaurant: '台灣餐廳',
 };
 
 export const BOARD_TYPE_HINT: Record<BoardType, string> = {
@@ -22,6 +26,8 @@ export const BOARD_TYPE_HINT: Record<BoardType, string> = {
   discussion: '一般話題交流',
   discussion_study: '學校、考試、學術等學習相關',
   discussion_longterm: '簽證、居留、工作、生活等長居相關',
+  discussion_food: '德國美食、食譜、餐廳推薦',
+  discussion_taiwan_restaurant: '德國境內台灣/中式餐廳分享',
 };
 
 /**
@@ -38,7 +44,18 @@ export const DISCUSSION_TYPES: BoardType[] = [
   'discussion',
   'discussion_study',
   'discussion_longterm',
+  'discussion_food',
+  'discussion_taiwan_restaurant',
 ];
+
+/** 商業類（有時效性，Phase R 起 90 天到期，發文時 client 端顯式設定 expires_at） */
+export const EXPIRING_TYPES: BoardType[] = [
+  'secondhand',
+  'rental_offer',
+  'rental_seek',
+];
+
+export const EXPIRY_DAYS = 90;
 
 export function isDiscussionType(type: string): type is BoardType {
   return (DISCUSSION_TYPES as string[]).includes(type);

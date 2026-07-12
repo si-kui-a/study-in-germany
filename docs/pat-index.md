@@ -4,7 +4,7 @@
 |---|---|---|
 | PAT-01 | CORE_IMMUTABLE | HashRouter + PKCE OAuth 相容性（`redirectTo` 顯式指定） |
 | PAT-02 | CORE_IMMUTABLE | PostgREST 無法 auto-embed auth.users FK → 用 attachProfiles() |
-| PAT-03 | DEPRECATE_MARK | listings_public_read 對本人也套 expires_at > NOW() |
+| PAT-03 | RESOLVED | listings_public_read 對本人也套 expires_at > NOW()（Phase R 已修正） |
 | PAT-04 | CORE_IMMUTABLE | GH Pages base './' 相對路徑（子路徑 `/study-in-germany/`） |
 | PAT-05 | CORE_IMMUTABLE | Build-time env 注入，anon key 進 bundle 是預期 |
 | PAT-06 | CORE_IMMUTABLE | ThemeProvider CSS var 驅動主題 |
@@ -101,11 +101,14 @@
 | PAT-98 | CORE_IMMUTABLE | 佈告欄按讚系統：listing_likes + LikeButton |
 | PAT-99 | CORE_IMMUTABLE | 佈告欄留言系統：listing_comments + CommentSection |
 | PAT-100 | KNOWN_ISSUE | Claude Code sandbox 無法完成 OAuth 登入（驗證上限說明） |
+| PAT-101 | CORE_IMMUTABLE | 貼文到期機制：商業 90 天／討論永久 + RLS 修正 |
+| PAT-102 | CORE_IMMUTABLE | 討論區 8 類（新增美食 + 台灣餐廳） |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance
 - **DEPRECATE_MARK**: 現行決策標記過期候選，需求方裁決後升級或降級
 - **KNOWN_ISSUE**: 已知問題，暫不修，記錄以免重複踩
+- **RESOLVED**: 原為 KNOWN_ISSUE/DEPRECATE_MARK，已於後續 Phase 實際修正，保留記錄供追溯
 
 ## 查找路徑
 明細於 Meta_Dev_Knowledge.md，PAT-XX 為錨點。

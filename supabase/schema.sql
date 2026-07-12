@@ -359,3 +359,43 @@ CREATE POLICY "listing_comments_public_read" ON public.listing_comments
 DROP POLICY IF EXISTS "listing_comments_own_delete" ON public.listing_comments;
 CREATE POLICY "listing_comments_own_delete" ON public.listing_comments
   FOR DELETE USING (auth.uid() = user_id);
+
+-- ==========================================
+-- Phase R · 貼文到期機制擴展 + 討論區 8 類
+-- ==========================================
+
+-- 【Pre-flight 發現】listings.expires_at 欄位於 v4 基礎 schema 就已存在
+-- （DEFAULT NOW() + INTERVAL '60 days'，全部類型皆適用），非本輪新增欄位，
+-- 故不需 ADD COLUMN。本輪實際要做的是：
+-- (1) type CHECK 擴展至 8 類（新增 discussion_food、discussion_taiwan_restaurant）
+-- (2) 修正既有 listings_public_read policy，讓 expires_at IS NULL 代表「永久」
+--     （若不修正，討論類貼文一旦被前端存入 expires_at = null，會被現行
+--     `USING (expires_at > NOW())` 判為 NULL（非 TRUE），RLS 直接擋下、
+--     該貼文會對所有人（含發文者本人）永久不可見，是嚴重且無錯誤訊息的
+--     靜默失效——因為 RLS 擋下時 SELECT 只是回傳空集合，不會報錯）
+-- (3) 順便解決既有 PAT-03 已知問題：本人也看不到自己已過期的貼文
+--     （導致「續期」功能在 MyPosts 頁面根本看不到過期貼文可以續期）
+
+ALTER TABLE public.listings DROP CONSTRAINT IF EXISTS listings_type_check;
+ALTER TABLE public.listings ADD CONSTRAINT listings_type_check
+  CHECK (type IN (
+    'secondhand',
+    'rental_offer',
+    'rental_seek',
+    'discussion',
+    'discussion_study',
+    'discussion_longterm',
+    'discussion_food',
+    'discussion_taiwan_restaurant'
+  ));
+
+DROP POLICY IF EXISTS "listings_public_read" ON public.listings;
+CREATE POLICY "listings_public_read" ON public.listings
+  FOR SELECT USING (
+    expires_at IS NULL
+    OR expires_at > NOW()
+    OR auth.uid() = user_id
+  );
+
+CREATE INDEX IF NOT EXISTS listings_expires_at_idx ON public.listings (expires_at)
+  WHERE expires_at IS NOT NULL;

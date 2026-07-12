@@ -9,16 +9,20 @@ import ReportButton from './ReportButton';
 import LikeButton from './LikeButton';
 import CommentSection from './CommentSection';
 import type { BadgeId } from '../lib/badges';
-import { boardTypeOf, isDiscussion, isDiscussionType, stripDiscussionPrefix, BOARD_TYPE_LABEL } from '../lib/board';
+import { boardTypeOf, isDiscussion, isDiscussionType, stripDiscussionPrefix, BOARD_TYPE_LABEL, EXPIRY_DAYS } from '../lib/board';
+import { useToast } from '../lib/toast';
+import { translateError } from '../lib/errorMessages';
 
 interface Props {
   listings: Listing[];
   onDeleted?: () => void;
+  onRenewed?: () => void;
   badgesMap?: Map<string, BadgeId[]>;
 }
 
-export default function BoardList({ listings, onDeleted, badgesMap }: Props) {
+export default function BoardList({ listings, onDeleted, onRenewed, badgesMap }: Props) {
   const { user } = useAuth();
+  const { push } = useToast();
 
   if (listings.length === 0) {
     return (
@@ -36,6 +40,22 @@ export default function BoardList({ listings, onDeleted, badgesMap }: Props) {
       return;
     }
     onDeleted?.();
+  };
+
+  const handleRenew = async (l: Listing) => {
+    const newExpiresAt = new Date(
+      Date.now() + EXPIRY_DAYS * 24 * 60 * 60 * 1000
+    ).toISOString();
+    const { error } = await supabase
+      .from('listings')
+      .update({ expires_at: newExpiresAt })
+      .eq('id', l.id);
+    if (error) {
+      push('error', translateError(error).message);
+      return;
+    }
+    push('success', `已續期 ${EXPIRY_DAYS} 天`);
+    onRenewed?.();
   };
 
   return (
@@ -65,6 +85,17 @@ export default function BoardList({ listings, onDeleted, badgesMap }: Props) {
               <span className="text-content-muted">
                 {new Date(l.created_at).toLocaleDateString('zh-Hant')}
               </span>
+              {l.expires_at && (() => {
+                const daysLeft = Math.ceil(
+                  (new Date(l.expires_at).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+                );
+                if (daysLeft <= 0) return null;
+                return (
+                  <span className={daysLeft <= 7 ? 'text-state-danger' : 'text-content-muted'}>
+                    {daysLeft <= 7 ? `⚠️ 剩 ${daysLeft} 天下架` : `${daysLeft} 天後下架`}
+                  </span>
+                );
+              })()}
               {!kindIsDiscussion && l.price && (
                 <span className="ml-auto text-brand-burgundy font-medium">{l.price}</span>
               )}
@@ -103,6 +134,15 @@ export default function BoardList({ listings, onDeleted, badgesMap }: Props) {
               </div>
               <div className="flex items-center gap-2 shrink-0">
                 <ReportButton targetType="listing" targetId={String(l.id)} />
+                {user?.id === l.user_id && l.expires_at && (
+                  <button
+                    type="button"
+                    onClick={() => handleRenew(l)}
+                    className="text-xs text-brand-burgundy hover:text-brand-burgundy-hover"
+                  >
+                    續期 {EXPIRY_DAYS} 天
+                  </button>
+                )}
                 {user?.id === l.user_id && (
                   <button onClick={() => handleDelete(l)} className="btn-danger text-xs px-2 py-1">
                     刪除
@@ -112,7 +152,9 @@ export default function BoardList({ listings, onDeleted, badgesMap }: Props) {
             </div>
 
             <div className="mt-2 text-xs text-content-muted">
-              到期：{new Date(l.expires_at).toLocaleDateString('zh-Hant')}
+              {l.expires_at
+                ? `到期：${new Date(l.expires_at).toLocaleDateString('zh-Hant')}`
+                : '永久保留'}
             </div>
 
             <div className="flex items-center gap-3 mt-2 pt-2 border-t border-border-subtle">
