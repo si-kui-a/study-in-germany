@@ -72,6 +72,15 @@ export default function Edu() {
         </div>
       </section>
 
+      <div className="pt-4 text-center">
+        <Link
+          to="/recommendation"
+          className="text-sm text-brand-burgundy hover:text-brand-burgundy-hover"
+        >
+          需要更多實用工具與推薦？前往推薦專區 →
+        </Link>
+      </div>
+
       <div className="pt-8 border-t border-border-subtle">
         <p className="text-xs text-content-muted text-center">
           本站學用板塊內容最後審核於 2026-07-11 ·

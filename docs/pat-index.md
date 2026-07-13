@@ -114,6 +114,8 @@
 | PAT-111 | CORE_IMMUTABLE | 城市圖示擴充：18 城（400×300 天際線家族，非 60×60 Geometry） |
 | PAT-112 | CORE_IMMUTABLE | 錯誤訊息絕不直接渲染（P0，translateError fallback 根因修正） |
 | PAT-113 | CORE_IMMUTABLE | Privacy.tsx 第10/11節補完（逐字採用 Lily 提供文件） |
+| PAT-114 | CORE_IMMUTABLE | 輕量 IA 優化：FAQ 升一級/推薦併學用/空狀態 CTA |
+| PAT-115 | DEPRECATE_MARK | 佈告欄聯絡方式強制化提案已否決（維持 PAT-78 選填） |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance

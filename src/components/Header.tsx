@@ -71,9 +71,10 @@ export default function Header() {
             <NavLink to="/schools" className={navClass}>語校</NavLink>
             <NavLink to="/board" className={navClass}>佈告欄</NavLink>
             <NavLink to="/edu" className={navClass}>學用</NavLink>
-            <NavLink to="/recommendation" className={navClass}>推薦</NavLink>
+            <NavLink to="/faq" className={navClass}>常見問答</NavLink>
 
-            {/* 更多：常見問答 / 隱私政策（PAT-88） */}
+            {/* 更多：隱私政策 / 支持本站（Phase X 起移出常見問答，升為一級導覽；
+                推薦專區移出一級導覽、併入學用 Hub 次要入口，見 Edu.tsx） */}
             <div className="relative group">
               <button type="button" className={navClass({ isActive: false })}>
                 更多 ▾
@@ -81,7 +82,6 @@ export default function Header() {
               <div className="absolute right-0 top-full pt-1 hidden group-hover:block group-focus-within:block z-50">
                 <div className="min-w-[10rem] rounded-lg border border-border-subtle
                                 bg-surface-card shadow-lg p-1.5">
-                  <NavLink to="/faq" className={dropdownLinkClass}>常見問答</NavLink>
                   <NavLink to="/privacy" className={dropdownLinkClass}>隱私政策</NavLink>
                   <NavLink to="/support" className={dropdownLinkClass}>支持本站</NavLink>
                 </div>
@@ -205,22 +205,15 @@ export default function Header() {
                 學用
               </NavLink>
               <NavLink
-                to="/recommendation"
+                to="/faq"
                 className="px-3 py-2.5 rounded-lg hover:bg-surface-hover
                            text-content-primary no-underline"
               >
-                推薦
+                常見問答
               </NavLink>
 
               <div className="my-2 border-t border-border-subtle" />
 
-              <NavLink
-                to="/faq"
-                className="px-3 py-2.5 rounded-lg hover:bg-surface-hover
-                           text-content-secondary text-sm no-underline"
-              >
-                常見問答
-              </NavLink>
               <NavLink
                 to="/privacy"
                 className="px-3 py-2.5 rounded-lg hover:bg-surface-hover

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import type { SchoolReview } from '../lib/types';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/useAuth';
@@ -34,6 +35,13 @@ export default function ReviewList({ reviews, onDeleted }: Props) {
     return (
       <div className="card text-sm text-content-muted">
         還沒有評價。第一個留下心得吧。
+        <p className="text-xs text-content-muted mt-2">
+          或
+          <Link to="/schools" className="text-brand-burgundy mx-1">
+            查看其他學校的評價
+          </Link>
+          參考看看
+        </p>
       </div>
     );
   }

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { translateError } from '../lib/errorMessages';
 import { useToast } from '../lib/toast';
@@ -13,6 +14,14 @@ interface SubmitterProfile {
   display_name: string | null;
   avatar_url: string | null;
 }
+
+/** 空狀態次要引導連結（依提交類型給對應的相關頁面，非強迫貢獻） */
+const EMPTY_STATE_SECONDARY_LINK: Record<SubmissionType, { to: string; label: string } | null> = {
+  school_edit: { to: '/schools', label: '看看其他學校' },
+  new_school: { to: '/schools', label: '看看其他學校' },
+  new_recommendation: { to: '/recommendation', label: '看看推薦專區其他分類' },
+  general_feedback: null,
+};
 
 interface Props {
   submissionType: SubmissionType;
@@ -101,9 +110,18 @@ export default function UserSubmissionsList({
 
   if (submissions.length === 0) {
     if (emptyMessage) {
+      const secondary = EMPTY_STATE_SECONDARY_LINK[submissionType];
       return (
-        <div className="pt-4 text-xs text-content-muted italic">
-          {emptyMessage}
+        <div className="pt-4 text-xs text-content-muted space-y-1">
+          <p className="italic">{emptyMessage}</p>
+          {secondary && (
+            <p>
+              或
+              <Link to={secondary.to} className="text-brand-burgundy mx-1">
+                {secondary.label}
+              </Link>
+            </p>
+          )}
         </div>
       );
     }
