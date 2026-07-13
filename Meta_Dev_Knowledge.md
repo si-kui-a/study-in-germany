@@ -944,3 +944,38 @@ Claude Code 自行臆測「應該沒問題」。
 設計是否本來就是為此尺寸繪製，不可假設「線框圖示放大即可用」；同時，套用已建立的視覺
 語言時，應逐行研究實際參考檔案的技法細節，而非依賴 spec 文字描述或範例程式碼的簡化版本
 （兩者可能有落差，如本輪發現的 opacity 填色手法差異）。
+
+## PAT-119 [CORE_IMMUTABLE]: Portal 卡片色彩系統 · 統一紅色系，脫離 module-* 分歧邏輯
+根本問題：Portal 首頁 6 張卡片過去依賴各自不同的 module-* CSS 變數
+（module-schools/board/edu/recommendation/faq/myposts），導致同一個 Portal 區塊
+呈現 4 種不同色系（深酒紅/淺粉/金色/未定義感灰色），與 Edu Hub（全金色系）、
+Schools 城市圖示（全酒紅色系）建立的「同區塊同色系」原則矛盾。
+
+**Pre-flight 診斷確認（推翻 spec 假設的技術性根因）**：逐一核對 6 個 module-* 變數
+的實際 RGB 值後，確認**全部 6 個變數都正確定義**（light + dark 雙模式皆有、Tailwind
+`@theme inline` 對接也正確），完全不是 spec 假設的「CSS 變數不存在」「Tailwind purge
+清除」「class 名稱寫錯」——這 3 種技術性故障皆未發生。實際數值：
+- module-schools = module-board = 155/95/95（light）· 196/139/139（dark）= brand-burgundy
+- module-edu = module-recommendation = 184/162/122（light）· 205/187/150（dark）= brand-gold
+- module-faq = 140/138/122（light）· 170/168/150（dark）= 一個獨立定義的低飽和灰褐色
+- module-myposts = 125/122/136（light）· 155/152/168（dark）= 一個獨立定義的低飽和灰紫色
+
+module-faq/module-myposts 這兩個「灰色」並非渲染失敗或變數缺失——CSS 完全照設定值
+正確渲染，只是這兩個顏色的飽和度遠低於酒紅/金色，並排放在一起時視覺上讀起來像
+「沒設定、預設灰」。**真正的根因是 Phase Y 的設計決策本身**：把「模組識別色」這個
+適合用於區分不同子區塊（如徽章分級、City 圖示各自代表不同城市）的既有 pattern，
+誤套到 Portal 首頁自己的 6 卡矩陣上——但 Portal 6 卡属於同一個視覺區塊，不該互相
+用不同色系區分身分，這點與 Edu Hub/Schools 已建立的「同區塊同色系」慣例矛盾。
+
+修正：Portal 卡片圖示**不再使用各自的 module-* 變數**，統一固定套用 `text-brand-burgundy`
+（與全站品牌主色一致），`PORTAL_ITEMS` 陣列移除 `colorClass` 欄位（不再需要）。
+module-edu/module-recommendation 變數本身**未受影響**，繼續原樣供 Edu.tsx/EduTopic.tsx/
+Recommendation.tsx/RecommendationCategory.tsx 這 4 個頁面內部使用（各自維持金色系不動，
+符合硬性約束）。module-schools/board/faq/myposts 這 4 個變數定義保留在 index.css（非破壞性
+刪除，供未來若有其他場景需要參考沿用），但已於程式碼註解標記為「Portal 用途已棄用」。
+
+## PAT-120 [RESOLVED]: module-faq/module-myposts 灰色根因
+根因非技術性故障（CSS 變數缺失/Tailwind purge/class 名稱錯誤皆未發生，見 PAT-119
+診斷細節），而是這兩個變數本身就被定義為低飽和度顏色（灰褐/灰紫），只是與酒紅/金色
+並排時視覺上顯得突兀、疑似「未定義」。已隨 PAT-119 的 Portal 色彩統一修正一併解決
+（Portal 不再引用這兩個變數）。

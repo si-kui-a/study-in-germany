@@ -29,8 +29,14 @@
   --state-success: 112 128 105;
 
   /* 功能模組識別色 · 僅圖示與識別，不作主品牌色 */
-  /* Phase Y：module-schools 對齊 brand-burgundy（Schools/SchoolDetail 頁現行主要
-     強調色皆為 brand-burgundy），避免從 Portal 卡片點入語校頁產生色彩跳躍感 */
+  /* Phase AB [DEPRECATED for Portal use]：module-schools/board/faq/myposts 這 4 個
+     原為 Home.tsx Portal 6 卡各自套用的識別色，但造成同一 Portal 區塊出現 4 種色系
+     並存（深酒紅/淺粉/金色/未定義感灰色），與 Edu Hub 全金色系、Schools 城市圖示
+     全酒紅色系建立的「同區塊同色系」原則矛盾。Phase AB 起 Home.tsx 已改為全部固定
+     套用 text-brand-burgundy，不再引用這 4 個變數。保留變數定義（非破壞性刪除），
+     供未來若有其他場景需要個別識別色時參考沿用，但不建議再用於 Portal 首頁卡片。
+     module-edu/module-recommendation 不受影響，兩者仍分別被 Edu.tsx/EduTopic.tsx/
+     Recommendation.tsx/RecommendationCategory.tsx 各自頁面內部引用，維持金色系不動。 */
   --module-schools: 155 95 95;
   --module-board: 155 95 95;
   --module-faq: 140 138 122;

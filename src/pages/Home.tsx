@@ -10,36 +10,42 @@ import EduIcon from '../assets/icons/EduIcon';
 import RecommendationIcon from '../assets/icons/RecommendationIcon';
 import BellIcon from '../assets/icons/BellIcon';
 
+/**
+ * Phase AB：Portal 卡片圖示不再各自套用 module-* 識別色（Phase Y 的做法），
+ * 統一固定為 text-brand-burgundy，脫離 module-edu/module-recommendation 等
+ * 只該用於各自頁面內部語境的變數（PAT-119）。
+ */
 const PORTAL_ITEMS = [
   {
     to: '/schools', title: '語言學校', description: '查看語校資料、學生評價、學費資訊',
-    Icon: SchoolIcon, colorClass: 'text-module-schools',
+    Icon: SchoolIcon,
   },
   {
     to: '/board', title: '生活佈告欄', description: '出租、求租、二手交易',
-    Icon: BoardIcon, colorClass: 'text-module-board',
+    Icon: BoardIcon,
   },
   {
     to: '/edu', title: '學用板塊', description: '簽證、落地、延簽、獎學金、政策',
-    Icon: EduIcon, colorClass: 'text-module-edu',
+    Icon: EduIcon,
   },
   {
     to: '/recommendation', title: '推薦', description: '德國好物、方案、優惠',
-    Icon: RecommendationIcon, colorClass: 'text-module-recommendation',
+    Icon: RecommendationIcon,
   },
   {
     to: '/faq', title: '常見問答', description: '簽證、健保、限制提領帳戶、生活疑問',
-    Icon: FaqIcon, colorClass: 'text-module-faq',
+    Icon: FaqIcon,
   },
   {
     to: '/my-posts', title: '我的資料', description: '管理自己的評價與貼文',
-    Icon: MyPostsIcon, colorClass: 'text-module-myposts',
+    Icon: MyPostsIcon,
   },
 ];
 
 /**
  * DS v4.1 Portal 首頁（B.1 Hero + B.2 Morandi 整合 · Phase G 擴為 6 卡）
  * Phase Y：Portal 卡片改用與 Edu Hub 一致的大圖示置中佈局（PAT-116）
+ * Phase AB：Portal 圖示色彩統一為 brand-burgundy，不再各卡各自套用 module-* 識別色（PAT-119）
  * 結構：Hero 天際線 → Portal (6 卡，兩列 3+3) → 熱門語校 → 最新公告
  */
 export default function Home() {
@@ -58,8 +64,8 @@ export default function Home() {
               className="card-interactive block p-5 no-underline aspect-[4/3]
                          flex flex-col justify-between"
             >
-              <div className={`${item.colorClass} w-20 h-20 sm:w-24 sm:h-24
-                                mt-auto mb-3 mx-auto flex items-center justify-center`}>
+              <div className="text-brand-burgundy w-20 h-20 sm:w-24 sm:h-24
+                              mt-auto mb-3 mx-auto flex items-center justify-center">
                 <item.Icon className="w-full h-full" />
               </div>
 

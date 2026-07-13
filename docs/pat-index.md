@@ -118,6 +118,8 @@
 | PAT-115 | DEPRECATE_MARK | 佈告欄聯絡方式強制化提案已否決（維持 PAT-78 選填） |
 | PAT-116 | CORE_IMMUTABLE | Portal 卡片視覺統一：大圖示置中 + 既有 module color 套用 |
 | PAT-118 | CORE_IMMUTABLE | Portal 圖示重畫：修正 Phase Y 線稿放大視覺不足問題 |
+| PAT-119 | CORE_IMMUTABLE | Portal 色彩統一為 brand-burgundy，脫離 module-* 分歧邏輯 |
+| PAT-120 | RESOLVED | module-faq/myposts 灰色根因：非故障，僅低飽和度顏色 |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance
