@@ -29,7 +29,9 @@
   --state-success: 112 128 105;
 
   /* 功能模組識別色 · 僅圖示與識別，不作主品牌色 */
-  --module-schools: 122 140 123;
+  /* Phase Y：module-schools 對齊 brand-burgundy（Schools/SchoolDetail 頁現行主要
+     強調色皆為 brand-burgundy），避免從 Portal 卡片點入語校頁產生色彩跳躍感 */
+  --module-schools: 155 95 95;
   --module-board: 155 95 95;
   --module-faq: 140 138 122;
   --module-edu: 184 162 122;
@@ -65,7 +67,7 @@
   --state-danger: 196 139 139;
   --state-success: 154 174 148;
 
-  --module-schools: 148 168 150;
+  --module-schools: 196 139 139;
   --module-board: 196 139 139;
   --module-faq: 170 168 150;
   --module-edu: 205 187 150;
