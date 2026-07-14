@@ -7,7 +7,7 @@ export default function Faq() {
       <div>
         <h1 className="text-2xl font-semibold">常見問答</h1>
         <p className="text-sm text-content-secondary mt-1 max-w-2xl">
-          留德新手最常先問的 5 個問題。深入的簽證、落地、申請、獎學金流程請至
+          留德新手最常先問的問題。深入的簽證、落地、申請、獎學金流程請至
           {' '}<Link to="/edu">作戰手冊</Link>。
         </p>
       </div>

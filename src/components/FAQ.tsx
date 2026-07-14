@@ -9,7 +9,7 @@ export default function FAQ() {
           <summary className="cursor-pointer font-medium text-content-primary group-open:text-brand-burgundy">
             {item.q}
           </summary>
-          <p className="mt-2 text-sm leading-relaxed text-content-secondary">{item.a}</p>
+          <p className="mt-2 text-sm leading-relaxed text-content-secondary whitespace-pre-wrap">{item.a}</p>
         </details>
       ))}
     </div>
