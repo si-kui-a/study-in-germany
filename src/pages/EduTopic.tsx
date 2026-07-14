@@ -11,7 +11,7 @@ import { exitWorkflow } from '../data/edu/exit';
 import type { WorkflowTopic } from '../data/edu/workflow';
 import WorkflowTimeline from '../components/edu/WorkflowTimeline';
 import WorkflowCard from '../components/edu/WorkflowCard';
-import { useWorkflowProgress } from '../lib/useWorkflowProgress';
+import { useWorkflowProgressContext } from '../lib/WorkflowProgressContext';
 import { getStepStatus } from '../lib/workflowProgress';
 
 const TOPIC_MAP: Record<string, WorkflowTopic> = {
@@ -43,7 +43,7 @@ export default function EduTopic() {
   const { slug } = useParams<{ slug: string }>();
   const topic = slug ? TOPIC_MAP[slug] : null;
   const [currentStep, setCurrentStep] = useState<number | undefined>(undefined);
-  const { progress, toggleStep, clearStep } = useWorkflowProgress();
+  const { progress, toggleStep, clearStep } = useWorkflowProgressContext();
 
   useEffect(() => {
     setCurrentStep(undefined);

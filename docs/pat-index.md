@@ -137,6 +137,8 @@
 | PAT-136 | CORE_IMMUTABLE | FAQ 結論先行排版：summary+points+收合 detail 三層結構，與純文字格式並存 |
 | PAT-137 | CORE_IMMUTABLE | 作戰手冊進度追蹤系統：profiles.workflow_progress(JSONB)，勾選+自動推進 |
 | PAT-138 | CORE_IMMUTABLE | 推薦專區新增 Wise（跨境匯款，無時效性資訊原則） |
+| PAT-139 | RESOLVED | 進度追蹤未同步 bug：改用 Context 單一資料源，消除跨頁 fetch 競態 |
+| PAT-140 | CORE_IMMUTABLE | Wise 於作戰手冊 STEP 03（個人銀行帳戶）同步出現，spec 誤植為 STEP 05 |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance

@@ -1453,3 +1453,79 @@ Phase AN 全站健檢逐一重新確認零引用（`grep -rl` 全站搜尋，除
 
 落地相關（arrival）分類新增 Wise 跨境匯款服務，遵循 PAT-58 無時效性資訊
 原則（不寫具體匯率/費率數字，僅描述服務性質）。
+
+## PAT-139 [CORE_IMMUTABLE / RESOLVED]: 進度追蹤資料未同步 bug 修復
+
+**診斷過程**：pre-flight 逐行核對 `WorkflowCard.tsx`（確認未內部呼叫
+`useWorkflowProgress()`，純接收 props，非情境 A）與 `EduTopic.tsx`（確認
+`topic.slug`/`s.step` 傳遞完全正確，非情境 B）；瀏覽器實測訪客路徑
+（清空 localStorage → 點擊 STEP 03/05「標記完成」）確認寫入結果為
+`{"visa":{"completed":[3,5],"skipped":[]}}`，逐字比對正確，進一步排除
+情境 A/B。原本嘗試以瀏覽器直接查詢正式環境 `profiles.workflow_progress`
+確認欄位是否已套用，被權限分類器正確攔截（正式資料庫讀取需明確授權，
+不應繞過），改以 `AskUserQuestion` 直接請示 Lily：**已確認 Phase AO 的
+SQL 已於 Supabase Dashboard 執行成功**，排除欄位不存在的可能。
+
+**實際根因**（情境 C 的變體，非 spec 原描述的「MyProfile 未重新整理不會反映」，
+MyProfile 確實有在每次掛載時重新 fetch，但……）：Phase AO 讓
+`EduTopic.tsx`/`MyProfile.tsx`/`Home.tsx` 各自獨立呼叫
+`useWorkflowProgress()`，各自擁有獨立的 state 副本；`saveCloudProgress()`
+為 fire-and-forget（未 await 即返回），使用者點擊「標記完成」後若快速切換
+頁面，新頁面掛載時的 `fetchCloudProgress()` 有機會搶在前一頁的雲端寫入
+完成前執行，讀到尚未更新的舊資料，且此後除非整頁重新整理，沒有任何
+重新 fetch 的機制。另外發現 `saveCloudProgress()` 原本捕捉 Supabase 錯誤後
+只 `console.error`、不 `throw`，導致任何寫入失敗（不論成因）都會被靜默吞掉，
+UI 端完全沒有失敗提示，使用者會誤以為操作成功。
+
+**修復內容**：
+- 新建 `src/lib/WorkflowProgressContext.tsx`（`WorkflowProgressProvider` +
+  `useWorkflowProgressContext()`），掛載於 `App.tsx` 最外層、跨路由導覽
+  不會卸載，全站進度狀態改為單一記憶體副本。初始 fetch 只在 Provider
+  掛載當下執行一次（`useEffect` deps 為 `[user]`，不隨路由變化重新觸發），
+  之後所有操作透過 `toggleStep`/`clearStep` **同步**更新這份共享狀態，
+  雲端寫入僅作為背景持久化，不再是「切換頁面後讀到什麼」的依據——
+  結構性排除整個race window，而非僅縮小發生機率
+- `EduTopic.tsx`/`MyProfile.tsx`/`Home.tsx` 改用 `useWorkflowProgressContext()`
+  取代各自獨立的 `useWorkflowProgress()`；刪除已無人引用的
+  `src/lib/useWorkflowProgress.ts`
+- `saveCloudProgress()` 失敗時改為 `throw`（而非只 log），
+  `WorkflowProgressProvider` 的 `persist()` 對應 `catch` 後跳出
+  toast「進度儲存失敗，請檢查網路連線後重試」，任何未來的寫入失敗
+  （不論成因為何）都會被使用者看見，不再靜默吞錯
+- 修正 `toggleStep`/`clearStep` 內部把持久化副作用寫在 `setProgress`
+  updater callback 內的寫法（違反 React state updater 必須是純函式的
+  約定，本專案啟用 `React.StrictMode` 會在開發模式下偵測並雙重呼叫
+  updater、進而讓副作用被誤觸發兩次），改為先算出 `next`、呼叫
+  `setProgress(next)`、再呼叫 `persist(next)` 三個獨立步驟
+
+**驗證方式與誠實限制**：本環境無法執行 Google OAuth 登入，無法直接重現
+Lily 回報的「登入身分下點擊→切頁未同步」情境本身。改為：(1) 瀏覽器完整
+測試訪客路徑（localStorage），確認在**不重新整理頁面**的情況下，從
+`/edu/visa` 標記 Step 1 完成後，soft-navigate 到 `/`，Home.tsx 的下一步
+提示卡片立即正確顯示 Step 2 真實標題——證實新的 Context 共享機制本身
+運作正確；(2) 透過程式碼推理確認同一套機制對登入路徑同樣適用且**結構性**
+消除競態（Provider 只在 App 掛載當下 fetch 一次，此後不論導覽到哪個頁面
+都讀同一份已經被使用者操作同步更新過的記憶體狀態，不存在「重新 fetch
+搶在寫入完成前」的視窗）。無法對登入路徑做到與訪客路徑同等的第一手
+瀏覽器實測確認，誠實列為本輪驗證限制。
+
+**教訓**：跨元件共享的可變狀態（如 workflow_progress）若在多處各自呼叫
+同一個 hook，容易產生各自獨立的 state 副本，造成使用者操作後其他畫面
+看不到更新。未來類似「使用者操作 → 需要多處畫面同步反映」的功能，應
+優先考慮單一資料源（Context/全域 store）而非多處獨立 fetch；async 寫入
+若無法確保完成時序，應避免讓下游讀取依賴「寫入已完成」的隱含假設。
+
+## PAT-140 [CORE_IMMUTABLE]: Wise 於作戰手冊 STEP 03 同步出現
+
+**與 spec 假設的落差**：spec 描述「STEP 05個人銀行帳戶」，但實際核對
+`src/data/edu/visa.ts` 發現 STEP 05 的真實標題是「線上預約遞件」，
+「個人銀行帳戶」內容實際位於 **STEP 03**（「開限制提領帳戶 + 個人帳戶」）。
+依實際資料位置修正，而非依 spec 的錯誤步驟編號執行。
+
+Wise 加入 STEP 03「個人銀行帳戶（落地後才能辦）」項目中的手機開戶選項
+（`N26 / Revolut / Wise（手機開戶）`），與推薦專區「落地相關」分類已有的
+Wise 項目呼應。**未**依 spec 建議新增獨立的 `official_sources` 條目——
+該欄位於此 step 實際上僅收錄限制提領帳戶（Sperrkonto）服務商的官方連結
+（Fintiba/Expatrio/Coracle/Deutsche Bank Sperrkonto），個人帳戶銀行
+（N26/Revolut/Sparkasse 等）本來就不個別條列官方連結，維持既有資料結構
+的一致性，不單獨為 Wise 破例。

@@ -13,7 +13,7 @@ import { BadgeChip } from '../components/UserAvatar';
 import { ALL_BADGES } from '../lib/badges';
 import { deleteAccountData } from '../lib/deleteAccount';
 import { resetOnboarding, getLocalPersonaStage, PERSONA_STAGE_LABELS } from '../lib/onboarding';
-import { useWorkflowProgress } from '../lib/useWorkflowProgress';
+import { useWorkflowProgressContext } from '../lib/WorkflowProgressContext';
 import { getStepStatus } from '../lib/workflowProgress';
 import { visaWorkflow } from '../data/edu/visa';
 import { arrivalWorkflow } from '../data/edu/arrival';
@@ -55,7 +55,7 @@ export default function MyProfile() {
 
   const googleName = (user?.user_metadata?.full_name as string | undefined) ?? null;
   const localStage = getLocalPersonaStage();
-  const { progress, toggleStep } = useWorkflowProgress();
+  const { progress, toggleStep } = useWorkflowProgressContext();
 
   const { counts } = useContributions(user?.id ?? null);
   const { badges } = useBadges({

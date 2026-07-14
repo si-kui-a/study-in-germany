@@ -102,7 +102,7 @@ export const visaWorkflow: WorkflowTopic = {
           {
             text: '個人銀行帳戶（落地後才能辦）：',
             items: [
-              'N26 / Revolut（手機開戶）',
+              'N26 / Revolut / Wise（手機開戶）',
               'Sparkasse / Deutsche Bank / Commerzbank（傳統銀行）',
             ],
           },

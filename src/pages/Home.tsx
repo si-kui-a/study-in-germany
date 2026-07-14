@@ -15,7 +15,7 @@ import HotSchoolsCarousel from '../components/HotSchoolsCarousel';
 import OnboardingModal from '../components/OnboardingModal';
 import { isOnboardingCompleted, getLocalPersonaStage } from '../lib/onboarding';
 import { getNextStepSuggestion } from '../lib/nextStep';
-import { useWorkflowProgress } from '../lib/useWorkflowProgress';
+import { useWorkflowProgressContext } from '../lib/WorkflowProgressContext';
 import { getNextPendingStep } from '../lib/workflowProgress';
 import { visaWorkflow } from '../data/edu/visa';
 import { arrivalWorkflow } from '../data/edu/arrival';
@@ -91,7 +91,7 @@ const PORTAL_ITEMS = [
 export default function Home() {
   const [onboardingOpen, setOnboardingOpen] = useState(false);
   const localStage = getLocalPersonaStage();
-  const { progress } = useWorkflowProgress();
+  const { progress } = useWorkflowProgressContext();
 
   let nudge: { moduleSlug: string; moduleName: string; stepNumber: number; stepTitle: string } | null = null;
   let allStepsDone = false;

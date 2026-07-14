@@ -96,7 +96,11 @@ export async function fetchCloudProgress(userId: string): Promise<WorkflowProgre
   return (data?.workflow_progress as WorkflowProgress) ?? {};
 }
 
-/** 雲端同步：寫入 */
+/**
+ * 雲端同步：寫入。
+ * Phase AP：失敗時必須 throw（而非只 console.error 後靜默 resolve），
+ * 否則呼叫端的 catch 永遠不會觸發、使用者永遠看不到任何失敗提示（PAT-139）。
+ */
 export async function saveCloudProgress(userId: string, progress: WorkflowProgress): Promise<void> {
   const { error } = await supabase
     .from('profiles')
@@ -105,5 +109,6 @@ export async function saveCloudProgress(userId: string, progress: WorkflowProgre
   if (error) {
     // eslint-disable-next-line no-console
     console.error('[workflowProgress] saveCloudProgress failed:', error);
+    throw error;
   }
 }
