@@ -97,7 +97,7 @@ export default function Header() {
                 <div className="absolute right-0 top-full pt-1 hidden group-hover:block group-focus-within:block z-50">
                   <div className="min-w-[10rem] rounded-lg border border-border-subtle
                                   bg-surface-card shadow-lg p-1.5">
-                    <NavLink to="/board?view=mine" className={dropdownLinkClass}>我的貼文</NavLink>
+                    <NavLink to="/board?view=mine&sub=posts" className={dropdownLinkClass}>我的貼文</NavLink>
                     <NavLink to="/my-profile" className={dropdownLinkClass}>編輯個人資料</NavLink>
                   </div>
                 </div>
@@ -232,7 +232,7 @@ export default function Header() {
                 <>
                   <div className="my-2 border-t border-border-subtle" />
                   <NavLink
-                    to="/board?view=mine"
+                    to="/board?view=mine&sub=posts"
                     className="px-3 py-2.5 rounded-lg hover:bg-surface-hover
                                text-content-secondary text-sm no-underline"
                   >

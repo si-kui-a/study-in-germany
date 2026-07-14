@@ -1292,3 +1292,35 @@ HashRouter 對同路由的導覽不會重新掛載元件，原本僅在 `useStat
 集中檢視入口（個別刪除評價本身仍可透過 `SchoolDetail.tsx` 完成，非完全
 功能喪失，但便利性確實會倒退）。已於執行前 STOP 並請示 Lily，Lily 選擇
 「併入 Board.tsx 第 4 個 viewMode」，範圍略微擴大但功能零損失。
+
+## PAT-130 [CORE_IMMUTABLE]:「我的」Hierarchical 分頁重組
+
+Phase AJ 建立的 4 個平行 viewMode（全部貼文/追蹤動態/我的貼文/我的評價）
+於 Phase AK 重組為 3 個頂層分頁（全部貼文/追蹤動態/我的），「我的」展開
+2 個子分類（語校評價/貼文），沿用現行租房/討論的 hierarchical sub-filter
+UI pattern（`pl-4 border-l-2 border-brand-gold/30 flex flex-wrap gap-2` +
+`text-xs px-2.5 py-1 rounded` 選中態 `text-brand-burgundy font-medium`），
+未另創新樣式。
+
+**State 結構**：`viewMode: 'all' | 'following' | 'mine'` + 獨立的
+`mineSubTab: 'reviews' | 'posts'`（非巢狀在 viewMode 型別內，比照
+`mainFilter`/`subFilter` 兩個獨立 state 的既有模式）。
+
+**渲染邏輯**：原本 `viewMode === 'my_reviews'` 的條件改為
+`viewMode === 'mine' && mineSubTab === 'reviews'`；原本 `viewMode === 'mine'`
+（貼文）的條件因 ternary chain 的排除法則（先檢查 reviews 分支，落到後面
+的分支時已隱含 `mineSubTab === 'posts'`），維持 `viewMode === 'mine'` 不需要
+額外顯式加上 `mineSubTab === 'posts'` 判斷。資料 fetch 邏輯（`school_reviews`
+查詢/`listings` 未過濾查詢）完全沿用 Phase AJ 建立的內容，只調整觸發條件。
+
+**深連結格式**：`?view=mine&sub=posts` / `?view=mine&sub=reviews`（取代
+Phase AJ 的 `?view=mine` / `?view=my_reviews`）。Header「我的」dropdown（桌面+
+行動版）、Home.tsx Portal「我的資料」卡片皆更新為 `?view=mine&sub=posts`。
+Phase AJ 建立的深連結切換 bug 修正（`useEffect` 監聽 `searchParams`）同步
+擴充支援讀取 `sub` 參數，已於瀏覽器實測確認 soft-navigation 在兩個
+`sub=` 深連結之間切換時分頁與子分類皆正確同步更新。
+
+**說明文字**：原 `MyPosts.tsx` 頁首的「管理你發布過的評價與貼文。刪除為
+永久動作（資料庫層級刪除），無法復原。」文字，Phase AJ 併入時**未實際移植**
+（僅移植功能邏輯，遺漏此說明文字），Phase AK 補上，顯示於「我的」分頁區塊
+內（子分類選單之後、列表之前），不分子分類皆顯示（因內容同時提及評價與貼文）。

@@ -20,7 +20,8 @@ import { boardTypeOf, isDiscussion, isRentalType, BOARD_TYPE_LABEL } from '../li
 import { fetchBadgesMap } from '../lib/badges';
 import type { BadgeId } from '../lib/badges';
 
-type ViewMode = 'all' | 'following' | 'mine' | 'my_reviews';
+type ViewMode = 'all' | 'following' | 'mine';
+type MineSubTab = 'reviews' | 'posts';
 
 type MainFilter = 'all' | 'secondhand' | 'rental' | 'discussion';
 type SubFilter =
@@ -71,17 +72,25 @@ export default function Board() {
   const [postModalOpen, setPostModalOpen] = useState(false);
   const [viewMode, setViewMode] = useState<ViewMode>(() => {
     const v = searchParams.get('view');
-    if (v === 'following' || v === 'mine' || v === 'my_reviews') return v;
+    if (v === 'following' || v === 'mine') return v;
     return 'all';
   });
+  const [mineSubTab, setMineSubTab] = useState<MineSubTab>(() =>
+    searchParams.get('sub') === 'reviews' ? 'reviews' : 'posts'
+  );
 
   // Phase AJ：新增 2 個深連結入口（Header「我的貼文」、Home Portal「我的資料」）後，
   // 若使用者已在 /board 上又點另一個 ?view= 深連結，HashRouter 不會重新掛載此元件，
   // 上面的 useState 初始值只在首次掛載時生效——故另加 effect 讓後續的 query 變化也能生效
+  // Phase AK：一併支援 sub 參數（?view=mine&sub=reviews|posts），見 PAT-130
   useEffect(() => {
     const v = searchParams.get('view');
-    if (v === 'following' || v === 'mine' || v === 'my_reviews') {
+    if (v === 'following' || v === 'mine') {
       setViewMode(v);
+    }
+    const sub = searchParams.get('sub');
+    if (sub === 'reviews' || sub === 'posts') {
+      setMineSubTab(sub);
     }
   }, [searchParams]);
 
@@ -202,7 +211,7 @@ export default function Board() {
       </div>
 
       {/* 檢視模式（用誰的角度看）· 與下方分類 filter（內容屬於什麼類型）為不同維度，見 PAT-123
-          Phase AJ：新增「我的貼文」「我的評價」2 個個人專屬檢視（原 MyPosts.tsx，見 PAT-129） */}
+          Phase AK：「我的貼文」「我的評價」重組為單一「我的」頂層分頁 + 子分類（見 PAT-130） */}
       <div className="flex gap-2 border-b border-border-subtle overflow-x-auto">
         <button
           onClick={() => setViewMode('all')}
@@ -236,24 +245,44 @@ export default function Board() {
           }`}
           title={!user ? '請先登入' : undefined}
         >
-          我的貼文
-        </button>
-        <button
-          onClick={() => setViewMode('my_reviews')}
-          disabled={!user}
-          className={`px-4 py-2 text-sm font-medium border-b-2 transition-colors whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed ${
-            viewMode === 'my_reviews'
-              ? 'border-brand-burgundy text-brand-burgundy'
-              : 'border-transparent text-content-muted hover:text-content-secondary'
-          }`}
-          title={!user ? '請先登入' : undefined}
-        >
-          我的評價
+          我的
         </button>
       </div>
 
-      {/* 分類 filter 僅適用於「全部貼文」「追蹤動態」；「我的貼文」不限分類、
-          「我的評價」非 listings 資料，皆不顯示分類 filter */}
+      {/* 「我的」子分類（語校評價/貼文）· 沿用租房/討論的 hierarchical sub-filter 樣式（PAT-73/PAT-103） */}
+      {viewMode === 'mine' && (
+        <div className="pl-4 border-l-2 border-brand-gold/30 flex flex-wrap gap-2">
+          <button
+            onClick={() => setMineSubTab('reviews')}
+            className={`text-xs px-2.5 py-1 rounded transition-colors ${
+              mineSubTab === 'reviews'
+                ? 'text-brand-burgundy font-medium'
+                : 'text-content-muted hover:text-content-secondary'
+            }`}
+          >
+            語校評價
+          </button>
+          <button
+            onClick={() => setMineSubTab('posts')}
+            className={`text-xs px-2.5 py-1 rounded transition-colors ${
+              mineSubTab === 'posts'
+                ? 'text-brand-burgundy font-medium'
+                : 'text-content-muted hover:text-content-secondary'
+            }`}
+          >
+            貼文
+          </button>
+        </div>
+      )}
+
+      {/* 說明文字：原 MyPosts.tsx 頁首說明，Phase AK 移至「我的」分頁區塊內（PAT-130） */}
+      {viewMode === 'mine' && (
+        <p className="text-xs text-content-muted">
+          管理你發布過的評價與貼文。刪除為永久動作（資料庫層級刪除），無法復原。
+        </p>
+      )}
+
+      {/* 分類 filter 僅適用於「全部貼文」「追蹤動態」；「我的」不限分類，不顯示分類 filter */}
       {(viewMode === 'all' || viewMode === 'following') && (
         <div className="space-y-3">
           <div className="flex flex-wrap items-center gap-2 text-xs">
@@ -293,7 +322,7 @@ export default function Board() {
       )}
 
       <section>
-        {viewMode === 'my_reviews' ? (
+        {viewMode === 'mine' && mineSubTab === 'reviews' ? (
           reviewsLoading ? (
             <SkeletonList n={3} />
           ) : !user ? (

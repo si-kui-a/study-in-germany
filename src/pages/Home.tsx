@@ -42,7 +42,7 @@ const PORTAL_ITEMS = [
     Icon: IconMessageQuestion,
   },
   {
-    to: '/board?view=mine', title: '我的資料', description: '管理自己的評價與貼文',
+    to: '/board?view=mine&sub=posts', title: '我的資料', description: '管理自己的評價與貼文',
     Icon: IconUserCircle,
   },
 ];

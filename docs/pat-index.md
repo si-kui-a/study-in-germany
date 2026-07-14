@@ -129,6 +129,7 @@
 | PAT-127 | CORE_IMMUTABLE | 新手導覽系統精簡版：persona_stage 選擇 + Edu Hub 動態突出，跳過期限/推播 |
 | PAT-128 | CORE_IMMUTABLE | 階段設定按鈕視覺提升：純文字連結改卡片式按鈕，顯示目前階段 |
 | PAT-129 | CORE_IMMUTABLE | 我的貼文/我的評價併入佈告欄（3、4 個 viewMode），MyPosts.tsx 移除 |
+| PAT-130 | CORE_IMMUTABLE |「我的」重組為 3 頂層分頁+2 子分類（語校評價/貼文），沿用 hierarchical sub-filter |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance
