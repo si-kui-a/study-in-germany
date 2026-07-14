@@ -399,3 +399,10 @@ CREATE POLICY "listings_public_read" ON public.listings
 
 CREATE INDEX IF NOT EXISTS listings_expires_at_idx ON public.listings (expires_at)
   WHERE expires_at IS NOT NULL;
+
+-- ==========================================
+-- Phase AI · profiles 加 persona_stage（新手導覽精簡版）
+-- ==========================================
+
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS persona_stage TEXT
+  CHECK (persona_stage IS NULL OR persona_stage IN ('visa_prep', 'landing', 'settled', 'leaving'));

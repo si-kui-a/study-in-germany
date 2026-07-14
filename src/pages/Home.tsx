@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
   IconBuildingArch,
@@ -11,6 +12,8 @@ import {
 import HeroSection from '../components/HeroSection';
 import Announcements from '../components/Announcements';
 import HotSchoolsCarousel from '../components/HotSchoolsCarousel';
+import OnboardingModal from '../components/OnboardingModal';
+import { isOnboardingCompleted } from '../lib/onboarding';
 
 /**
  * Phase AB：Portal 卡片圖示不再各自套用 module-* 識別色（Phase Y 的做法），
@@ -55,9 +58,19 @@ const PORTAL_ITEMS = [
  * Phase AH：6 個手繪 SVG 圖示全數改用 Tabler Icons（`@tabler/icons-react`），
  *   直接以元件參照存於 PORTAL_ITEMS，不再需要獨立的 PortalRecommendationIcon.tsx
  *   分流檔案（PAT-122 終局版）
+ * Phase AI：新增新手導覽 Modal（精簡版，僅階段選擇+收尾），首次造訪時自動彈出
+ *   （PAT-127）
  * 結構：Hero 天際線 → Portal (6 卡) → 熱門語校 → 最新公告
  */
 export default function Home() {
+  const [onboardingOpen, setOnboardingOpen] = useState(false);
+
+  useEffect(() => {
+    if (!isOnboardingCompleted()) {
+      setOnboardingOpen(true);
+    }
+  }, []);
+
   return (
     <div className="space-y-20 sm:space-y-24">
       <HeroSection />
@@ -117,6 +130,8 @@ export default function Home() {
         </div>
         <Announcements />
       </section>
+
+      <OnboardingModal open={onboardingOpen} onClose={() => setOnboardingOpen(false)} />
     </div>
   );
 }

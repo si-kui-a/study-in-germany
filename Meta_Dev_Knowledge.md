@@ -1211,3 +1211,34 @@ Edu 主題頁本身（`EduTopic.tsx`）進入後仍可見完整流程總覽與 s
 **Why**：Lily 提供截圖指出三頁卡片留白過多、方格過大，手機端尤其浪費捲動
 空間；響應式雙態（而非固定尺寸卡片單純縮小）能讓手機端徹底改用資訊密度
 更高的列表形式，同時桌面端保留卡片視覺語言但顯著提高單螢幕可見項目數。
+
+## PAT-127 [CORE_IMMUTABLE]: 新手導覽系統（精簡版）
+
+依 v9 願景文件精簡實作，僅 Step 1（階段判斷）+Step 2（動態呈現）+Step 5（收尾），
+**刻意跳過** Step 3（期限輸入）與 Step 4（推播權限），因對應的儀表板/推播功能本體
+尚未建置（見 v9 願景文件 P1/P2 項目，暫緩），避免收集使用者用不到的資料。
+
+**資料層**：`profiles.persona_stage`（nullable TEXT，4 值：`visa_prep`/`landing`/
+`settled`/`leaving`，CHECK constraint 約束）——已登入使用者選擇階段時才寫入 DB
+（`supabase.from('profiles').update({ persona_stage })`，走既有 `profiles_own_update`
+RLS policy，未新增 RLS）；訪客（未登入）僅存 `localStorage`（`persona_stage_local`），
+不做跨裝置同步，本輪不處理。`onboarding_completed`（localStorage）控制是否顯示導覽
+Modal，「我的資料」頁「重新設定我的階段」可清除此標記重新觸發。
+
+**AI.c 實作細節**：Edu Hub 依 `getLocalPersonaStage()`（讀 localStorage，**不讀
+DB**，因即時可用性優先於跨裝置同步，且訪客也需要此功能）對應 `PERSONA_MODULE_MAP`
+突出顯示推薦模組（`ring-2 ring-brand-gold` + 卡片右上角「為你推薦」小標籤，
+`absolute` 定位不干擾 Phase AG/AH 已建立的緊湊卡片內部佈局），視覺克制、不做
+誇張特效。DB 內的 `persona_stage` 目前**尚未被任何頁面讀取**，純粹是為未來
+可能的跨裝置同步/儀表板功能預先鋪路的資料結構，Lily 應知悉這是有意的超前部署
+而非遺漏。
+
+**與 spec 範例程式碼的一處修正**：spec 提供的「重新設定我的階段」按鈕範例用
+`window.location.href = '/'`，但本站部署於 GitHub Pages 子路徑
+（`si-kui-a.github.io/study-in-germany/`）+ HashRouter，若直接導向網站根目錄
+`/` 會脫離子路徑造成 404——已修正為與既有刪除帳號流程（`MyProfile.tsx`）相同的
+安全寫法 `` `${window.location.origin}${window.location.pathname}#/` ``，
+保留 pathname 子路徑再附加 hash route。
+
+**未來若要擴充期限/推播功能**，需重新評估 v9 願景文件 Step 3/4，
+屆時 `persona_stage` 的資料結構已就緒可沿用。

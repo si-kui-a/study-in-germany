@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { EduTopicIcon } from '../assets/icons/edu';
+import { getLocalPersonaStage, PERSONA_MODULE_MAP } from '../lib/onboarding';
 import { visaWorkflow } from '../data/edu/visa';
 import { arrivalWorkflow } from '../data/edu/arrival';
 import { renewalWorkflow } from '../data/edu/renewal';
@@ -28,8 +29,13 @@ const TOPICS = [
  * Phase AG：圖示與標題文字放大，消除卡片內部多餘留白（PAT-126 v2）
  * Phase AH：圖示改用 Tabler Icons（`EduTopicIcon` registry 內部改實作，
  *   本頁 import/呼叫方式不變，見 src/assets/icons/edu/index.tsx，PAT-122）
+ * Phase AI：依新手導覽選擇的 persona_stage 突出對應主題卡（金色外框 +
+ *   「為你推薦」標籤），視覺克制不做誇張特效（PAT-127）
  */
 export default function Edu() {
+  const localStage = getLocalPersonaStage();
+  const recommendedSlug = localStage ? PERSONA_MODULE_MAP[localStage] : null;
+
   return (
     <div className="space-y-10">
       <section>
@@ -51,12 +57,20 @@ export default function Edu() {
             <Link
               key={t.slug}
               to={`/edu/${t.slug}`}
-              className="flex items-center gap-3 p-3 rounded-lg border border-border-subtle
+              className={`relative flex items-center gap-3 p-3 rounded-lg border border-border-subtle
                          bg-surface-card hover:border-border-strong transition-all duration-150
                          no-underline
                          sm:flex-col sm:items-center sm:justify-center sm:text-center sm:gap-0
-                         sm:p-3 sm:aspect-[3/2] sm:rounded-card sm:hover:-translate-y-0.5"
+                         sm:p-3 sm:aspect-[3/2] sm:rounded-card sm:hover:-translate-y-0.5
+                         ${t.slug === recommendedSlug ? 'ring-2 ring-brand-gold' : ''}`}
             >
+              {t.slug === recommendedSlug && (
+                <span className="absolute top-1.5 right-1.5 sm:top-2 sm:right-2 z-10
+                                 text-[10px] leading-none px-1.5 py-1 rounded
+                                 bg-brand-gold text-white font-medium">
+                  為你推薦
+                </span>
+              )}
               <div className="text-module-edu w-12 h-12 shrink-0 flex items-center justify-center
                               sm:w-16 sm:h-16 lg:w-20 lg:h-20 sm:mb-2">
                 <EduTopicIcon slug={t.slug} className="w-full h-full" />

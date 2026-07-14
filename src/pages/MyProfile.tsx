@@ -12,6 +12,7 @@ import { useContributions } from '../lib/useContributions';
 import { BadgeChip } from '../components/UserAvatar';
 import { ALL_BADGES } from '../lib/badges';
 import { deleteAccountData } from '../lib/deleteAccount';
+import { resetOnboarding } from '../lib/onboarding';
 
 const MAX_AVATAR_BYTES = 5 * 1024 * 1024; // 5 MB
 
@@ -169,6 +170,20 @@ export default function MyProfile() {
           My Profile
         </div>
         <h1 className="text-2xl sm:text-3xl font-semibold">個人資料</h1>
+      </div>
+
+      {/* Phase AI：重新觸發新手導覽（PAT-127） */}
+      <div>
+        <button
+          type="button"
+          onClick={() => {
+            resetOnboarding();
+            window.location.href = `${window.location.origin}${window.location.pathname}#/`;
+          }}
+          className="text-sm text-brand-burgundy hover:text-brand-burgundy-hover"
+        >
+          重新設定我的階段
+        </button>
       </div>
 
       {/* 目前資訊 */}

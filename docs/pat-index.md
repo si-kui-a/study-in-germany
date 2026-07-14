@@ -126,6 +126,7 @@
 | PAT-124 | CORE_IMMUTABLE | 站內命名統一：使用者可見文字「學用」→「作戰手冊」，不動程式碼識別名 |
 | PAT-125 | RESOLVED | PAT-122 全站圖示稽核：4 家族合規，Recommendation 家族 viewBox 不一致已修正 |
 | PAT-126 | CORE_IMMUTABLE | 全站卡片密度優化 v2：響應式雙態 + 圖示/標題放大（手機列表 icon 48px/桌面卡 icon 64-80px） |
+| PAT-127 | CORE_IMMUTABLE | 新手導覽系統精簡版：persona_stage 選擇 + Edu Hub 動態突出，跳過期限/推播 |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance
