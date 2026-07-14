@@ -406,3 +406,11 @@ CREATE INDEX IF NOT EXISTS listings_expires_at_idx ON public.listings (expires_a
 
 ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS persona_stage TEXT
   CHECK (persona_stage IS NULL OR persona_stage IN ('visa_prep', 'landing', 'settled', 'leaving'));
+
+-- ==========================================
+-- Phase AO · profiles 加 workflow_progress（2/2，本輪 SQL 段落 2/2）
+-- 作戰手冊個人進度追蹤，JSONB 結構：
+-- { "visa": { "completed": [1,2,3], "skipped": [4] }, "arrival": {...} }
+-- ==========================================
+
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS workflow_progress JSONB DEFAULT '{}'::jsonb;

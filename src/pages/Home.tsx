@@ -15,6 +15,26 @@ import HotSchoolsCarousel from '../components/HotSchoolsCarousel';
 import OnboardingModal from '../components/OnboardingModal';
 import { isOnboardingCompleted, getLocalPersonaStage } from '../lib/onboarding';
 import { getNextStepSuggestion } from '../lib/nextStep';
+import { useWorkflowProgress } from '../lib/useWorkflowProgress';
+import { getNextPendingStep } from '../lib/workflowProgress';
+import { visaWorkflow } from '../data/edu/visa';
+import { arrivalWorkflow } from '../data/edu/arrival';
+import { renewalWorkflow } from '../data/edu/renewal';
+import { applicationWorkflow } from '../data/edu/application';
+import { scholarshipWorkflow } from '../data/edu/scholarship';
+import { policyWorkflow } from '../data/edu/policy';
+import { exitWorkflow } from '../data/edu/exit';
+import type { WorkflowTopic } from '../data/edu/workflow';
+
+const EDU_TOPICS_MAP: Record<string, WorkflowTopic> = {
+  visa: visaWorkflow,
+  arrival: arrivalWorkflow,
+  renewal: renewalWorkflow,
+  application: applicationWorkflow,
+  scholarship: scholarshipWorkflow,
+  policy: policyWorkflow,
+  exit: exitWorkflow,
+};
 
 /**
  * Phase AB：Portal 卡片圖示不再各自套用 module-* 識別色（Phase Y 的做法），
@@ -63,12 +83,34 @@ const PORTAL_ITEMS = [
  *   （PAT-127）
  * Phase AN：Hero 下方新增「下一步提示」卡片，僅當使用者已設定 persona_stage
  *   時顯示，導向作戰手冊對應主題的 Step 1（v9 精簡延伸，PAT-134）
+ * Phase AO：「下一步提示」整合進度追蹤，依 workflow_progress 自動推進到下一個
+ *   未完成/未跳過的 step（不再永遠停在 step 1），該階段全部完成時改顯示
+ *   完成訊息（PAT-136）
  * 結構：Hero 天際線 → 下一步提示（條件式）→ Portal (6 卡) → 熱門語校 → 最新公告
  */
 export default function Home() {
   const [onboardingOpen, setOnboardingOpen] = useState(false);
   const localStage = getLocalPersonaStage();
-  const nextStep = localStage ? getNextStepSuggestion(localStage) : null;
+  const { progress } = useWorkflowProgress();
+
+  let nudge: { moduleSlug: string; moduleName: string; stepNumber: number; stepTitle: string } | null = null;
+  let allStepsDone = false;
+  if (localStage) {
+    const suggestion = getNextStepSuggestion(localStage);
+    const topic = EDU_TOPICS_MAP[suggestion.moduleSlug];
+    const nextPending = getNextPendingStep(progress, suggestion.moduleSlug, topic.steps.length);
+    if (nextPending === null) {
+      allStepsDone = true;
+    } else {
+      const stepData = topic.steps.find((s) => s.step === nextPending);
+      nudge = {
+        moduleSlug: suggestion.moduleSlug,
+        moduleName: suggestion.moduleName,
+        stepNumber: nextPending,
+        stepTitle: stepData?.title_zh ?? suggestion.stepTitle,
+      };
+    }
+  }
 
   useEffect(() => {
     if (!isOnboardingCompleted()) {
@@ -80,9 +122,20 @@ export default function Home() {
     <div className="space-y-20 sm:space-y-24">
       <HeroSection />
 
-      {nextStep && (
+      {allStepsDone && (
+        <div className="card bg-brand-gold-soft border-brand-gold/30">
+          <div className="text-sm font-medium text-content-primary">
+            🎉 這個階段的推薦步驟都完成了！
+          </div>
+          <div className="text-xs text-content-muted mt-1">
+            可於「我的資料」重新設定階段，查看其他主題的推薦步驟
+          </div>
+        </div>
+      )}
+
+      {nudge && (
         <Link
-          to={`/edu/${nextStep.moduleSlug}`}
+          to={`/edu/${nudge.moduleSlug}`}
           className="block card bg-brand-gold-soft border-brand-gold/30
                      hover:border-brand-gold transition-colors no-underline"
         >
@@ -90,7 +143,7 @@ export default function Home() {
             <div>
               <div className="text-xs text-content-muted mb-1">為你推薦的下一步</div>
               <div className="text-sm font-medium text-content-primary">
-                {nextStep.moduleName} · Step {nextStep.stepNumber}：{nextStep.stepTitle}
+                {nudge.moduleName} · Step {nudge.stepNumber}：{nudge.stepTitle}
               </div>
             </div>
             <span className="text-brand-burgundy text-sm shrink-0">前往 →</span>

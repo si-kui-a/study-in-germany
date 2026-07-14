@@ -1,17 +1,25 @@
 import { useState } from 'react';
 import type { WorkflowStep } from '../../data/edu/workflow';
 import PriorityBadge from './PriorityBadge';
+import type { StepStatus } from '../../lib/workflowProgress';
 
 interface Props {
   step: WorkflowStep;
+  /** Phase AO：進度勾選狀態（PAT-136），選填——非作戰手冊主題頁的用途不需傳入 */
+  status?: StepStatus;
+  onMarkCompleted?: () => void;
+  onMarkSkipped?: () => void;
+  onClear?: () => void;
 }
 
 /**
  * DS v4.2 §八/§九/§十
  * 卡片 · 五區固定：STEP / Title / Meta / Outcome / CTA
  * CTA 為 Accordion trigger，展開 §十 四區塊：文件/流程/常見錯誤/官方資源
+ * Phase AO：Outcome 與 CTA 之間新增進度勾選區（完成/跳過），選填 props，
+ *   零狀態 tracking 的呼叫端不受影響（PAT-136）
  */
-export default function WorkflowCard({ step }: Props) {
+export default function WorkflowCard({ step, status, onMarkCompleted, onMarkSkipped, onClear }: Props) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -75,6 +83,36 @@ export default function WorkflowCard({ step }: Props) {
               </li>
             ))}
           </ul>
+        </div>
+      )}
+
+      {/* Phase AO：進度勾選（PAT-136） */}
+      {status !== undefined && (
+        <div className="flex items-center gap-2 pt-2">
+          <button
+            type="button"
+            onClick={() => (status === 'completed' ? onClear?.() : onMarkCompleted?.())}
+            className={`text-xs px-3 py-1.5 rounded-lg border transition-colors ${
+              status === 'completed'
+                ? 'bg-brand-burgundy text-white border-brand-burgundy'
+                : 'border-border-subtle text-content-secondary hover:border-brand-gold'
+            }`}
+          >
+            {status === 'completed' ? '✓ 已完成' : '標記完成'}
+          </button>
+          {status !== 'completed' && (
+            <button
+              type="button"
+              onClick={() => (status === 'skipped' ? onClear?.() : onMarkSkipped?.())}
+              className={`text-xs px-3 py-1.5 rounded-lg border transition-colors ${
+                status === 'skipped'
+                  ? 'border-brand-gold text-brand-gold-hover'
+                  : 'border-border-subtle text-content-muted hover:border-content-secondary'
+              }`}
+            >
+              {status === 'skipped' ? '已跳過（點擊取消）' : '跳過此步'}
+            </button>
+          )}
         </div>
       )}
 

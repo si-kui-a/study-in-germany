@@ -13,6 +13,26 @@ import { BadgeChip } from '../components/UserAvatar';
 import { ALL_BADGES } from '../lib/badges';
 import { deleteAccountData } from '../lib/deleteAccount';
 import { resetOnboarding, getLocalPersonaStage, PERSONA_STAGE_LABELS } from '../lib/onboarding';
+import { useWorkflowProgress } from '../lib/useWorkflowProgress';
+import { getStepStatus } from '../lib/workflowProgress';
+import { visaWorkflow } from '../data/edu/visa';
+import { arrivalWorkflow } from '../data/edu/arrival';
+import { renewalWorkflow } from '../data/edu/renewal';
+import { applicationWorkflow } from '../data/edu/application';
+import { scholarshipWorkflow } from '../data/edu/scholarship';
+import { policyWorkflow } from '../data/edu/policy';
+import { exitWorkflow } from '../data/edu/exit';
+import type { WorkflowTopic } from '../data/edu/workflow';
+
+const EDU_TOPICS: WorkflowTopic[] = [
+  visaWorkflow,
+  arrivalWorkflow,
+  renewalWorkflow,
+  applicationWorkflow,
+  scholarshipWorkflow,
+  policyWorkflow,
+  exitWorkflow,
+];
 
 const MAX_AVATAR_BYTES = 5 * 1024 * 1024; // 5 MB
 
@@ -35,6 +55,7 @@ export default function MyProfile() {
 
   const googleName = (user?.user_metadata?.full_name as string | undefined) ?? null;
   const localStage = getLocalPersonaStage();
+  const { progress, toggleStep } = useWorkflowProgress();
 
   const { counts } = useContributions(user?.id ?? null);
   const { badges } = useBadges({
@@ -197,6 +218,52 @@ export default function MyProfile() {
             重新設定
           </button>
         </div>
+      </div>
+
+      {/* Phase AO：作戰手冊進度總覽 + 手動調整（PAT-136） */}
+      <div className="card space-y-3">
+        <h2 className="text-lg font-semibold text-content-primary">我的學習進度</h2>
+        {EDU_TOPICS.map((topic) => {
+          const mod = progress[topic.slug];
+          const doneCount = (mod?.completed.length ?? 0) + (mod?.skipped.length ?? 0);
+          const totalSteps = topic.steps.length;
+          return (
+            <details key={topic.slug} className="text-sm">
+              <summary className="cursor-pointer flex items-center justify-between">
+                <span>{topic.title}</span>
+                <span className="text-xs text-content-muted">{doneCount}/{totalSteps}</span>
+              </summary>
+              <div className="pt-2 pl-4 space-y-1">
+                {topic.steps.map((s) => {
+                  const status = getStepStatus(progress, topic.slug, s.step);
+                  return (
+                    <div key={s.step} className="flex items-center justify-between text-xs">
+                      <span className="text-content-secondary truncate pr-2">
+                        Step {s.step}：{s.title_zh}
+                      </span>
+                      <div className="flex gap-2 shrink-0">
+                        <button
+                          type="button"
+                          onClick={() => toggleStep(topic.slug, s.step, 'completed')}
+                          className={status === 'completed' ? 'text-brand-burgundy font-medium' : 'text-content-muted hover:text-content-secondary'}
+                        >
+                          完成
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => toggleStep(topic.slug, s.step, 'skipped')}
+                          className={status === 'skipped' ? 'text-brand-gold-hover font-medium' : 'text-content-muted hover:text-content-secondary'}
+                        >
+                          跳過
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </details>
+          );
+        })}
       </div>
 
       {/* 目前資訊 */}

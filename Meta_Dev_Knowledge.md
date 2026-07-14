@@ -1395,3 +1395,61 @@ Phase AN 全站健檢逐一重新確認零引用（`grep -rl` 全站搜尋，除
 
 刪除後 typecheck/build 皆 PASS，確認零遺留引用。`BoardIcon.tsx` 維持不動
 （仍在使用中，非 deprecated）。
+
+## PAT-136 [CORE_IMMUTABLE]: FAQ 結論先行排版
+
+數據密集題目採用 `summary`（一句結論）+`points`（條列重點）+`detail`（收合完整
+說明）三層結構，與簡單題目的純 `q`/`a` 格式並存於同一 `faq.json` 陣列。
+`FAQ.tsx` 依資料是否含 `summary` 欄位切換渲染方式。
+
+**型別處理**：`FaqItem`（`src/lib/types.ts`，受保護檔案）維持原本的純
+`{ q, a }` 形狀不變（未違反受保護檔案零改動的硬性約束）；另立
+`src/lib/faq.ts` 匯出 `FaqEntry`（`{ q, a?, summary?, points?, detail? }`，
+所有內容欄位皆為選填，涵蓋兩種格式）供 `FAQ.tsx`/`search.ts` 改用。
+`search.ts` 原本無條件存取 `f.a` 會在新格式題目上讀到 `undefined` 而壞掉
+（`f.a.slice(...)` 會拋錯），已改用 `faqSearchableText()`/`faqPreviewText()`
+兩個 helper 函式做 null-safe 的格式判斷，搜尋索引與結果預覽對兩種格式皆正確
+運作（已實測搜尋「德鐵」正確命中 2 題新格式問答，預覽文字使用 `summary`
+而非截斷的原始長文字，品質更好）。
+
+## PAT-137 [CORE_IMMUTABLE]: 作戰手冊進度追蹤系統
+
+`profiles.workflow_progress`（JSONB · 非新表）記錄各主題完成/跳過的 step。
+登入使用者雲端同步（`profiles` 表）、未登入使用者 localStorage 暫存
+（`workflow_progress_local`）。「完成」與「跳過」皆視為該 step 已處理
+（推進判斷邏輯相同），使用者可隨時取消勾選回到 pending。
+
+**三個整合點**：
+- `EduTopic.tsx`／`WorkflowCard.tsx`：每個 step 卡片的 Outcome 與 CTA
+  之間新增勾選區（標記完成/跳過此步），`WorkflowCard` 新增選填 props
+  （`status`/`onMarkCompleted`/`onMarkSkipped`/`onClear`），未傳入時該區塊
+  不渲染，不影響其他潛在呼叫端
+- `MyProfile.tsx`：「我的學習進度」卡片，7 主題各自可展開查看逐 step 完成
+  度並手動調整（不強制依作戰手冊頁面順序勾選），每個 step 額外顯示
+  `title_zh` 而非僅數字，方便使用者識別
+- `Home.tsx`：Phase AN 的「下一步提示」卡片整合自動推進——依
+  `getNextPendingStep()` 找出該階段推薦模組中第一個未完成/未跳過的 step，
+  不再永遠停留在 step 1；已透過瀏覽器實測完整驗證（標記 step 1 完成後，
+  卡片正確改顯示 step 2 的真實標題；標記全部 step 完成後，改顯示完成
+  訊息並隱藏推薦卡片）。原 spec 提供 STOP CONDITION 允許本項延後，
+  但複雜度可控（沿用與 MyProfile.tsx 相同的 7 主題 import pattern），
+  故完整實作，未採用 spec 提供的延後選項
+
+**與 spec 提供程式碼的差異**（修正實作缺陷，非改變設計）：
+- `markStep()` 移除 spec 原文兩個宣告後從未使用的區域變數（`otherList`/
+  `targetList`），會觸發本專案 `noUnusedLocals: true` 的 typecheck 錯誤
+- `useWorkflowProgress()` 的 `toggleStep`/`clearStep` 改用 React 的
+  functional state updater（`setProgress((prev) => ...)`）取代 spec 原文
+  依賴 `[progress, persist]` 作為 `useCallback` deps 的寫法，避免快速連續
+  操作時可能讀到過期的 `progress` 閉包值
+- `WorkflowCard.tsx` 的「跳過此步」按鈕在已跳過狀態下改為可點擊取消
+  （呼叫 `onClear`），spec 原文此按鈕在已跳過時再次點擊只會重複標記跳過
+  （無實際效果），與「已完成」按鈕的取消邏輯不一致
+
+此為 v9 願景「陪伴儀表板」核心功能的輕量落地，零新表、零推播、零期限提醒、
+零跨使用者統計/排行榜。
+
+## PAT-138 [CORE_IMMUTABLE]: 推薦專區新增 Wise
+
+落地相關（arrival）分類新增 Wise 跨境匯款服務，遵循 PAT-58 無時效性資訊
+原則（不寫具體匯率/費率數字，僅描述服務性質）。

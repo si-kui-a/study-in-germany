@@ -134,6 +134,9 @@
 | PAT-133 | CORE_IMMUTABLE | FAQ 年度維護日期：頁底寫死「最後審核於 YYYY-MM」，人工年度更新 |
 | PAT-134 | CORE_IMMUTABLE |「下一步提示」卡片：依 persona_stage 導向作戰手冊對應 Step 1，v9 精簡延伸 |
 | PAT-135 | RESOLVED | Phase AH deprecated 手繪 SVG 檔案清理（20 檔，健檢確認零引用後刪除） |
+| PAT-136 | CORE_IMMUTABLE | FAQ 結論先行排版：summary+points+收合 detail 三層結構，與純文字格式並存 |
+| PAT-137 | CORE_IMMUTABLE | 作戰手冊進度追蹤系統：profiles.workflow_progress(JSONB)，勾選+自動推進 |
+| PAT-138 | CORE_IMMUTABLE | 推薦專區新增 Wise（跨境匯款，無時效性資訊原則） |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance

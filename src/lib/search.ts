@@ -1,7 +1,9 @@
 import schoolsData from '../data/schools.json';
 import faqData from '../data/faq.json';
 import announcementsData from '../data/announcements.json';
-import type { School, FaqItem } from './types';
+import type { School } from './types';
+import type { FaqEntry } from './faq';
+import { faqSearchableText, faqPreviewText } from './faq';
 import { visaWorkflow } from '../data/edu/visa';
 import { arrivalWorkflow } from '../data/edu/arrival';
 import { renewalWorkflow } from '../data/edu/renewal';
@@ -55,15 +57,16 @@ export function searchAll(query: string): SearchHit[] {
     }
   }
 
-  for (let i = 0; i < (faqData as FaqItem[]).length; i++) {
-    const f = (faqData as FaqItem[])[i];
-    const hay = `${f.q} ${f.a}`.toLowerCase();
+  for (let i = 0; i < (faqData as FaqEntry[]).length; i++) {
+    const f = (faqData as FaqEntry[])[i];
+    const hay = `${f.q} ${faqSearchableText(f)}`.toLowerCase();
     if (hay.includes(q)) {
+      const preview = faqPreviewText(f);
       hits.push({
         kind: 'faq',
         id: String(i),
         title: f.q,
-        subtitle: f.a.slice(0, 60) + (f.a.length > 60 ? '…' : ''),
+        subtitle: preview.slice(0, 60) + (preview.length > 60 ? '…' : ''),
         url: `/faq`,
       });
     }

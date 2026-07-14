@@ -11,6 +11,8 @@ import { exitWorkflow } from '../data/edu/exit';
 import type { WorkflowTopic } from '../data/edu/workflow';
 import WorkflowTimeline from '../components/edu/WorkflowTimeline';
 import WorkflowCard from '../components/edu/WorkflowCard';
+import { useWorkflowProgress } from '../lib/useWorkflowProgress';
+import { getStepStatus } from '../lib/workflowProgress';
 
 const TOPIC_MAP: Record<string, WorkflowTopic> = {
   visa: visaWorkflow,
@@ -41,6 +43,7 @@ export default function EduTopic() {
   const { slug } = useParams<{ slug: string }>();
   const topic = slug ? TOPIC_MAP[slug] : null;
   const [currentStep, setCurrentStep] = useState<number | undefined>(undefined);
+  const { progress, toggleStep, clearStep } = useWorkflowProgress();
 
   useEffect(() => {
     setCurrentStep(undefined);
@@ -105,7 +108,14 @@ export default function EduTopic() {
       {/* Workflow Cards */}
       <section className="space-y-4">
         {topic.steps.map((s) => (
-          <WorkflowCard key={s.step} step={s} />
+          <WorkflowCard
+            key={s.step}
+            step={s}
+            status={getStepStatus(progress, topic.slug, s.step)}
+            onMarkCompleted={() => toggleStep(topic.slug, s.step, 'completed')}
+            onMarkSkipped={() => toggleStep(topic.slug, s.step, 'skipped')}
+            onClear={() => clearStep(topic.slug, s.step)}
+          />
         ))}
       </section>
 
