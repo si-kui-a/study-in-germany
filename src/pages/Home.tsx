@@ -50,6 +50,7 @@ const PORTAL_ITEMS = [
  *   PortalRecommendationIcon（獨立於 Recommendation.tsx 頁首共用的 RecommendationIcon）
  * Phase AF：卡片密度優化，響應式雙態佈局（手機橫向列表 / 桌面縮小版 grid），
  *   與 Recommendation.tsx、Edu.tsx 共用同一套 class 組合邏輯（PAT-126）
+ * Phase AG：圖示與標題文字放大，消除卡片內部多餘留白（PAT-126 v2）
  * 結構：Hero 天際線 → Portal (6 卡) → 熱門語校 → 最新公告
  */
 export default function Home() {
@@ -71,14 +72,14 @@ export default function Home() {
                          sm:flex-col sm:items-center sm:justify-center sm:text-center sm:gap-0
                          sm:p-3 sm:aspect-[3/2] sm:rounded-card sm:hover:-translate-y-0.5"
             >
-              <div className="text-brand-burgundy w-10 h-10 shrink-0 flex items-center justify-center
-                              sm:w-12 sm:h-12 sm:mb-2">
+              <div className="text-brand-burgundy w-12 h-12 shrink-0 flex items-center justify-center
+                              sm:w-16 sm:h-16 lg:w-20 lg:h-20 sm:mb-2">
                 <item.Icon className="w-full h-full" />
               </div>
 
               <div className="flex-1 min-w-0 sm:flex-none sm:w-full">
                 <div className="text-sm font-semibold text-content-primary truncate
-                                sm:text-xs sm:whitespace-normal">
+                                sm:text-base sm:whitespace-normal">
                   {item.title}
                 </div>
                 <div className="text-xs text-content-muted truncate sm:hidden">

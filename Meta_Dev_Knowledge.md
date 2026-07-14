@@ -1129,24 +1129,33 @@ PAT-122 §2「造型複雜需要層次感時」並未強制所有圖示都要色
 
 **其餘 4 家族**：稽核未發現違規，維持現狀，不做非必要修改。
 
-## PAT-126 [CORE_IMMUTABLE]: 全站卡片密度優化 · 響應式雙態佈局
+## PAT-126 [CORE_IMMUTABLE]: 全站卡片密度優化 · 響應式雙態佈局（v2 · Phase AG 調整）
 
 Home/Recommendation/Edu 三頁的卡片系統統一採用響應式雙態 pattern，取代原本
 `aspect-[4/3]`、`w-20~24` 大圖示、`p-5` 大留白的舊版卡片：
 
-- **Mobile（sm 以下）**：橫向列表——`flex items-center` 一行一項，圖示 `w-10 h-10`
-  置左，標題+描述文字置右（皆 `truncate` 單行），資訊密度優先
+- **Mobile（sm 以下）**：橫向列表——`flex items-center` 一行一項，圖示 `w-12 h-12`
+  置左，標題（`text-sm`）+描述文字置右（皆 `truncate` 單行），資訊密度優先
 - **Desktop（sm 以上）**：縮小版卡片 grid——`sm:grid-cols-3 lg:grid-cols-4`，
-  卡片改 `sm:flex-col sm:aspect-[3/2]`，圖示縮小為 `sm:w-12 sm:h-12`，
-  `sm:p-3`（原 `p-5`），描述文字 `sm:hidden`（桌面卡片縮小後空間有限，
-  優先保證圖示+標題為視覺主體）
+  卡片改 `sm:flex-col sm:aspect-[3/2]`，圖示 `sm:w-16 sm:h-16 lg:w-20 lg:h-20`，
+  標題 `sm:text-base`，`sm:p-3`（原 `p-5`），描述文字 `sm:hidden`（桌面卡片
+  空間有限，優先保證圖示+標題為視覺主體）
 
-純 CSS responsive class 切換（`sm:` prefix），不依賴 JS 判斷裝置寬度或
+純 CSS responsive class 切換（`sm:`/`lg:` prefix），不依賴 JS 判斷裝置寬度或
 `useState`/`matchMedia`。三頁的容器 class、卡片 Link class、圖示 wrapper
 class（除顏色 token 外）採用**逐字相同**的組合，僅資料內容（title/description/
 icon/顏色）依各頁面既有慣例不同（Home 用 `text-brand-burgundy`，Recommendation
 用 `text-module-recommendation`，Edu 用 `text-module-edu`，此為 PAT-119 既有
 決策，本輪未變動）。
+
+**Phase AF → AG 調整脈絡**：AF 首次收斂密度時圖示縮得過小（`sm:w-12`＝48px，
+桌面），與卡片留白比例失衡，Lily 檢視實際部署畫面後要求圖示與文字同步放大、
+消除卡片內部多餘留白。AG 將桌面圖示放大至 `sm:w-16 lg:w-20`（64–80px）、
+手機圖示放大至 `w-12`（48px）、桌面標題放大至 `sm:text-base`；`padding`
+（`sm:p-3`）與 `aspect-[3/2]` **維持不變**——實測 lg 斷點下卡片高度
+199.5px，內容（80px 圖示+8px 間距+16px 標題行高+24px padding≈132px）已
+能自然填滿大部分空間，放大內容本身即足以消除留白，不需額外壓縮容器尺寸，
+符合 spec「優先放大內容、padding 為次要手段」的指示。
 
 **⚠️ 已知功能縮減（需求方應知悉）**：Recommendation 原本每卡右下角顯示子分類
 項目數（「N 項」，來自 `COUNT_MAP`）、Edu 原本顯示「N 個步驟」，兩者皆隨舊版

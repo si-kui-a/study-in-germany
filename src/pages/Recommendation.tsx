@@ -11,6 +11,7 @@ import UserSubmissionsList from '../components/UserSubmissionsList';
  * Phase AF：卡片密度優化，響應式雙態佈局，與 Home.tsx、Edu.tsx 共用同一套
  *   class 組合邏輯（PAT-126）；子分類項目數（COUNT_MAP）不再於卡片上顯示，
  *   優先保留 icon+title 之精簡度
+ * Phase AG：圖示與標題文字放大，消除卡片內部多餘留白（PAT-126 v2）
  */
 export default function Recommendation() {
   return (
@@ -43,14 +44,14 @@ export default function Recommendation() {
                        sm:flex-col sm:items-center sm:justify-center sm:text-center sm:gap-0
                        sm:p-3 sm:aspect-[3/2] sm:rounded-card sm:hover:-translate-y-0.5"
           >
-            <div className="text-module-recommendation w-10 h-10 shrink-0 flex items-center justify-center
-                            sm:w-12 sm:h-12 sm:mb-2">
+            <div className="text-module-recommendation w-12 h-12 shrink-0 flex items-center justify-center
+                            sm:w-16 sm:h-16 lg:w-20 lg:h-20 sm:mb-2">
               <RecommendationCategoryIcon slug={c.key} className="w-full h-full" />
             </div>
 
             <div className="flex-1 min-w-0 sm:flex-none sm:w-full">
               <div className="text-sm font-semibold text-content-primary truncate
-                              sm:text-xs sm:whitespace-normal">
+                              sm:text-base sm:whitespace-normal">
                 {c.title}
               </div>
               <div className="text-xs text-content-muted truncate sm:hidden">
