@@ -4,25 +4,13 @@ import { RecommendationCategoryIcon } from '../assets/icons/recommendation';
 import { RECOMMENDATION_CATEGORIES } from '../lib/recommendation';
 import SubmissionForm from '../components/SubmissionForm';
 import UserSubmissionsList from '../components/UserSubmissionsList';
-import generalData from '../data/recommendations/general.json';
-import visaData from '../data/recommendations/visa.json';
-import arrivalData from '../data/recommendations/arrival.json';
-import eduData from '../data/recommendations/edu.json';
-import scholarshipData from '../data/recommendations/scholarship.json';
-import taiwanData from '../data/recommendations/taiwan.json';
-
-const COUNT_MAP: Record<string, number> = {
-  general: generalData.length,
-  visa: visaData.length,
-  arrival: arrivalData.length,
-  edu: eduData.length,
-  scholarship: scholarshipData.length,
-  taiwan: taiwanData.length,
-};
 
 /**
  * DS v4.2 · 推薦專區 Hub · 對齊 Edu Hub 佈局（PAT-64）
  * 6 個子分類卡矩陣 · 圖示置中 · 文字置中
+ * Phase AF：卡片密度優化，響應式雙態佈局，與 Home.tsx、Edu.tsx 共用同一套
+ *   class 組合邏輯（PAT-126）；子分類項目數（COUNT_MAP）不再於卡片上顯示，
+ *   優先保留 icon+title 之精簡度
  */
 export default function Recommendation() {
   return (
@@ -44,31 +32,29 @@ export default function Recommendation() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="flex flex-col gap-2 sm:grid sm:grid-cols-3 lg:grid-cols-4 sm:gap-3">
         {RECOMMENDATION_CATEGORIES.map((c) => (
           <Link
             key={c.key}
             to={`/recommendation/${c.key}`}
-            className="card-interactive block p-5 no-underline aspect-[4/3]
-                       flex flex-col justify-between"
+            className="flex items-center gap-3 p-3 rounded-lg border border-border-subtle
+                       bg-surface-card hover:border-border-strong transition-all duration-150
+                       no-underline
+                       sm:flex-col sm:items-center sm:justify-center sm:text-center sm:gap-0
+                       sm:p-3 sm:aspect-[3/2] sm:rounded-card sm:hover:-translate-y-0.5"
           >
-            <div className="text-module-recommendation w-20 h-20 sm:w-24 sm:h-24
-                            mt-auto mb-3 mx-auto flex items-center justify-center">
+            <div className="text-module-recommendation w-10 h-10 shrink-0 flex items-center justify-center
+                            sm:w-12 sm:h-12 sm:mb-2">
               <RecommendationCategoryIcon slug={c.key} className="w-full h-full" />
             </div>
 
-            <div className="space-y-1 text-center">
-              <div className="text-base font-semibold text-content-primary">
+            <div className="flex-1 min-w-0 sm:flex-none sm:w-full">
+              <div className="text-sm font-semibold text-content-primary truncate
+                              sm:text-xs sm:whitespace-normal">
                 {c.title}
               </div>
-              <div className="text-xs text-content-muted italic">
+              <div className="text-xs text-content-muted truncate sm:hidden">
                 {c.subtitle}
-              </div>
-              <div className="pt-2 flex items-center justify-between text-xs">
-                <span className="text-content-secondary">
-                  {COUNT_MAP[c.key]} 項
-                </span>
-                <span className="text-brand-burgundy font-medium">進入 →</span>
               </div>
             </div>
           </Link>

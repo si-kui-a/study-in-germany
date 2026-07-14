@@ -125,6 +125,7 @@
 | PAT-123 | CORE_IMMUTABLE | 追蹤動態併入佈告欄：檢視模式（誰）與分類 filter（什麼）為正交維度 |
 | PAT-124 | CORE_IMMUTABLE | 站內命名統一：使用者可見文字「學用」→「作戰手冊」，不動程式碼識別名 |
 | PAT-125 | RESOLVED | PAT-122 全站圖示稽核：4 家族合規，Recommendation 家族 viewBox 不一致已修正 |
+| PAT-126 | CORE_IMMUTABLE | 全站卡片密度優化：Home/Recommendation/Edu 響應式雙態（手機列表/桌面縮小卡） |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance

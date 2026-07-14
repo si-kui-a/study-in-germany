@@ -1128,3 +1128,38 @@ PAT-122 §2「造型複雜需要層次感時」並未強制所有圖示都要色
 （w-8/10 CSS class 控制），視覺呈現與修正前基本一致。
 
 **其餘 4 家族**：稽核未發現違規，維持現狀，不做非必要修改。
+
+## PAT-126 [CORE_IMMUTABLE]: 全站卡片密度優化 · 響應式雙態佈局
+
+Home/Recommendation/Edu 三頁的卡片系統統一採用響應式雙態 pattern，取代原本
+`aspect-[4/3]`、`w-20~24` 大圖示、`p-5` 大留白的舊版卡片：
+
+- **Mobile（sm 以下）**：橫向列表——`flex items-center` 一行一項，圖示 `w-10 h-10`
+  置左，標題+描述文字置右（皆 `truncate` 單行），資訊密度優先
+- **Desktop（sm 以上）**：縮小版卡片 grid——`sm:grid-cols-3 lg:grid-cols-4`，
+  卡片改 `sm:flex-col sm:aspect-[3/2]`，圖示縮小為 `sm:w-12 sm:h-12`，
+  `sm:p-3`（原 `p-5`），描述文字 `sm:hidden`（桌面卡片縮小後空間有限，
+  優先保證圖示+標題為視覺主體）
+
+純 CSS responsive class 切換（`sm:` prefix），不依賴 JS 判斷裝置寬度或
+`useState`/`matchMedia`。三頁的容器 class、卡片 Link class、圖示 wrapper
+class（除顏色 token 外）採用**逐字相同**的組合，僅資料內容（title/description/
+icon/顏色）依各頁面既有慣例不同（Home 用 `text-brand-burgundy`，Recommendation
+用 `text-module-recommendation`，Edu 用 `text-module-edu`，此為 PAT-119 既有
+決策，本輪未變動）。
+
+**⚠️ 已知功能縮減（需求方應知悉）**：Recommendation 原本每卡右下角顯示子分類
+項目數（「N 項」，來自 `COUNT_MAP`）、Edu 原本顯示「N 個步驟」，兩者皆隨舊版
+`p-5 aspect-[4/3]` 大卡片的 footer 列一併移除，新版卡片（無論 mobile 列表或
+desktop 縮小卡）皆不再顯示數量徽章，僅保留圖示+標題（+mobile 態的描述）。
+`Recommendation.tsx` 中原本用於計算 `COUNT_MAP` 的 6 個 JSON import
+（`generalData`/`visaData`/`arrivalData`/`eduData`/`scholarshipData`/
+`taiwanData`）因不再被引用，已一併移除（避免 `noUnusedLocals` 報錯）；
+Edu 主題頁本身（`EduTopic.tsx`）進入後仍可見完整流程總覽與 step 數量，
+資訊未真正遺失，只是從 Hub 卡片層移到了主題詳情頁。此為配合「圖示為視覺
+主體、大幅減少留白」的密度目標所做的內容取捨，非技術限制，供 Lily 確認
+是否需要保留。
+
+**Why**：Lily 提供截圖指出三頁卡片留白過多、方格過大，手機端尤其浪費捲動
+空間；響應式雙態（而非固定尺寸卡片單純縮小）能讓手機端徹底改用資訊密度
+更高的列表形式，同時桌面端保留卡片視覺語言但顯著提高單螢幕可見項目數。
