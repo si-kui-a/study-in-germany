@@ -9,7 +9,7 @@
       "已廢除傳統線上預約系統",
       "改為官網表單上傳文件、審核後由機關主動排定時間"
     ],
-    "detail": "正式名稱為 Landesamt für Einwanderung（LEA）。⚠️ 柏林已於近期廢除傳統線上預約系統，改為全面數位化申請：透過官網線上表單上傳文件，經審核後由機關主動排定時間（多為email通知）。實際流程請以官網當下顯示內容為準。",
+    "detail": "審核後多以 email 通知排定時間。實際流程請以官網當下顯示內容為準。",
     "tags": ["外事局", "柏林"],
     "url": "https://www.berlin.de/einwanderung/",
     "updated_at": "2026-07"
@@ -24,7 +24,6 @@
       "於 Servicestelle für Zuwanderung und Einbürgerung 辦理",
       "實際預約與申請流程請以官網當下顯示內容為準，各城市制度變動頻繁"
     ],
-    "detail": "正式名稱為 Kreisverwaltungsreferat（KVR）– Ausländerbehörde，於 Servicestelle für Zuwanderung und Einbürgerung 辦理。實際預約與申請流程請以官網當下顯示內容為準，各城市制度變動頻繁。",
     "tags": ["外事局", "慕尼黑"],
     "url": "https://stadt.muenchen.de/service/info/servicestelle-fur-zuwanderung-und-einburgerung/10339026/",
     "updated_at": "2026-07"

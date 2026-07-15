@@ -1747,3 +1747,37 @@ button + chevron（`▾`/`rotate-180`）手動控制的展開模式，而非 Pha
 更早的 Phase H/AQ 資料中，與本輪內容無關。驗收標準之「零」應理解為「本
 Phase 新增內容不得引入」，而非回溯清除既有分類資料；已確認新建的
 `immigrationGuide.ts`/`ImmigrationGuide.tsx` 兩檔零命中禁止網域。
+
+## PAT-150 [CORE_IMMUTABLE]: 內容層 · detail 反重複規則
+
+適用範圍：任何 `Recommendation`（或未來其他資料型別）採用 `summary`/
+`points`/`detail` 三層結構時（PAT-147 建立），`detail` **只能保留
+`summary`/`points` 未提及的資訊**（操作步驟、例外情況、費用、註記判讀等）。
+逐句比對，凡與 `summary`/`points` 語意重複的句子一律刪除；若比對後
+`detail` 已無任何獨有資訊，**整個 `detail` 欄位直接省略（`undefined`），
+不得留空字串或硬湊內容填充**——`RecommendationCategory.tsx` 的
+`{item.detail && (<details>...)}` 已原生支援此情形，省略後「查看完整
+說明」收合按鈕不會渲染，因為已無額外內容可看。
+
+**首次稽核範圍**（Phase AT.c）：逐卡比對 Phase AS 建立的 3 筆
+summary/points/detail 資料（`finance.json` 的 `wise-transfer`、
+`immigration.json` 的 `auslaenderbehoerde-berlin`/`auslaenderbehoerde-
+muenchen`）：
+- `wise-transfer`：原 detail 3 句全數與 points 逐句重複（僅為 summary+
+  points 的合併改寫），無任何獨有資訊 → `detail` 欄位整段移除。
+- `auslaenderbehoerde-muenchen`：原 detail 2 句，第 1 句與 points[0]+
+  points[1] 合併重複，第 2 句與 points[2] 逐字相同 → `detail` 欄位整段
+  移除。
+- `auslaenderbehoerde-berlin`：原 detail 3 句，第 1 句與 points[0] 重複、
+  第 2 句大部分與 points[1]+points[2] 重複但夾帶一個原文獨有事實
+  （「多為 email 通知」的審核結果通知方式，屬操作細節）、第 3 句
+  （「實際流程請以官網當下顯示內容為準」）未見於本卡 points，判定為獨有
+  的註記判讀 → `detail` 精簡為僅保留這兩則獨有資訊：「審核後多以 email
+  通知排定時間。實際流程請以官網當下顯示內容為準。」
+
+**已知但依規則範圍未處理的殘留重複**：`auslaenderbehoerde-berlin` 保留的
+「實際流程請以官網當下顯示內容為準」與 immigration 分類頁面層級既有的
+警語 banner（PAT-146：「⚠️ 各城市外事局的預約制度變動頻繁...實際申請
+流程請以官網當下顯示內容為準」）語意高度重疊。本規則比對範圍明確限定
+「該卡自身的 summary/points」，不含頁面層級其他區塊，故未刪除；若未來
+規則擴大至跨區塊比對，這是已知候選對象。
