@@ -3,6 +3,7 @@ import { RECOMMENDATION_CATEGORIES } from '../lib/recommendation';
 import type { Recommendation } from '../lib/recommendation';
 import { RecommendationCategoryIcon } from '../assets/icons/recommendation';
 import UserSubmissionsList from '../components/UserSubmissionsList';
+import ImmigrationGuide from '../components/ImmigrationGuide';
 import financeData from '../data/recommendations/finance.json';
 import transportData from '../data/recommendations/transport.json';
 import telecomData from '../data/recommendations/telecom.json';
@@ -30,6 +31,7 @@ const DATA_MAP: Record<string, Recommendation[]> = {
  * 分類重組為 8 新分類（PAT-145）
  * Phase AS：描述過長項目改用 summary/points/detail 三層結構（PAT-147），
  * 卡片補上 updated_at 顯示（PAT-148）
+ * Phase AT：immigration 分類城市連結上方新增跨城市通用應對指南（PAT-149）
  */
 export default function RecommendationCategory() {
   const { slug } = useParams<{ slug: string }>();
@@ -69,6 +71,9 @@ export default function RecommendationCategory() {
           </p>
         </div>
       </header>
+
+      {/* Phase AT：跨城市通用應對指南，置於城市連結清單「上方」（PAT-149） */}
+      {meta.key === 'immigration' && <ImmigrationGuide />}
 
       {/* Phase AR：外事局分類提醒制度變動頻繁，不描述具體預約流程（PAT-146） */}
       {meta.key === 'immigration' && (
