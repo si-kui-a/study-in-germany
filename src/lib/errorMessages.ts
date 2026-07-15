@@ -24,7 +24,7 @@ const MESSAGE_PATTERNS: [RegExp, string][] = [
   [/user_submissions_title_check/i, '標題長度需 2-100 字'],
   [/user_submissions_content_check/i, '內容長度需 5-2000 字'],
   [/user_submissions_submission_type_check/i, '提交類型錯誤'],
-  [/listings_type_check/i, '佈告欄類型錯誤 · 請重新選擇'],
+  [/listings_type_check/i, '討論區類型錯誤 · 請重新選擇'],
   [/violates check constraint/i, '資料不符合規則'],
   [/network|fetch/i,      '網路連線失敗，請確認網路狀態'],
   [/jwt/i,                '登入憑證異常，請重新登入'],

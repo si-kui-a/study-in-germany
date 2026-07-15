@@ -154,6 +154,7 @@
 | PAT-153 | CORE_IMMUTABLE | 外事局指南新增 §4a/§4b（聯絡管道/補件通知）+ §6（eAT/eID）；查證 bamf.de 過程中一併驗證取得原本標記待查的 AusweisApp URL 與 116116 熱線 |
 | PAT-154 | CORE_IMMUTABLE | telecom.json 新增 6 個預付卡品牌（Telekom/Vodafone/O2/congstar/Ortel/Lebara），全數瀏覽器驗證存活；分類頁新增身分驗證共通事實橫幅 |
 | PAT-155 | CORE_IMMUTABLE | 核心教訓：schema.sql 段落未經真 DB 驗證即視同未測試，Phase AV 建立 audit.sql + expected-schema.md 全量稽核機制取代憑印象比對 |
+| PAT-156 | CORE_IMMUTABLE | 全站更名分層規則：只改顯示層字串（導覽/標題/toast/隱私政策），路由/檔名/category鍵值/DB CHECK值域/程式碼註解一律不動 |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance

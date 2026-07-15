@@ -22,7 +22,7 @@ export interface BadgeMeta {
 export const ALL_BADGES: BadgeMeta[] = [
   { id: 'pioneer', label: '先鋒', description: '註冊序號 100 以內', tier: 'gold' },
   { id: 'review_expert', label: '評價達人', description: '累計 5 則以上 6 維評價', tier: 'gold' },
-  { id: 'post_expert', label: '貼文達人', description: '累計 10 則以上佈告欄貼文', tier: 'silver' },
+  { id: 'post_expert', label: '貼文達人', description: '累計 10 則以上討論區貼文', tier: 'silver' },
   { id: 'contribution_expert', label: '貢獻達人', description: '累計 5 則以上使用者提交', tier: 'gold' },
   { id: 'discussion_expert', label: '討論家', description: '累計 5 則以上討論類貼文', tier: 'silver' },
   { id: 'school_expert', label: '語校達人', description: '評價 3 所以上不同語校', tier: 'silver' },

@@ -24,7 +24,7 @@ export default function Recommendation() {
           <span className="text-module-recommendation w-8 h-8 sm:w-10 sm:h-10 inline-flex">
             <RecommendationIcon className="w-full h-full" />
           </span>
-          加油站
+          資源
         </h1>
         <p className="text-sm text-content-secondary mt-3 max-w-2xl leading-relaxed">
           給留德新手與在德華人的實用工具、方案、平台清單。

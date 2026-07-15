@@ -19,7 +19,7 @@ interface SubmitterProfile {
 const EMPTY_STATE_SECONDARY_LINK: Record<SubmissionType, { to: string; label: string } | null> = {
   school_edit: { to: '/schools', label: '看看其他學校' },
   new_school: { to: '/schools', label: '看看其他學校' },
-  new_recommendation: { to: '/recommendation', label: '看看加油站其他分類' },
+  new_recommendation: { to: '/recommendation', label: '看看資源其他分類' },
   general_feedback: null,
 };
 

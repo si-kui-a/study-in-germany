@@ -68,8 +68,8 @@ export default function Header() {
           </Link>
 
           <nav className="hidden sm:flex items-center gap-1">
-            <NavLink to="/board" className={navClass}>佈告欄</NavLink>
-            <NavLink to="/recommendation" className={navClass}>加油站</NavLink>
+            <NavLink to="/board" className={navClass}>討論區</NavLink>
+            <NavLink to="/recommendation" className={navClass}>資源</NavLink>
             <NavLink to="/faq" className={navClass}>常見問答</NavLink>
 
             {/* Phase AQ：資源 dropdown（語校 + 作戰手冊 收合，PAT-141）*/}
@@ -200,14 +200,14 @@ export default function Header() {
                 className="px-3 py-2.5 rounded-lg hover:bg-surface-hover
                            text-content-primary no-underline"
               >
-                佈告欄
+                討論區
               </NavLink>
               <NavLink
                 to="/recommendation"
                 className="px-3 py-2.5 rounded-lg hover:bg-surface-hover
                            text-content-primary no-underline"
               >
-                加油站
+                資源
               </NavLink>
               <NavLink
                 to="/faq"

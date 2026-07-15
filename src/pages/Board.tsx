@@ -108,7 +108,7 @@ export default function Board() {
       .order('created_at', { ascending: false });
     if (error) {
       const friendly = translateError(error);
-      push('error', `讀取佈告欄失敗：${friendly.message}`);
+      push('error', `讀取討論區失敗：${friendly.message}`);
       console.error('[Board] raw:', friendly.raw, 'code:', friendly.code);
       setLoading(false);
       return;
@@ -203,7 +203,7 @@ export default function Board() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-semibold">生活佈告欄</h1>
+        <h1 className="text-2xl font-semibold">討論區</h1>
         <p className="text-sm text-content-secondary mt-1">
           二手交易、租房（出租／求租）、討論（一般／學習／長居／美食／台灣餐廳）。
           二手交易／租房 90 天後自動下架（可續期），討論類永久保留。

@@ -95,7 +95,7 @@ export default function Edu() {
           to="/recommendation"
           className="text-sm text-brand-burgundy hover:text-brand-burgundy-hover"
         >
-          需要更多實用工具與推薦？前往加油站 →
+          需要更多實用工具與推薦？前往資源 →
         </Link>
       </div>
 
@@ -114,7 +114,7 @@ export default function Edu() {
         <p className="text-sm text-content-secondary leading-relaxed">
           內容以官方公開資料為基礎，仍持續補充中。
           若你走過某段流程有實用細節，請於
-          <Link to="/board" className="mx-1">佈告欄</Link>
+          <Link to="/board" className="mx-1">討論區</Link>
           留言分享，或直接開 GitHub issue。留言功能將於後續版本上線。
         </p>
       </section>

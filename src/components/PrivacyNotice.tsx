@@ -10,7 +10,7 @@ interface Props {
 
 const MESSAGE: Record<Variant, string> = {
   listing:
-    '我同意將填寫的聯絡方式公開顯示於佈告欄（任何訪客皆可見），且貼文於 60 天後自動下架。',
+    '我同意將填寫的聯絡方式公開顯示於討論區（任何訪客皆可見），且貼文於 60 天後自動下架。',
   review:
     '我了解此評價將公開顯示，且我的 Google 顯示名稱與頭像會一併公開。',
 };

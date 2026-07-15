@@ -127,7 +127,7 @@ export default function SubmissionForm({
                        focus:outline-none focus:border-brand-burgundy
                        hover:border-brand-gold transition-colors"
           >
-            <option value="">未指定分類（顯示於加油站主頁）</option>
+            <option value="">未指定分類（顯示於資源主頁）</option>
             {RECOMMENDATION_CATEGORIES.map((c) => (
               <option key={c.key} value={c.key}>{c.title}</option>
             ))}

@@ -59,7 +59,7 @@ const PORTAL_ITEMS = [
     Icon: IconBuildingArch,
   },
   {
-    to: '/board', title: '生活佈告欄', description: '出租、求租、二手交易',
+    to: '/board', title: '討論區', description: '出租、求租、二手交易',
     Icon: IconSpeakerphone,
   },
   {
@@ -67,7 +67,7 @@ const PORTAL_ITEMS = [
     Icon: IconNotebook,
   },
   {
-    to: '/recommendation', title: '加油站', description: '德國好物、方案、優惠',
+    to: '/recommendation', title: '資源', description: '德國好物、方案、優惠',
     Icon: IconStar,
   },
   {

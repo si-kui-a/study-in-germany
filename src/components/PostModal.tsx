@@ -56,7 +56,7 @@ export default function PostModal({ open, onClose, onSubmitted }: Props) {
           </button>
         </div>
 
-        <AuthGate message="請先登入才能刊登佈告欄貼文。">
+        <AuthGate message="請先登入才能刊登討論區貼文。">
           <BoardForm
             onSubmitted={() => {
               onSubmitted?.();

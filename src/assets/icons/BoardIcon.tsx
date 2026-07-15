@@ -1,7 +1,7 @@
 export default function BoardIcon({ className }: { className?: string }) {
   return (
     <svg viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"
-         className={className} role="img" aria-label="生活佈告欄"
+         className={className} role="img" aria-label="討論區"
          fill="none" stroke="currentColor" strokeWidth="1.5"
          strokeLinecap="round" strokeLinejoin="round">
       {/* 主板 · 實心色塊 */}

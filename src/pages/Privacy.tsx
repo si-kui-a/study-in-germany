@@ -3,14 +3,14 @@ export default function Privacy() {
     <article className="mx-auto max-w-2xl space-y-8 text-content-secondary">
       <div>
         <h1 className="text-2xl font-semibold text-content-primary">隱私政策</h1>
-        <p className="mt-1 text-xs text-content-muted">最後更新：2026-07-12</p>
+        <p className="mt-1 text-xs text-content-muted">最後更新：2026-07-15</p>
       </div>
 
       <section>
         <h2 className="mb-2 text-lg font-medium text-content-primary">1. 前言與適用範圍</h2>
         <p>
           留德華（下稱「本站」）是一個開源個人專案，非官方社群平台，以台灣使用者為主要
-          服務對象，提供德國語言學校評價、生活佈告欄與相關資訊整理。本政策適用於所有訪客
+          服務對象，提供德國語言學校評價、討論區與相關資訊整理。本政策適用於所有訪客
           （未登入瀏覽者）與已透過 Google 帳號登入的註冊使用者。
         </p>
       </section>
@@ -35,11 +35,11 @@ export default function Privacy() {
             教材、行政、交通、價格）與心得文字。
           </li>
           <li>
-            <strong>佈告欄貼文（listings 表）</strong>：貼文標題、內容、地區、價格、聯絡方式
+            <strong>討論區貼文（listings 表）</strong>：貼文標題、內容、地區、價格、聯絡方式
             （選填）、上傳照片、到期時間。
           </li>
           <li>
-            <strong>留言與按讚（listing_comments / listing_likes 表）</strong>：你於佈告欄貼文下的
+            <strong>留言與按讚（listing_comments / listing_likes 表）</strong>：你於討論區貼文下的
             留言內容，以及按讚紀錄。
           </li>
           <li>
@@ -125,7 +125,7 @@ export default function Privacy() {
         <h2 className="mb-2 text-lg font-medium text-content-primary">7. 資料保存期限</h2>
         <ul className="list-disc space-y-1.5 pl-5">
           <li>
-            <strong>佈告欄貼文（商業類：二手交易／租房）</strong>：發布後 90 天自動下架，你可於
+            <strong>討論區貼文（商業類：二手交易／租房）</strong>：發布後 90 天自動下架，你可於
             「我的貼文」自行續期；<strong>討論類貼文</strong>（一般／學習／長居／美食／台灣餐廳）
             則永久保留，不會自動下架。
           </li>

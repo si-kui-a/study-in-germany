@@ -37,7 +37,7 @@ export default function HeroSection() {
           <span className="text-brand-burgundy">.</span>
         </h1>
         <p className="text-content-secondary max-w-xl mx-auto leading-relaxed">
-          給留德新手與在德華人的三個小工具：語校真實評價、生活佈告欄、常見問答。
+          給留德台灣人的一站式基地：語校真實評價、作戰手冊逐步指引、討論區、資源庫與外事局應對指南、常見問答。
           內容全公開，寫入需登入以確保問責。
         </p>
         <div className="pt-2 flex flex-wrap justify-center gap-3">
@@ -45,7 +45,7 @@ export default function HeroSection() {
             瀏覽語校評價
           </Link>
           <Link to="/board" className="btn-ghost no-underline">
-            進入佈告欄
+            進入討論區
           </Link>
         </div>
       </div>

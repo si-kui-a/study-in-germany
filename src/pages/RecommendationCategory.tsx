@@ -46,7 +46,7 @@ export default function RecommendationCategory() {
     return (
       <div className="py-16 text-center text-content-secondary">
         找不到這個分類。
-        <Link to="/recommendation" className="ml-2">回加油站</Link>
+        <Link to="/recommendation" className="ml-2">回資源</Link>
       </div>
     );
   }
@@ -55,7 +55,7 @@ export default function RecommendationCategory() {
     <div className="space-y-6">
       <div>
         <Link to="/recommendation" className="text-xs no-underline">
-          ← 回加油站
+          ← 回資源
         </Link>
       </div>
 
