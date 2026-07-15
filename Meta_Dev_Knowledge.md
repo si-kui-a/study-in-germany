@@ -1933,3 +1933,48 @@ PAT-152 卡片格式；既有 2 筆（Aldi Talk／Lidl Connect）重新以瀏覽
 優惠（例如「39,99€/28 天」「AKTION bis 31.07.2026」），依 PAT-58
 無時效性資訊原則，卡片內文僅描述品牌定位（主打國際通話優惠），不寫入
 會過期的價格/優惠期限數字。
+
+## PAT-155 [CORE_IMMUTABLE]: schema.sql 段落未經真 DB 驗證＝未經測試的程式碼
+
+**核心教訓**（Phase AV 起源）：2026-07-15 線上 DB 抽查發現面狀漂移——
+`listing_likes` 整表缺失、`profiles.persona_stage` 欄位缺失、2 張
+`pre_v4` 殭屍表殘留。這些落差存在的根本原因是：`schema.sql` 是**唯一
+真相來源的假象**——它只記錄了「哪些 SQL 曾經被寫下」，不代表「哪些
+SQL 真的在正式 DB 上被成功執行過」。過去每個 Phase 若只在本機用
+`pglast`/靜態檢查confirmed schema.sql 語法正確，或只憑肉眼比對程式碼
+與 SQL 段落的邏輯是否自洽，這**等同於只做了單元測試從未做整合測試**
+——語法正確、邏輯自洽的 SQL 完全可能因為：Lily 忘記執行某一段、
+複製貼上時漏掉範圍、Dashboard 手動操作後未同步回 schema.sql、或
+不同環境（本機開發用的 mock/測試 DB vs 正式 DB）狀態不同步，而與
+真實 DB 產生落差，且這種落差**不會在 typecheck/build 任何一關被
+攔截**——它只會在使用者遇到功能壞掉時才現形。
+
+**具體案例**：
+- `listing_likes` 整表缺失：代表 Phase Q 當初的 SQL 從未在正式 DB 上
+  執行成功（或執行過但後來被移除／從未存在於正式環境），但 schema.sql
+  一直靜靜地記錄著它「應該存在」，前端 `useLikes.ts` 一直在對一個
+  不存在的表送查詢，只是沒人發現（讚功能可能長期靜默失敗）。
+- `persona_stage` 欄位缺失：同樣的模式，Phase AI 的 ALTER TABLE 語句
+  從未被證實在正式 DB 執行過。
+- 2 張 `pre_v4` 殭屍表：反方向的漂移——DB 上存在著 schema.sql 完全沒有
+  記錄、理論上不該存在的表，代表過去曾有未被記錄進 schema.sql 的手動
+  DB 操作。
+
+**制度性修正（Phase AV 建立）**：
+1. `supabase/audit.sql`——單一可一次執行的全量稽核查詢（全表/全欄位/
+   全約束/全 RLS 狀態/全 policies/storage buckets/全 triggers 與
+   functions），輸出統一為 `(section, key, value)` 三欄，方便逐行貼回
+   對照，取代過去「憑印象或憑 schema.sql 內容推測 DB 現狀」的做法。
+2. `docs/expected-schema.md`——由校正後 schema.sql 人工推導出的期望值
+   總表，格式與 audit.sql 輸出逐項對應，作為「schema.sql 說了什麼」
+   與「DB 實際是什麼」比對時的中介文件。
+3. 兩份文件皆以 `pglast`（libpg_query 的 Python binding，非本機 psql，
+   但屬於同一套 Postgres 官方解析器）做語法靜態驗證，確認至少不含
+   語法錯誤——這只保證「能被 Postgres 解析」，**不保證「已在正式 DB
+   執行過」**，兩者不可混為一談，這正是本 PAT 要強調的核心區別。
+
+**日後規範**：任何涉及 schema.sql 的 Phase，完成 SQL 段落撰寫後不能
+視為「已完成」，必須明確標記為「待 Lily 於正式 DB 執行並回報結果」，
+且**不能假設先前 Phase 記錄在 schema.sql 裡的 SQL 都已確實執行成功**
+——若後續稽核發現落差，應視為系統性風險（可能影響任何一段歷史 SQL），
+而非單一意外，優先安排全量稽核（如本輪 audit.sql）而非逐一排查。
