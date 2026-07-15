@@ -3,7 +3,10 @@
     "id": "visa-mawista",
     "category": "expense",
     "title": "Mawista · 學生保險",
-    "description": "學生簽證常用私人保險品牌，涵蓋簽證申請所需的醫療保險證明。",
+    "summary": "學生簽證常用私人保險品牌",
+    "points": [
+      "涵蓋簽證申請所需的醫療保險證明"
+    ],
     "tags": ["保險", "醫療"],
     "url": "https://www.mawista.com/",
     "updated_at": "2026-07"
@@ -12,7 +15,10 @@
     "id": "visa-care-concept",
     "category": "expense",
     "title": "Care Concept · 學生保險",
-    "description": "另一常見的留學生私人保險品牌，多語言客服支援。",
+    "summary": "另一常見的留學生私人保險品牌",
+    "points": [
+      "多語言客服支援"
+    ],
     "tags": ["保險", "醫療"],
     "url": "https://www.care-concept.de/",
     "updated_at": "2026-07"
@@ -21,7 +27,10 @@
     "id": "tw-moe-scholarship",
     "category": "expense",
     "title": "教育部 · 留學貸款專區",
-    "description": "台灣教育部主辦的留學生就學貸款方案，適合家庭經濟資源有限者。",
+    "summary": "台灣教育部主辦的留學生就學貸款方案",
+    "points": [
+      "適合家庭經濟資源有限者"
+    ],
     "tags": ["貸款", "官方", "台灣"],
     "url": "https://depart.moe.edu.tw/ed2500/Content_List.aspx?n=E0E936B8395696D7",
     "updated_at": "2026-07"
@@ -30,7 +39,11 @@
     "id": "arr-rundfunkbeitrag",
     "category": "expense",
     "title": "Rundfunkbeitrag · 電視稅登記",
-    "description": "德國電視稅官方，落地登記戶籍後需要註冊繳費。一戶一份即可。",
+    "summary": "德國電視稅官方",
+    "points": [
+      "落地登記戶籍後需要註冊繳費",
+      "一戶一份即可"
+    ],
     "tags": ["官方", "戶籍"],
     "url": "https://www.rundfunkbeitrag.de/",
     "updated_at": "2026-07"

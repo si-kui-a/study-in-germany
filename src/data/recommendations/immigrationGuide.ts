@@ -6,6 +6,9 @@
  * 連結僅限指令書 §2 白名單 8 條，見 IMMIGRATION_GUIDE_LINKS，見 PAT-149。
  * Phase AT.c：§2 擴充 §2a/§2b/§2c，內容逐字依 Lily 查證回覆的三張表填入，
  * 事實範圍不超過三張表本身，見 PAT-151。
+ * Phase AU.b：解除 §2 第 3 條列點與 §2b 表格重複；新增 §4a/§4b（聯絡管道／
+ * 補件通知）與 §6（eAT/eID）；115.de、bamf.de eAT 頁、AusweisApp 官方
+ * 下載頁三條新連結皆於本輪以瀏覽器實測驗證存活，見 PAT-153。
  */
 
 export interface ImmigrationGuideLink {
@@ -58,7 +61,7 @@ export const IMMIGRATION_GUIDE_SECTIONS: ImmigrationGuideSection[] = [
         items: [
           '到期前已正式送件：多數情況原居留效力可暫時延續，外事局可核發 Fiktionsbescheinigung（臨時證明）證明審理期間合法停留。',
           '核發前提：有效護照＋已正式提出的居留申請。只是詢問過、預約過，不構成申請。',
-          '**Fiktionsbescheinigung 不是萬用旅行證件**：能否出境後再入境，取決於證明類型與註記，出國前務必逐字確認證件內容（漢堡官方明確提醒部分臨時證明不足以再入境）。',
+          '能否出境後再入境，取決於證明上勾選的條款——見下表逐字確認。',
           '到期後才送件：延續效力通常不成立，風險自負。',
         ],
       },
@@ -151,6 +154,33 @@ export const IMMIGRATION_GUIDE_SECTIONS: ImmigrationGuideSection[] = [
           '收到補件通知：當場或當日以書面確認補件項目與期限，避免聽漏。',
         ],
       },
+      // Phase AU.b-2 · §4a/§4b（PAT-153）
+      { type: 'subheading', text: '§4a 電話打不進、官網混亂找不到信箱時' },
+      {
+        type: 'unordered',
+        items: [
+          '**結論**：不要耗在電話上，改走可留紀錄的管道。',
+          '撥打 115 政府服務專線（跨機關統一號碼，可代查外事局聯絡方式與管轄）。',
+          '用城市官方服務入口（Serviceportal）的 Kontaktformular，送出後截圖確認頁。',
+          '找不到信箱時的定位法：城市官網搜尋「Ausländerbehörde Kontakt」；或從本站城市連結（柏林/慕尼黑既有卡片）進入。',
+          '仍無果：掛號信寄外事局郵政地址（官網 Impressum/Kontakt 必有）；請大學國際處或雇主 HR 代為轉達——機構信件常比個人信有效。',
+        ],
+      },
+      { type: 'subheading', text: '§4b 補件通知怎麼來、寄漏怎麼辦' },
+      {
+        type: 'unordered',
+        items: [
+          '**結論**：補件通知以郵寄至你 Anmeldung 登記地址為主，部分城市輔以 Email——地址與信箱名牌正確是收得到的前提。',
+          '自保三件事：①信箱上貼正確姓名（德國郵差按名牌投遞）；②搬家立即 Anmeldung＋通知外事局；③送件後若超過預期未收到任何回音，主動以書面（Email/掛號）查詢案件狀態並留存紀錄。',
+        ],
+      },
+      { type: 'callout', text: '查詢頻率建議每 4 週一次（本站建議，非官方規定）' },
+      {
+        type: 'unordered',
+        items: [
+          '懷疑寄漏：以書面說明「至今未收到任何通知」並附送件證據，請求重寄；切勿因沒收到通知而錯過原申請案的後續期限。',
+        ],
+      },
     ],
   },
   {
@@ -176,6 +206,39 @@ export const IMMIGRATION_GUIDE_SECTIONS: ImmigrationGuideSection[] = [
           '未送件 → 立即聯絡外事局、大學國際處或雇主，不要拖',
           '想出境 → **先不要走**。先確認能否取得臨時證明或離境文件；已逾期出境者，返德可能在入境端卡關，程序常需重來。',
         ],
+      },
+    ],
+  },
+  {
+    id: 'eat-eid',
+    title: '§6 eAT 居留卡與 eID 線上身分',
+    blocks: [
+      // Phase AU.b-3（PAT-153）
+      {
+        type: 'unordered',
+        items: [
+          '**台灣人適用性**：eAT（電子居留卡）不分國籍，凡經德國核發居留者一律為 eAT 卡片形式，台灣護照持有者同樣適用；卡上內建 eID 線上身分功能。',
+        ],
+      },
+      { type: 'subheading', text: '如何確認自己是否持有／已啟用 eID' },
+      {
+        type: 'ordered',
+        items: [
+          '領卡時收到的 PIN 信函（含 Transport-PIN）即代表 eID 已隨卡核發',
+          '用官方 AusweisApp 讀卡自查啟用狀態',
+          '不確定時向外事局查詢',
+        ],
+      },
+      { type: 'subheading', text: '如何判斷遺失＋處理' },
+      {
+        type: 'unordered',
+        items: [
+          '卡片本體不在身上即應視同遺失處理，依 §5 五步驟（報失→封鎖 eID→備說明→等補辦→找回繳回）',
+        ],
+      },
+      {
+        type: 'callout',
+        text: 'eID 封鎖熱線 116 116：境內免付費、24 小時受理；境外請撥 0049-116 116 或 0049-30 4050 4050（可能收取國際費用）',
       },
     ],
   },
@@ -213,5 +276,17 @@ export const IMMIGRATION_GUIDE_LINKS: ImmigrationGuideLink[] = [
   {
     label: '學生居留 §16b 辦理說明（Essen WSC）',
     url: 'https://service.essen.de/detail/-/vr-bis-detail/dienstleistung/5242914/show',
+  },
+  {
+    label: '115 政府服務專線（跨機關統一號碼）',
+    url: 'https://www.115.de/',
+  },
+  {
+    label: '電子居留卡（eAT）官方說明（BAMF）',
+    url: 'https://www.bamf.de/EN/Themen/MigrationAufenthalt/ZuwandererDrittstaaten/Migrathek/eAufenthaltstitel/eaufenthaltstitel-node.html',
+  },
+  {
+    label: 'AusweisApp 官方下載頁',
+    url: 'https://www.ausweisapp.bund.de/',
   },
 ];

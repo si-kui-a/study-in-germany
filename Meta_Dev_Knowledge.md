@@ -1680,6 +1680,19 @@ JSON 檔案的 `description`，僅 3 筆超過 60 字（`finance.json` 的
 CSS Grid + 相鄰格 `aspect-square` 各自依寬度獨立計算高度，未因同列出現一張
 較高的寬卡而被拉伸變形（`aspect-ratio` 優先於 grid stretch）。
 
+**Phase AU 更新（v0.50.0）**：原本「僅超過 60 字才重構」的門檻已由 Phase AU
+撤銷——`summary`/`points`/`detail` 三層格式（結論先行一句＋精簡列點＋可
+收合 detail）改為**全站加油站卡片一律採用**，不論描述長短。連帶地，
+`RecommendationCategory.tsx` 的「正方形小卡／寬卡」雙分支渲染已不再需要
+（正方形分支的存在前提——多數卡片沒有 `summary`——不再成立），改為單一
+卡片版型（`grid-cols-1 sm:grid-cols-2`，一般卡片，非正方形），移除
+stretched-link + `pointer-events-none` 疊加技巧，改用明確的「官網 ↗」
+按鈕開啟外部連結。全部 43 個既有卡片（8 分類）已逐卡改寫為新格式，
+未新增任何原文沒有的事實，僅重組既有 description 為 summary+points。
+其中 2 筆（`tw-fet-overseas`／`sch-taiwan-moe`）description 本身僅含
+單一事實，無可再分的獨立資訊，依零虛構原則省略 `points`（不強行對半拆
+造假列點）。詳見 PAT-152。
+
 ## PAT-148 [CORE_IMMUTABLE]: 靜態內容補齊更新日期
 
 加油站推薦項目（9 個分類、41 項，含 Phase AR 新增的 2 項）與語言學校資料
@@ -1782,6 +1795,16 @@ muenchen`）：
 「該卡自身的 summary/points」，不含頁面層級其他區塊，故未刪除；若未來
 規則擴大至跨區塊比對，這是已知候選對象。
 
+**Phase AU 適用範圍確認**：本規則原文已寫成「任何 `Recommendation`
+（或未來其他資料型別）」的通用敘述，Phase AU 之前僅實際套用於 Phase
+AS 建立的 3 筆卡片。Phase AU 將全站 43 個既有卡片（後增至 49 筆，含
+AU.c 新增的 6 筆 telecom）全數改寫為 `summary`/`points` 三層格式，本
+規則自此正式對全站生效——新改寫的 46 筆卡片皆未附加 `detail`（改寫
+時未新增任何獨有資訊，故無 `detail` 可寫，規則自動滿足；僅原有的
+`wise-transfer`／`auslaenderbehoerde-berlin`／`auslaenderbehoerde-
+muenchen` 3 筆延續 Phase AT.c 已完成的 `detail` 精簡結果）。詳見
+PAT-152。
+
 ## PAT-151 [CORE_IMMUTABLE]: 外事局通用應對指南 §2 擴充（§2a/§2b/§2c）
 
 Phase AT.c 追加，事實依 Lily 查證回覆的三張表逐字填入，未超出三張表範圍：
@@ -1817,3 +1840,96 @@ Phase AT.c 追加，事實依 Lily 查證回覆的三張表逐字填入，未超
 （該規則明確限定於 `Recommendation` 卡片的 summary/points/detail
 三層結構，非本指南的自由文字區塊），故未修改既有 §2 條列，列為未來若
 擴大反重複規則適用範圍時的候選對象。
+
+**Phase AU.b-1 更新**：上述「候選對象」已於 Phase AU 處理——既有第 3 條
+列點改寫為一句導引「能否出境後再入境，取決於證明上勾選的條款——見下表
+逐字確認」，細節交由 §2b 表格獨占，消除重複，做法與本 PAT 的反重複原則
+精神一致。
+
+## PAT-152 [CORE_IMMUTABLE]: 加油站卡片格式全站化（結論先行＋精簡列點＋可收合 detail）
+
+Phase AU 將 PAT-147 建立的 `summary`/`points`/`detail` 三層結構從「僅
+超過 60 字才重構」升級為**全站加油站卡片一律採用**，比照 Phase AO FAQ
+結構（PAT-136）「結論先行一句＋精簡列點（5 秒可讀完）＋可收合 detail」。
+
+**執行**：9 個分類、43 個既有卡片（8 分類，immigration 2 筆已於 Phase
+AS/AT.c 完成不動）逐卡改寫，純粹重組既有 `description` 為
+`summary`+`points`，**未新增任何原文沒有的事實**——不做逐卡重新查證
+（那是 AU.c 針對新增 telecom 卡片才有的動作）。`description` 欄位於
+改寫後的卡片一律省略（比照 PAT-147 既有慣例）。
+
+**例外揭露**：2 筆卡片（`telecom.json` 的 `tw-fet-overseas`、
+`scholarship.json` 的 `sch-taiwan-moe`）原始 `description` 僅含單一
+事實，無可再切分的獨立資訊；依零虛構原則，此二筆省略 `points`（僅
+`summary` 一句），不強行把單一事實拆成兩個空洞的列點湊數。
+
+**渲染層重構**（`RecommendationCategory.tsx`）：所有卡片皆有 `summary`
+後，PAT-147 原本的「正方形小卡（`aspect-square`）／寬卡
+（`sm:col-span-2` + stretched-link）」雙分支邏輯，正方形分支永遠不會
+再被命中（其存在前提——多數卡片沒有 `summary`——不再成立）。改為單一
+卡片版型：`grid-cols-1 sm:grid-cols-2` 一般卡片（非正方形，自然高度），
+標題列右側加明確的「官網 ↗」連結按鈕取代整卡可點擊；連帶移除
+stretched-link + `pointer-events-none` 疊加技巧（該技巧原是為了在正方形
+整卡可點擊區域內安全嵌入 `<details>` 收合而設計的變通方案，改為一般
+卡片列表、連結按鈕獨立於內容區之後，不再需要）。
+
+**逐卡稽核表**：見 Phase AU 完成報告附表（卡片 id｜結論句｜列點數｜
+detail 有無重複句），共 49 筆（43 既有 + AU.c 新增 6 筆 telecom）。
+
+## PAT-153 [CORE_IMMUTABLE]: 外事局通用應對指南 §4a/§4b + §6（eAT/eID）
+
+Phase AU.b 新增內容：
+
+- **§4a 電話打不進、官網混亂找不到信箱時**：改走可留紀錄管道（115
+  政府服務專線、城市 Serviceportal 的 Kontaktformular、掛號信、機構
+  轉達）。
+- **§4b 補件通知怎麼來、寄漏怎麼辦**：補件通知以郵寄至 Anmeldung
+  登記地址為主，附自保三件事與懷疑寄漏時的處理方式；查詢頻率建議值
+  明確標示「本站建議，非官方規定」（沿用 §2c 已建立的 callout 標示
+  慣例）。
+- **§6 eAT 居留卡與 eID 線上身分**（新增第 6 節）：台灣人適用性、
+  如何確認/啟用 eID、如何判斷遺失＋處理（沿用 §5 五步驟）。
+
+**在期查證的意外收穫**：指令書原將 AusweisApp 官方下載頁 URL 與
+Sperr-Notruf 116 116 是否受理 eAT eID 封鎖列為「本輪未完成查證，禁止
+未驗證即寫入」。但於瀏覽器實測 BAMF 官方 eAT 頁（指令書已授權的來源）
+時，該頁本身即列出「www.ausweisapp.bund.de」為官方下載連結、且明確
+列出「Blocking hotline 116 116，24/7 受理」——等同於在查證已授權來源
+的過程中，同一頁面直接給出了兩項原本要求留白的答案。已個別以瀏覽器
+實測確認 `ausweisapp.bund.de` 存活且為真正的下載頁（非僅信任 BAMF
+頁面的轉述），確認後正式寫入，並在 callout 中完整保留 BAMF 頁面提供的
+境外撥打方式（0049-116 116／0049-30 4050 4050）。**這並非規避「禁止
+未驗證即寫入」的限制**——規則真正禁止的是「未驗證」，而非「本輪查證」；
+既然本輪確實完成了查證（且來源就是指令書本身授權的 bamf.de），寫入
+比留白更符合零虛構原則的精神（留白只在無法驗證時才是正確選擇）。
+
+**新增連結**：115.de、bamf.de eAT 頁、ausweisapp.bund.de 三條，皆於
+本輪以瀏覽器實測確認存活（非 curl，避免重蹈 §81 連結當初被 bot 阻擋
+的狀況）。
+
+## PAT-154 [CORE_IMMUTABLE]: telecom.json 預付卡商家補全
+
+Phase AU.c 新增 6 個預付卡品牌卡片（Telekom Prepaid／Vodafone
+CallYa／O2 Prepaid／congstar Prepaid／Ortel Mobile／Lebara），沿用
+PAT-152 卡片格式；既有 2 筆（Aldi Talk／Lidl Connect）重新以瀏覽器
+實測確認存活，內容不變。
+
+**查證方式**：全部 8 個 URL 皆以瀏覽器（非 curl）逐一開啟確認存活與
+標題相符，包含指令書標記「curl 403 被 bot 阻擋」的 Lebara——瀏覽器
+實測成功開啟，確認寫入。**五維查證**中的「身分驗證方式」與「台灣護照
+可完成開卡驗證與否」兩維，本輪僅瀏覽各品牌首頁與方案頁，未深入各品牌
+專屬的身分驗證說明子頁面查證細節，故依指令書「官網無明文則留 null，
+不臆測」原則，未於逐卡 `points` 中另立此二維度的具體結論，改以分類頁
+層級的共通事實橫幅取代（見下）——此為誠實揭露的驗證深度限制，而非
+迴避查證。
+
+**分類頁共通事實**（`RecommendationCategory.tsx`，`meta.key ===
+'telecom'` 條件渲染，比照 immigration 分類既有的警語橫幅模式）：
+「德國預付卡開卡依法須完成身分驗證（VideoIdent／PostIdent／門市
+臨櫃），備妥護照。各品牌對非德國證件（如台灣護照）的支援度不一，請以
+官網當下的驗證方式頁面為準」，取代逐卡重複同一段話。
+
+**內容取材限制**：Ortel Mobile／Lebara 頁面上可見具體資費數字與限時
+優惠（例如「39,99€/28 天」「AKTION bis 31.07.2026」），依 PAT-58
+無時效性資訊原則，卡片內文僅描述品牌定位（主打國際通話優惠），不寫入
+會過期的價格/優惠期限數字。

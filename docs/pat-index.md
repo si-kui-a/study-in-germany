@@ -150,6 +150,9 @@
 | PAT-149 | CORE_IMMUTABLE | 外事局分類頁新增通用應對指南（5 節+8 官方連結），沿用 WorkflowCard button+chevron 展開模式；發現 AS 未合併與指令書前提衝突，經請示後等待合併再分支 |
 | PAT-150 | CORE_IMMUTABLE | 內容層規則：summary/points/detail 結構中 detail 只留獨有資訊，逐句重複刪除，無獨有內容則整欄位省略（非留空字串） |
 | PAT-151 | CORE_IMMUTABLE | 外事局指南 §2 擴充 §2a/§2b/§2c（申請要件/Abs.3-4 再入境對照表/送件建議值），事實依 Lily 查證三張表逐字填入，新增 table/callout 區塊型別 |
+| PAT-152 | CORE_IMMUTABLE | 加油站卡片格式全站化：summary/points/detail 三層改為全站一律採用，移除正方形/寬卡雙分支，改單一卡片版型+「官網↗」按鈕 |
+| PAT-153 | CORE_IMMUTABLE | 外事局指南新增 §4a/§4b（聯絡管道/補件通知）+ §6（eAT/eID）；查證 bamf.de 過程中一併驗證取得原本標記待查的 AusweisApp URL 與 116116 熱線 |
+| PAT-154 | CORE_IMMUTABLE | telecom.json 新增 6 個預付卡品牌（Telekom/Vodafone/O2/congstar/Ortel/Lebara），全數瀏覽器驗證存活；分類頁新增身分驗證共通事實橫幅 |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance

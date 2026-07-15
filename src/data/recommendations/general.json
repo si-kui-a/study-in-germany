@@ -3,7 +3,10 @@
     "id": "gen-reddit-germany",
     "category": "general",
     "title": "Reddit r/germany",
-    "description": "英文為主的德國生活論壇，各種疑難雜症、生活體驗、政策討論皆有社群回應。",
+    "summary": "英文為主的德國生活論壇",
+    "points": [
+      "各種疑難雜症、生活體驗、政策討論皆有社群回應"
+    ],
     "tags": ["論壇", "社群", "英文"],
     "url": "https://www.reddit.com/r/germany/",
     "updated_at": "2026-07"
@@ -12,7 +15,11 @@
     "id": "gen-reddit-de",
     "category": "general",
     "title": "Reddit r/de",
-    "description": "德文為主的德國本地論壇，比 r/germany 更貼近本地觀點，適合練德文閱讀。",
+    "summary": "德文為主的德國本地論壇",
+    "points": [
+      "比 r/germany 更貼近本地觀點",
+      "適合練德文閱讀"
+    ],
     "tags": ["論壇", "社群", "德文"],
     "url": "https://www.reddit.com/r/de/",
     "updated_at": "2026-07"
@@ -21,7 +28,10 @@
     "id": "gen-lieferando",
     "category": "general",
     "title": "Lieferando · 外送平台",
-    "description": "德國最大外送平台，涵蓋範圍廣，多數餐廳都在上面。",
+    "summary": "德國最大外送平台",
+    "points": [
+      "涵蓋範圍廣，多數餐廳都在上面"
+    ],
     "tags": ["外送", "App"],
     "url": "https://www.lieferando.de/",
     "updated_at": "2026-07"
@@ -30,7 +40,10 @@
     "id": "visa-auswaertiges-amt",
     "category": "general",
     "title": "聯邦外交部 · 簽證資訊",
-    "description": "德國聯邦外交部官方簽證頁面，各類簽證的權威資訊來源。",
+    "summary": "德國聯邦外交部官方簽證頁面",
+    "points": [
+      "各類簽證的權威資訊來源"
+    ],
     "tags": ["官方", "政府"],
     "url": "https://www.auswaertiges-amt.de/de/visa-service",
     "updated_at": "2026-07"
@@ -39,7 +52,10 @@
     "id": "visa-taipei-diplo",
     "category": "general",
     "title": "德國在台協會",
-    "description": "台灣申請德國簽證的主要窗口。位於台北市信義區松高路 1 號 12 樓。",
+    "summary": "台灣申請德國簽證的主要窗口",
+    "points": [
+      "位於台北市信義區松高路 1 號 12 樓"
+    ],
     "tags": ["官方", "台北"],
     "url": "https://taipei.diplo.de/",
     "updated_at": "2026-07"
@@ -48,7 +64,11 @@
     "id": "tw-taipei-office-berlin",
     "category": "general",
     "title": "駐德國台北代表處",
-    "description": "台灣在德國的官方辦事處，護照補發、公證、緊急事務處理。柏林為主館，法蘭克福與慕尼黑另設辦事處。",
+    "summary": "台灣在德國的官方辦事處",
+    "points": [
+      "護照補發、公證、緊急事務處理",
+      "柏林為主館，法蘭克福與慕尼黑另設辦事處"
+    ],
     "tags": ["官方", "台灣", "領事"],
     "url": "https://www.roc-taiwan.org/de/",
     "updated_at": "2026-07"

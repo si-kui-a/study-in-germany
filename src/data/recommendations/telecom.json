@@ -3,7 +3,10 @@
     "id": "arr-alditalk",
     "category": "telecom",
     "title": "Aldi Talk · 預付 SIM",
-    "description": "超市 Aldi 旗下的預付 SIM 品牌，落地後短期方便選擇。可於 Aldi 超市直接購買。",
+    "summary": "超市 Aldi 旗下預付 SIM，落地後短期方便選擇",
+    "points": [
+      "可於 Aldi 超市直接購買"
+    ],
     "tags": ["SIM", "預付"],
     "url": "https://www.alditalk.de/",
     "updated_at": "2026-07"
@@ -12,16 +15,96 @@
     "id": "arr-lidl-connect",
     "category": "telecom",
     "title": "Lidl Connect · 預付 SIM",
-    "description": "超市 Lidl 旗下的預付 SIM 品牌，與 Aldi Talk 類似的定位。",
+    "summary": "超市 Lidl 旗下預付 SIM 品牌",
+    "points": [
+      "定位與 Aldi Talk 類似"
+    ],
     "tags": ["SIM", "預付"],
     "url": "https://www.lidl-connect.de/",
+    "updated_at": "2026-07"
+  },
+  {
+    "id": "telecom-telekom-prepaid",
+    "category": "telecom",
+    "title": "Telekom Prepaid",
+    "summary": "德國電信（Telekom）預付方案，主網路涵蓋能力強",
+    "points": [
+      "支援 5G",
+      "無合約綁定"
+    ],
+    "tags": ["SIM", "預付"],
+    "url": "https://www.telekom.de/unterwegs/prepaid-tarife",
+    "updated_at": "2026-07"
+  },
+  {
+    "id": "telecom-vodafone-callya",
+    "category": "telecom",
+    "title": "Vodafone CallYa",
+    "summary": "Vodafone 預付品牌 CallYa",
+    "points": [
+      "無合約綁定的預付門號選擇"
+    ],
+    "tags": ["SIM", "預付"],
+    "url": "https://www.vodafone.de/privat/callya.html",
+    "updated_at": "2026-07"
+  },
+  {
+    "id": "telecom-o2-prepaid",
+    "category": "telecom",
+    "title": "O2 Prepaid",
+    "summary": "O2 預付 SIM 卡與資費方案",
+    "points": [
+      "涵蓋手機與網路用途的預付選擇"
+    ],
+    "tags": ["SIM", "預付"],
+    "url": "https://www.o2online.de/prepaid/",
+    "updated_at": "2026-07"
+  },
+  {
+    "id": "telecom-congstar-prepaid",
+    "category": "telecom",
+    "title": "congstar Prepaid",
+    "summary": "德國電信集團旗下 congstar 的預付資費",
+    "points": [
+      "支援 5G",
+      "無合約綁定"
+    ],
+    "tags": ["SIM", "預付"],
+    "url": "https://www.congstar.de/prepaid/",
+    "updated_at": "2026-07"
+  },
+  {
+    "id": "telecom-ortel-mobile",
+    "category": "telecom",
+    "title": "Ortel Mobile",
+    "summary": "主打國際通話優惠的預付門號品牌",
+    "points": [
+      "適合常需撥打國際電話者"
+    ],
+    "tags": ["SIM", "預付", "國際通話"],
+    "url": "https://www.ortelmobile.de/",
+    "updated_at": "2026-07"
+  },
+  {
+    "id": "telecom-lebara",
+    "category": "telecom",
+    "title": "Lebara",
+    "summary": "主打國際通話優惠的預付/月租門號品牌",
+    "points": [
+      "提供含國際通話分鐘數的資費選項"
+    ],
+    "tags": ["SIM", "預付", "國際通話"],
+    "url": "https://www.lebara.de/",
     "updated_at": "2026-07"
   },
   {
     "id": "tw-cht-overseas",
     "category": "telecom",
     "title": "中華電信 · 海外方案",
-    "description": "中華電信提供的國際漫遊、海外月租方案，銜接台灣舊門號。",
+    "summary": "中華電信國際漫遊與海外月租方案",
+    "points": [
+      "銜接台灣舊門號"
+    ],
     "tags": ["電信", "台灣", "漫遊"],
     "url": "https://www.cht.com.tw/",
     "updated_at": "2026-07"
@@ -30,7 +113,7 @@
     "id": "tw-fet-overseas",
     "category": "telecom",
     "title": "遠傳電信 · 海外方案",
-    "description": "遠傳電信的國際漫遊與海外月租方案。",
+    "summary": "遠傳電信國際漫遊與海外月租方案",
     "tags": ["電信", "台灣", "漫遊"],
     "url": "https://www.fetnet.net/",
     "updated_at": "2026-07"
