@@ -305,14 +305,27 @@ ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS deletion_requested_at TIMES
 
 -- ==========================================
 -- Phase Q · listing_likes 表（1/2）
+-- 2026-07-15 校正（Phase AV）：線上 DB 抽查發現本表整表缺失，已由 Lily
+-- 於 Supabase Dashboard 手動補建（bigint FK 版）。本段落原本從未在真實
+-- DB 上執行驗證過（schema.sql 段落未經真 DB 驗證＝未經測試的程式碼），
+-- 現依線上實際建立版校正：
+--   (1) listing_id 型別依線上 listings.id (bigint)，維持 BIGINT FK 不變
+--   (2) PK 改為 (listing_id, user_id) 複合主鍵，取代原本 BIGSERIAL id
+--       單欄 PK + 額外 UNIQUE 的寫法，與線上版一致；id 欄位保留（非
+--       PK）是因為 src/lib/useLikes.ts 的 .select('id') 查詢依賴此
+--       欄位存在，移除會讓前端功能中斷——AV.a 明訂零前端改動，此為
+--       在滿足「複合 PK」要求的同時不破壞既有前端查詢的必要保留
+--   (3) policies 改名為線上版實際使用的 likes_public_read /
+--       likes_auth_insert / likes_auth_delete（取代原本帶
+--       listing_likes_ 前綴、且 delete 用 own_delete 命名的版本）
 -- ==========================================
 
 CREATE TABLE IF NOT EXISTS public.listing_likes (
-  id BIGSERIAL PRIMARY KEY,
+  id BIGSERIAL,
   listing_id BIGINT NOT NULL REFERENCES public.listings(id) ON DELETE CASCADE,
   user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-  UNIQUE (listing_id, user_id)
+  PRIMARY KEY (listing_id, user_id)
 );
 
 CREATE INDEX IF NOT EXISTS listing_likes_listing_idx ON public.listing_likes (listing_id);
@@ -320,16 +333,21 @@ CREATE INDEX IF NOT EXISTS listing_likes_user_idx ON public.listing_likes (user_
 
 ALTER TABLE public.listing_likes ENABLE ROW LEVEL SECURITY;
 
+-- 舊命名（若殘留於某環境）先行清除，避免與新命名並存
 DROP POLICY IF EXISTS "listing_likes_auth_insert" ON public.listing_likes;
-CREATE POLICY "listing_likes_auth_insert" ON public.listing_likes
+DROP POLICY IF EXISTS "listing_likes_public_read" ON public.listing_likes;
+DROP POLICY IF EXISTS "listing_likes_own_delete" ON public.listing_likes;
+
+DROP POLICY IF EXISTS "likes_auth_insert" ON public.listing_likes;
+CREATE POLICY "likes_auth_insert" ON public.listing_likes
   FOR INSERT WITH CHECK (auth.uid() = user_id);
 
-DROP POLICY IF EXISTS "listing_likes_public_read" ON public.listing_likes;
-CREATE POLICY "listing_likes_public_read" ON public.listing_likes
+DROP POLICY IF EXISTS "likes_public_read" ON public.listing_likes;
+CREATE POLICY "likes_public_read" ON public.listing_likes
   FOR SELECT USING (true);
 
-DROP POLICY IF EXISTS "listing_likes_own_delete" ON public.listing_likes;
-CREATE POLICY "listing_likes_own_delete" ON public.listing_likes
+DROP POLICY IF EXISTS "likes_auth_delete" ON public.listing_likes;
+CREATE POLICY "likes_auth_delete" ON public.listing_likes
   FOR DELETE USING (auth.uid() = user_id);
 
 -- ==========================================
@@ -402,10 +420,18 @@ CREATE INDEX IF NOT EXISTS listings_expires_at_idx ON public.listings (expires_a
 
 -- ==========================================
 -- Phase AI · profiles 加 persona_stage（新手導覽精簡版）
+-- 2026-07-15 校正（Phase AV）：線上 DB 抽查發現本欄位缺失，已由 Lily
+-- 手動補回為 text NULL（無 CHECK）。原本此處寫的 CHECK 約束從未在真實
+-- DB 上執行驗證過，故移除，僅以註解列出目前程式碼實際使用的候選值域，
+-- 供未來若要決定是否加回 CHECK 時參考；值域約束本身列為後續獨立決策，
+-- 不在本輪加回。
+--
+-- 候選值域（見 src/lib/onboarding.ts 的 PersonaStage 型別，與
+-- src/lib/nextStep.ts / src/components/OnboardingModal.tsx 一致）：
+--   'visa_prep' | 'landing' | 'settled' | 'leaving'
 -- ==========================================
 
-ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS persona_stage TEXT
-  CHECK (persona_stage IS NULL OR persona_stage IN ('visa_prep', 'landing', 'settled', 'leaving'));
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS persona_stage TEXT;
 
 -- ==========================================
 -- Phase AO · profiles 加 workflow_progress（2/2，本輪 SQL 段落 2/2）
