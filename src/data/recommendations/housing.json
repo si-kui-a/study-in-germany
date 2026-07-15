@@ -1,0 +1,34 @@
+[
+  {
+    "id": "arr-wg-gesucht",
+    "category": "housing",
+    "title": "wg-gesucht.de · 找 WG",
+    "description": "德國最大的合租房搜尋平台，找 WG 首選。有中文介面。",
+    "tags": ["找房", "WG"],
+    "url": "https://www.wg-gesucht.de/"
+  },
+  {
+    "id": "arr-immoscout",
+    "category": "housing",
+    "title": "ImmobilienScout24 · 找整套房",
+    "description": "整套公寓、長租房源，適合家庭或想獨居的學生。",
+    "tags": ["找房", "整套房"],
+    "url": "https://www.immobilienscout24.de/"
+  },
+  {
+    "id": "arr-immowelt",
+    "category": "housing",
+    "title": "Immowelt · 房源平台",
+    "description": "另一常見的找房平台，介面較簡潔。",
+    "tags": ["找房"],
+    "url": "https://www.immowelt.de/"
+  },
+  {
+    "id": "arr-studentenwerk",
+    "category": "housing",
+    "title": "Studentenwerk · 學生宿舍",
+    "description": "各大學所屬的學生服務機構，管理學生宿舍申請。宿舍便宜但等候期長，建議儘早申請。",
+    "tags": ["宿舍", "官方"],
+    "url": "https://www.studentenwerke.de/"
+  }
+]

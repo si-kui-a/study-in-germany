@@ -1,0 +1,34 @@
+[
+  {
+    "id": "arr-alditalk",
+    "category": "telecom",
+    "title": "Aldi Talk · 預付 SIM",
+    "description": "超市 Aldi 旗下的預付 SIM 品牌，落地後短期方便選擇。可於 Aldi 超市直接購買。",
+    "tags": ["SIM", "預付"],
+    "url": "https://www.alditalk.de/"
+  },
+  {
+    "id": "arr-lidl-connect",
+    "category": "telecom",
+    "title": "Lidl Connect · 預付 SIM",
+    "description": "超市 Lidl 旗下的預付 SIM 品牌，與 Aldi Talk 類似的定位。",
+    "tags": ["SIM", "預付"],
+    "url": "https://www.lidl-connect.de/"
+  },
+  {
+    "id": "tw-cht-overseas",
+    "category": "telecom",
+    "title": "中華電信 · 海外方案",
+    "description": "中華電信提供的國際漫遊、海外月租方案，銜接台灣舊門號。",
+    "tags": ["電信", "台灣", "漫遊"],
+    "url": "https://www.cht.com.tw/"
+  },
+  {
+    "id": "tw-fet-overseas",
+    "category": "telecom",
+    "title": "遠傳電信 · 海外方案",
+    "description": "遠傳電信的國際漫遊與海外月租方案。",
+    "tags": ["電信", "台灣", "漫遊"],
+    "url": "https://www.fetnet.net/"
+  }
+]

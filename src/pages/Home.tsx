@@ -13,10 +13,22 @@ import HeroSection from '../components/HeroSection';
 import Announcements from '../components/Announcements';
 import HotSchoolsCarousel from '../components/HotSchoolsCarousel';
 import OnboardingModal from '../components/OnboardingModal';
-import { isOnboardingCompleted, getLocalPersonaStage } from '../lib/onboarding';
+import {
+  isOnboardingCompleted, getLocalPersonaStage, setLocalPersonaStage, PERSONA_STAGE_LABELS,
+} from '../lib/onboarding';
+import type { PersonaStage } from '../lib/onboarding';
 import { getNextStepSuggestion } from '../lib/nextStep';
 import { useWorkflowProgressContext } from '../lib/WorkflowProgressContext';
 import { getNextPendingStep } from '../lib/workflowProgress';
+import { useAuth } from '../lib/useAuth';
+import { supabase } from '../lib/supabase';
+
+const STAGE_SEQUENCE: PersonaStage[] = ['visa_prep', 'landing', 'settled', 'leaving'];
+
+function getNextStage(current: PersonaStage): PersonaStage | null {
+  const idx = STAGE_SEQUENCE.indexOf(current);
+  return idx >= 0 && idx < STAGE_SEQUENCE.length - 1 ? STAGE_SEQUENCE[idx + 1] : null;
+}
 import { visaWorkflow } from '../data/edu/visa';
 import { arrivalWorkflow } from '../data/edu/arrival';
 import { renewalWorkflow } from '../data/edu/renewal';
@@ -55,7 +67,7 @@ const PORTAL_ITEMS = [
     Icon: IconNotebook,
   },
   {
-    to: '/recommendation', title: '推薦', description: '德國好物、方案、優惠',
+    to: '/recommendation', title: '加油站', description: '德國好物、方案、優惠',
     Icon: IconStar,
   },
   {
@@ -86,12 +98,17 @@ const PORTAL_ITEMS = [
  * Phase AO：「下一步提示」整合進度追蹤，依 workflow_progress 自動推進到下一個
  *   未完成/未跳過的 step（不再永遠停在 step 1），該階段全部完成時改顯示
  *   完成訊息（PAT-136）
+ * Phase AQ：全部完成訊息追加「前往下一階段」按鈕，persona_stage 循序推進
+ *   （visa_prep→landing→settled→leaving），非自動跳轉、使用者需主動點擊
+ *   （PAT-144）
  * 結構：Hero 天際線 → 下一步提示（條件式）→ Portal (6 卡) → 熱門語校 → 最新公告
  */
 export default function Home() {
   const [onboardingOpen, setOnboardingOpen] = useState(false);
+  const [advancing, setAdvancing] = useState(false);
   const localStage = getLocalPersonaStage();
   const { progress } = useWorkflowProgressContext();
+  const { user } = useAuth();
 
   let nudge: { moduleSlug: string; moduleName: string; stepNumber: number; stepTitle: string } | null = null;
   let allStepsDone = false;
@@ -118,6 +135,19 @@ export default function Home() {
     }
   }, []);
 
+  const nextStage = localStage ? getNextStage(localStage) : null;
+
+  const handleAdvanceStage = async () => {
+    if (!nextStage || advancing) return;
+    setAdvancing(true);
+    setLocalPersonaStage(nextStage);
+    if (user) {
+      // Phase AP 教訓：導覽/reload 前先等待雲端寫入完成，避免競態（PAT-139）
+      await supabase.from('profiles').update({ persona_stage: nextStage }).eq('id', user.id);
+    }
+    window.location.reload();
+  };
+
   return (
     <div className="space-y-20 sm:space-y-24">
       <HeroSection />
@@ -127,9 +157,26 @@ export default function Home() {
           <div className="text-sm font-medium text-content-primary">
             🎉 這個階段的推薦步驟都完成了！
           </div>
-          <div className="text-xs text-content-muted mt-1">
-            可於「我的資料」重新設定階段，查看其他主題的推薦步驟
-          </div>
+          {nextStage ? (
+            <>
+              <p className="text-xs text-content-muted mt-1">
+                準備好了嗎？可以前往下一個階段查看對應的推薦步驟。
+              </p>
+              <button
+                type="button"
+                onClick={handleAdvanceStage}
+                disabled={advancing}
+                className="mt-2 text-sm px-4 py-2 rounded-lg bg-brand-burgundy text-white
+                           disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {advancing ? '切換中…' : `前往下一階段：${PERSONA_STAGE_LABELS[nextStage].label} →`}
+              </button>
+            </>
+          ) : (
+            <p className="text-xs text-content-muted mt-2">
+              你已完成所有階段的推薦步驟！可於「我的資料」查看其他主題。
+            </p>
+          )}
         </div>
       )}
 
@@ -175,7 +222,7 @@ export default function Home() {
                                 sm:text-base sm:whitespace-normal">
                   {item.title}
                 </div>
-                <div className="text-xs text-content-muted truncate sm:hidden">
+                <div className="text-xs text-content-muted truncate sm:block sm:mt-0.5">
                   {item.description}
                 </div>
               </div>

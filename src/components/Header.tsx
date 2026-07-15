@@ -68,10 +68,23 @@ export default function Header() {
           </Link>
 
           <nav className="hidden sm:flex items-center gap-1">
-            <NavLink to="/schools" className={navClass}>語校</NavLink>
             <NavLink to="/board" className={navClass}>佈告欄</NavLink>
-            <NavLink to="/edu" className={navClass}>作戰手冊</NavLink>
+            <NavLink to="/recommendation" className={navClass}>加油站</NavLink>
             <NavLink to="/faq" className={navClass}>常見問答</NavLink>
+
+            {/* Phase AQ：資源 dropdown（語校 + 作戰手冊 收合，PAT-141）*/}
+            <div className="relative group">
+              <button type="button" className={navClass({ isActive: false })}>
+                資源 ▾
+              </button>
+              <div className="absolute right-0 top-full pt-1 hidden group-hover:block group-focus-within:block z-50">
+                <div className="min-w-[10rem] rounded-lg border border-border-subtle
+                                bg-surface-card shadow-lg p-1.5">
+                  <NavLink to="/schools" className={dropdownLinkClass}>語校</NavLink>
+                  <NavLink to="/edu" className={dropdownLinkClass}>作戰手冊</NavLink>
+                </div>
+              </div>
+            </div>
 
             {/* 更多：隱私政策 / 支持本站（Phase X 起移出常見問答，升為一級導覽；
                 推薦專區移出一級導覽、併入學用 Hub 次要入口，見 Edu.tsx） */}
@@ -183,13 +196,6 @@ export default function Header() {
                           shadow-lg z-50">
             <nav className="flex flex-col p-4 gap-1">
               <NavLink
-                to="/schools"
-                className="px-3 py-2.5 rounded-lg hover:bg-surface-hover
-                           text-content-primary no-underline"
-              >
-                語校
-              </NavLink>
-              <NavLink
                 to="/board"
                 className="px-3 py-2.5 rounded-lg hover:bg-surface-hover
                            text-content-primary no-underline"
@@ -197,11 +203,11 @@ export default function Header() {
                 佈告欄
               </NavLink>
               <NavLink
-                to="/edu"
+                to="/recommendation"
                 className="px-3 py-2.5 rounded-lg hover:bg-surface-hover
                            text-content-primary no-underline"
               >
-                作戰手冊
+                加油站
               </NavLink>
               <NavLink
                 to="/faq"
@@ -209,6 +215,24 @@ export default function Header() {
                            text-content-primary no-underline"
               >
                 常見問答
+              </NavLink>
+
+              <div className="my-2 border-t border-border-subtle" />
+
+              {/* Phase AQ：資源（語校 + 作戰手冊 收合，PAT-141） */}
+              <NavLink
+                to="/schools"
+                className="px-3 py-2.5 rounded-lg hover:bg-surface-hover
+                           text-content-primary no-underline"
+              >
+                語校
+              </NavLink>
+              <NavLink
+                to="/edu"
+                className="px-3 py-2.5 rounded-lg hover:bg-surface-hover
+                           text-content-primary no-underline"
+              >
+                作戰手冊
               </NavLink>
 
               <div className="my-2 border-t border-border-subtle" />

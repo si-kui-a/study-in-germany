@@ -414,3 +414,22 @@ ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS persona_stage TEXT
 -- ==========================================
 
 ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS workflow_progress JSONB DEFAULT '{}'::jsonb;
+
+-- ==========================================
+-- Phase AQ · user_submissions.target_category 分類重組
+-- 舊 6 分類（general/visa/arrival/edu/scholarship/taiwan）
+-- → 新 8 分類（finance/transport/telecom/housing/lookup/scholarship/expense/general）
+-- 本輪僅此 1 段 SQL
+-- ==========================================
+
+ALTER TABLE public.user_submissions DROP CONSTRAINT IF EXISTS user_submissions_target_category_check;
+ALTER TABLE public.user_submissions ADD CONSTRAINT user_submissions_target_category_check
+  CHECK (target_category IS NULL OR target_category IN (
+    'finance', 'transport', 'telecom', 'housing', 'lookup', 'scholarship', 'expense', 'general'
+  ));
+
+-- 現有使用者提交若 target_category 為已移除的舊分類值，改為 NULL
+-- （避免違反新 CHECK 導致既有資料列被拒絕更新；'general'/'scholarship' 新舊皆存在、語意相同，予以保留）
+UPDATE public.user_submissions
+  SET target_category = NULL
+  WHERE target_category IN ('visa', 'arrival', 'edu', 'taiwan');

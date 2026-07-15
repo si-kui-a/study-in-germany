@@ -3,22 +3,30 @@ import { RECOMMENDATION_CATEGORIES } from '../lib/recommendation';
 import type { Recommendation } from '../lib/recommendation';
 import { RecommendationCategoryIcon } from '../assets/icons/recommendation';
 import UserSubmissionsList from '../components/UserSubmissionsList';
-import generalData from '../data/recommendations/general.json';
-import visaData from '../data/recommendations/visa.json';
-import arrivalData from '../data/recommendations/arrival.json';
-import eduData from '../data/recommendations/edu.json';
+import financeData from '../data/recommendations/finance.json';
+import transportData from '../data/recommendations/transport.json';
+import telecomData from '../data/recommendations/telecom.json';
+import housingData from '../data/recommendations/housing.json';
+import lookupData from '../data/recommendations/lookup.json';
 import scholarshipData from '../data/recommendations/scholarship.json';
-import taiwanData from '../data/recommendations/taiwan.json';
+import expenseData from '../data/recommendations/expense.json';
+import generalData from '../data/recommendations/general.json';
 
 const DATA_MAP: Record<string, Recommendation[]> = {
-  general: generalData as Recommendation[],
-  visa: visaData as Recommendation[],
-  arrival: arrivalData as Recommendation[],
-  edu: eduData as Recommendation[],
+  finance: financeData as Recommendation[],
+  transport: transportData as Recommendation[],
+  telecom: telecomData as Recommendation[],
+  housing: housingData as Recommendation[],
+  lookup: lookupData as Recommendation[],
   scholarship: scholarshipData as Recommendation[],
-  taiwan: taiwanData as Recommendation[],
+  expense: expenseData as Recommendation[],
+  general: generalData as Recommendation[],
 };
 
+/**
+ * Phase AQ：條目卡片改為正方形小卡 grid（原直排列表形式），
+ * 分類重組為 8 新分類（PAT-145）
+ */
 export default function RecommendationCategory() {
   const { slug } = useParams<{ slug: string }>();
   const meta = RECOMMENDATION_CATEGORIES.find((c) => c.key === slug);
@@ -28,7 +36,7 @@ export default function RecommendationCategory() {
     return (
       <div className="py-16 text-center text-content-secondary">
         找不到這個分類。
-        <Link to="/recommendation" className="ml-2">回推薦專區</Link>
+        <Link to="/recommendation" className="ml-2">回加油站</Link>
       </div>
     );
   }
@@ -37,7 +45,7 @@ export default function RecommendationCategory() {
     <div className="space-y-6">
       <div>
         <Link to="/recommendation" className="text-xs no-underline">
-          ← 回推薦專區
+          ← 回加油站
         </Link>
       </div>
 
@@ -58,45 +66,33 @@ export default function RecommendationCategory() {
         </div>
       </header>
 
-      <div className="space-y-4">
-        {items.map((r) => (
-          <article key={r.id} className="card space-y-2">
-            <div className="flex items-baseline justify-between gap-3">
-              <h3 className="text-base font-semibold text-content-primary leading-tight">
-                {r.title}
-              </h3>
-              <a
-                href={r.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs no-underline shrink-0"
-              >
-                前往 ↗
-              </a>
-            </div>
-
-            <p className="text-sm text-content-secondary leading-relaxed">
-              {r.description}
-            </p>
-
-            {r.note && (
-              <div className="text-xs text-content-muted italic pt-1">
-                備註：{r.note}
+      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
+        {items.map((item) => (
+          <a
+            key={item.id}
+            href={item.url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="aspect-square flex flex-col justify-between p-3
+                       rounded-lg border border-border-subtle
+                       hover:border-brand-gold transition-colors no-underline"
+          >
+            <div>
+              <div className="text-sm font-semibold text-content-primary line-clamp-2">
+                {item.title}
               </div>
-            )}
-
-            <div className="pt-2 flex flex-wrap gap-1.5">
-              {r.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="text-xs px-2 py-0.5 rounded
-                             bg-surface-hover text-content-muted"
-                >
+              <div className="text-xs text-content-muted mt-1 line-clamp-3">
+                {item.description}
+              </div>
+            </div>
+            <div className="flex flex-wrap gap-1 mt-2">
+              {item.tags?.slice(0, 2).map((tag) => (
+                <span key={tag} className="text-xs px-1.5 py-0.5 rounded bg-surface-hover text-content-muted">
                   {tag}
                 </span>
               ))}
             </div>
-          </article>
+          </a>
         ))}
       </div>
 
@@ -114,11 +110,14 @@ export default function RecommendationCategory() {
             <Link
               key={c.key}
               to={`/recommendation/${c.key}`}
-              className="text-xs px-3 py-1.5 rounded-lg border border-border-subtle
+              className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg border border-border-subtle
                          hover:border-brand-gold hover:text-brand-burgundy
                          no-underline transition-colors"
             >
-              {c.emoji} {c.title}
+              <span className="w-3.5 h-3.5 inline-flex shrink-0">
+                <RecommendationCategoryIcon slug={c.key} className="w-full h-full" />
+              </span>
+              {c.title}
             </Link>
           ))}
         </div>

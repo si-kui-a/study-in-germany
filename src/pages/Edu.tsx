@@ -81,7 +81,7 @@ export default function Edu() {
                                 sm:text-base sm:whitespace-normal">
                   {t.title}
                 </div>
-                <div className="text-xs text-content-muted truncate sm:hidden">
+                <div className="text-xs text-content-muted truncate sm:block sm:mt-0.5">
                   {t.subtitle}
                 </div>
               </div>
@@ -95,7 +95,7 @@ export default function Edu() {
           to="/recommendation"
           className="text-sm text-brand-burgundy hover:text-brand-burgundy-hover"
         >
-          需要更多實用工具與推薦？前往推薦專區 →
+          需要更多實用工具與推薦？前往加油站 →
         </Link>
       </div>
 

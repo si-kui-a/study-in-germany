@@ -3,59 +3,68 @@
  *
  * 每項推薦 = 可長期查證的公開實體。
  * 不寫時效性資訊（價格、優惠碼、日期），使用者可自行至官網看最新。
+ *
+ * Phase AQ：分類徹底重組，舊 6 分類（general/visa/arrival/edu/scholarship/
+ * taiwan）→ 新 8 分類（finance/transport/telecom/housing/lookup/scholarship/
+ * expense/general），依實用主題而非留德階段分類，見 PAT-145。
  */
 
 export type RecommendationCategory =
-  | 'general'
-  | 'visa'
-  | 'arrival'
-  | 'edu'
+  | 'finance'
+  | 'transport'
+  | 'telecom'
+  | 'housing'
+  | 'lookup'
   | 'scholarship'
-  | 'taiwan';
+  | 'expense'
+  | 'general';
 
 export interface RecommendationCategoryMeta {
   key: RecommendationCategory;
   title: string;
   subtitle: string;
-  emoji: string;
 }
 
 export const RECOMMENDATION_CATEGORIES: RecommendationCategoryMeta[] = [
   {
-    key: 'general',
-    title: '通用推薦',
-    subtitle: '日常生活實用工具與服務',
-    emoji: '🌟',
+    key: 'finance',
+    title: '金融',
+    subtitle: '銀行開戶、財力證明、跨境匯款',
   },
   {
-    key: 'visa',
-    title: '簽證相關',
-    subtitle: '限制提領帳戶、保險、官方申請',
-    emoji: '🛂',
+    key: 'transport',
+    title: '交通',
+    subtitle: '鐵路、大眾運輸',
   },
   {
-    key: 'arrival',
-    title: '落地相關',
-    subtitle: '找房、開戶、SIM 卡、生活服務',
-    emoji: '🏠',
+    key: 'telecom',
+    title: '電信',
+    subtitle: 'SIM 卡、網路方案',
   },
   {
-    key: 'edu',
-    title: '學程相關',
-    subtitle: '學校申請、語言考試、學術資源',
-    emoji: '🎓',
+    key: 'housing',
+    title: '找房',
+    subtitle: '租屋、宿舍平台',
+  },
+  {
+    key: 'lookup',
+    title: '查詢',
+    subtitle: '學歷認證、考試、課程資料庫',
   },
   {
     key: 'scholarship',
     title: '獎學金',
     subtitle: '德國、歐盟、台灣獎學金資源',
-    emoji: '💰',
   },
   {
-    key: 'taiwan',
-    title: '台灣海外方案',
-    subtitle: '銀行、電信、辦事處聯絡',
-    emoji: '🇹🇼',
+    key: 'expense',
+    title: '支出',
+    subtitle: '保險、貸款、稅費',
+  },
+  {
+    key: 'general',
+    title: '通用',
+    subtitle: '其他實用工具與社群',
   },
 ];
 

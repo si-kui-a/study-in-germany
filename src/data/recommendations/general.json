@@ -1,45 +1,5 @@
 [
   {
-    "id": "gen-db",
-    "category": "general",
-    "title": "Deutsche Bahn 官方 App",
-    "description": "德國國鐵官方 App，全德鐵路時刻表、購票、即時延誤資訊。搭火車必備。",
-    "tags": ["交通", "App", "官方"],
-    "url": "https://www.bahn.de/service/mobile/db-navigator"
-  },
-  {
-    "id": "gen-bahncard",
-    "category": "general",
-    "title": "BahnCard 折扣卡",
-    "description": "德鐵發行的年度折扣卡。BahnCard 25 / 50 / 100 有不同折扣級別，適合常搭火車的人。",
-    "tags": ["交通", "折扣"],
-    "url": "https://www.bahn.de/angebot/bahncard"
-  },
-  {
-    "id": "gen-google-maps",
-    "category": "general",
-    "title": "Google 地圖 · 大眾運輸",
-    "description": "德國大眾運輸整合完整。輸入目的地即可查公車、地鐵、電車、火車最佳路線。",
-    "tags": ["交通", "App"],
-    "url": "https://maps.google.com/"
-  },
-  {
-    "id": "gen-n26",
-    "category": "general",
-    "title": "N26 手機銀行",
-    "description": "純網路銀行，手機 App 開戶，免除傳統銀行 SCHUFA 障礙。適合剛落地學生。",
-    "tags": ["銀行", "App"],
-    "url": "https://n26.com/"
-  },
-  {
-    "id": "gen-revolut",
-    "category": "general",
-    "title": "Revolut · 多幣別金融卡",
-    "description": "支援台幣入金、歐元使用、匯率透明。適合台德兩地金流需求。",
-    "tags": ["銀行", "App", "多幣別"],
-    "url": "https://www.revolut.com/"
-  },
-  {
     "id": "gen-reddit-germany",
     "category": "general",
     "title": "Reddit r/germany",
@@ -62,5 +22,29 @@
     "description": "德國最大外送平台，涵蓋範圍廣，多數餐廳都在上面。",
     "tags": ["外送", "App"],
     "url": "https://www.lieferando.de/"
+  },
+  {
+    "id": "visa-auswaertiges-amt",
+    "category": "general",
+    "title": "聯邦外交部 · 簽證資訊",
+    "description": "德國聯邦外交部官方簽證頁面，各類簽證的權威資訊來源。",
+    "tags": ["官方", "政府"],
+    "url": "https://www.auswaertiges-amt.de/de/visa-service"
+  },
+  {
+    "id": "visa-taipei-diplo",
+    "category": "general",
+    "title": "德國在台協會",
+    "description": "台灣申請德國簽證的主要窗口。位於台北市信義區松高路 1 號 12 樓。",
+    "tags": ["官方", "台北"],
+    "url": "https://taipei.diplo.de/"
+  },
+  {
+    "id": "tw-taipei-office-berlin",
+    "category": "general",
+    "title": "駐德國台北代表處",
+    "description": "台灣在德國的官方辦事處，護照補發、公證、緊急事務處理。柏林為主館，法蘭克福與慕尼黑另設辦事處。",
+    "tags": ["官方", "台灣", "領事"],
+    "url": "https://www.roc-taiwan.org/de/"
   }
 ]

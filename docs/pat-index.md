@@ -139,6 +139,11 @@
 | PAT-138 | CORE_IMMUTABLE | 推薦專區新增 Wise（跨境匯款，無時效性資訊原則） |
 | PAT-139 | RESOLVED | 進度追蹤未同步 bug：改用 Context 單一資料源，消除跨頁 fetch 競態 |
 | PAT-140 | CORE_IMMUTABLE | Wise 於作戰手冊 STEP 03（個人銀行帳戶）同步出現，spec 誤植為 STEP 05 |
+| PAT-141 | CORE_IMMUTABLE | Header 導覽重構：語校+作戰手冊收合進「資源」dropdown，一級導覽精簡為 3 項 |
+| PAT-142 | CORE_IMMUTABLE | 推薦專區更名「加油站」，路由 URL 不變，僅改顯示文字 |
+| PAT-143 | CORE_IMMUTABLE | Portal/Recommendation/Edu 卡片描述文字桌面+手機皆顯示（維持 PAT-126 跨頁一致性） |
+| PAT-144 | CORE_IMMUTABLE | persona_stage 循序推進：全部完成後「前往下一階段」按鈕，await 雲端寫入避免 PAT-139 重演 |
+| PAT-145 | CORE_IMMUTABLE | 推薦專區分類重組：8 新分類（金融/交通/電信/找房/查詢/獎學金/支出/通用）取代舊 6 分類 |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance

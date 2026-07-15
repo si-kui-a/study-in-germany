@@ -6,8 +6,8 @@ import SubmissionForm from '../components/SubmissionForm';
 import UserSubmissionsList from '../components/UserSubmissionsList';
 
 /**
- * DS v4.2 · 推薦專區 Hub · 對齊 Edu Hub 佈局（PAT-64）
- * 6 個子分類卡矩陣 · 圖示置中 · 文字置中
+ * DS v4.2 · 加油站 Hub（原「推薦專區」，Phase AQ 更名，PAT-142）
+ * 8 個子分類卡矩陣 · 圖示置中 · 文字置中（Phase AQ 分類重組，PAT-145）
  * Phase AF：卡片密度優化，響應式雙態佈局，與 Home.tsx、Edu.tsx 共用同一套
  *   class 組合邏輯（PAT-126）；子分類項目數（COUNT_MAP）不再於卡片上顯示，
  *   優先保留 icon+title 之精簡度
@@ -24,7 +24,7 @@ export default function Recommendation() {
           <span className="text-module-recommendation w-8 h-8 sm:w-10 sm:h-10 inline-flex">
             <RecommendationIcon className="w-full h-full" />
           </span>
-          推薦專區
+          加油站
         </h1>
         <p className="text-sm text-content-secondary mt-3 max-w-2xl leading-relaxed">
           給留德新手與在德華人的實用工具、方案、平台清單。
@@ -54,7 +54,7 @@ export default function Recommendation() {
                               sm:text-base sm:whitespace-normal">
                 {c.title}
               </div>
-              <div className="text-xs text-content-muted truncate sm:hidden">
+              <div className="text-xs text-content-muted truncate sm:block sm:mt-0.5">
                 {c.subtitle}
               </div>
             </div>

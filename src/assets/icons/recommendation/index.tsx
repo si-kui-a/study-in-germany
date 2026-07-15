@@ -1,20 +1,25 @@
 import {
-  IconCompass,
-  IconFileCertificate,
-  IconLuggage,
+  IconCoin,
+  IconTrain,
+  IconDeviceMobile,
+  IconHome2,
   IconSearch,
   IconMedal,
-  IconMapPin,
+  IconReceipt,
+  IconApps,
   type Icon as TablerIcon,
 } from '@tabler/icons-react';
 
+/** Phase AQ：分類重組為 8 新分類（PAT-145），圖示比照 Tabler Icons 家族（PAT-122） */
 const REGISTRY: Record<string, TablerIcon> = {
-  general: IconCompass,
-  visa: IconFileCertificate,
-  arrival: IconLuggage,
-  edu: IconSearch,
+  finance: IconCoin,
+  transport: IconTrain,
+  telecom: IconDeviceMobile,
+  housing: IconHome2,
+  lookup: IconSearch,
   scholarship: IconMedal,
-  taiwan: IconMapPin,
+  expense: IconReceipt,
+  general: IconApps,
 };
 
 export function RecommendationCategoryIcon({

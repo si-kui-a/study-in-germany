@@ -1529,3 +1529,101 @@ Wise 項目呼應。**未**依 spec 建議新增獨立的 `official_sources` 條
 （Fintiba/Expatrio/Coracle/Deutsche Bank Sperrkonto），個人帳戶銀行
 （N26/Revolut/Sparkasse 等）本來就不個別條列官方連結，維持既有資料結構
 的一致性，不單獨為 Wise 破例。
+
+## PAT-141 [CORE_IMMUTABLE]: Header 導覽重構 · 語校+作戰手冊收合
+
+主導覽從 4 項精簡為 3 項（佈告欄/加油站/常見問答），語校與作戰手冊收合進新
+「資源」dropdown，比照現行「更多」dropdown 的互動樣式（`relative group` +
+`group-hover:block`，桌面 hover 展開）。手機選單同步調整順序：
+佈告欄/加油站/常見問答 → 分隔線 → 語校/作戰手冊（資源分組）→ 分隔線 →
+隱私政策/支持本站。此決策由 Lily 明確指示，雖犧牲核心功能（語校、作戰手冊）
+的一級可見度，但符合其對導覽視覺密度的偏好。
+
+## PAT-142 [CORE_IMMUTABLE]: 推薦專區更名為「加油站」
+
+全站顯示文字由「推薦」「推薦專區」改為「加油站」，路由 URL（`/recommendation`、
+`/recommendation/:slug`）維持不變，避免破壞既有連結/書籤。逐一核對全站所有
+使用者可見文字出現處：Header nav（AQ.a 已處理）、Home.tsx Portal 卡片標題、
+Recommendation.tsx/RecommendationCategory.tsx 頁面標題與麵包屑、
+SubmissionForm.tsx 分類下拉的預設選項、UserSubmissionsList.tsx 空狀態引導連結、
+Edu.tsx 頁尾連結。**未改動**歷史 code comment（Header.tsx 的 Phase X 決策說明、
+`recommendation.ts` 的 Phase H 資料契約說明）與 `docs/pat-index.md` 既有 PAT
+條目原文（PAT-57、PAT-138），依時間膠囊原則保留當時用語。
+
+## PAT-143 [CORE_IMMUTABLE]: Portal/Recommendation/Edu 卡片描述文字桌面+手機皆顯示
+
+Phase AF/AG 密度優化曾在手機橫列模式用 `sm:hidden` 隱藏描述文字，本輪確認
+桌面與手機都需要顯示，改為 `sm:block sm:mt-0.5`（移除 `sm:hidden`），
+`truncate` 控制單行省略而非完全隱藏。**範圍延伸**：spec 僅要求 Home.tsx
+的 Portal 卡片，但 `Recommendation.tsx`/`Edu.tsx` 依 PAT-126 建立的
+「三頁共用同一套 class 組合邏輯」原本就有完全相同的 `sm:hidden` 寫法——
+若只改 Home.tsx 會破壞 PAT-126 的既有一致性保證，故一併套用相同修正到
+三個頁面，維持既有的跨頁一致性原則不變。
+
+## PAT-144 [CORE_IMMUTABLE]: 全部完成後的下一階段引導按鈕
+
+`persona_stage` 循序推進（`visa_prep`→`landing`→`settled`→`leaving`），
+全部完成訊息追加「前往下一階段」按鈕，非自動跳轉，使用者需主動點擊確認。
+**吸取 PAT-139 的教訓**：spec 提供的範例程式碼在按鈕 `onClick` 中對登入
+使用者呼叫 `supabase.from('profiles').update(...)` 後未等待即呼叫
+`window.location.reload()`（fire-and-forget，reload 可能中斷尚未完成的
+雲端寫入請求）——這正是本輪剛修復過的同一類問題，故本次實作**改為 `await`
+雲端寫入完成後才 `reload()`**，避免重蹈覆轍。`leaving`（最後階段）無下一
+階段時顯示終局完成訊息，不顯示按鈕。已透過瀏覽器完整測試 `visa_prep`→
+`landing` 的推進流程（含 reload 後 nudge 卡片正確切換至新階段對應模組）
+與 `leaving` 階段的終局訊息顯示。
+
+## PAT-145 [CORE_IMMUTABLE]: 推薦專區分類徹底重組 · 8 新分類取代舊 6 分類
+
+金融/交通/電信/找房/查詢/獎學金/支出/通用，取代舊有「通用/簽證相關/落地相關/
+學程相關/獎學金/台灣海外方案」6 分類。`user_submissions.target_category`
+CHECK constraint 同步更新（`DROP CONSTRAINT` + `ADD CONSTRAINT`），既有
+使用者提交若屬已移除的舊分類值（`visa`/`arrival`/`edu`/`taiwan`）改為
+`NULL` 避免資料異常；`general`/`scholarship` 兩個分類鍵在新舊分類中皆存在
+且語意相同，予以保留不需清空。
+
+**重分類方式**：純粹搬移，逐字保留原有全部 41 項推薦（`id`/`title`/
+`description`/`tags`/`url` 皆未改動，僅 `category` 欄位改指向新分類），
+確認零遺漏、零重複、零虛構新增。舊 6 個 JSON 檔案中 `general.json`/
+`scholarship.json` 檔名沿用（因分類鍵持續存在，但內容已按新歸類重新
+組成）、`visa.json`/`arrival.json`/`edu.json`/`taiwan.json` 因不再對應
+任何分類鍵，內容已完整搬空後刪除。
+
+**重分類對照表**（原分類 → 新分類，逐項）：
+- **finance**（8）：gen-n26、gen-revolut（原 general）、visa-fintiba、
+  visa-expatrio（原 visa）、arr-schufa（原 arrival）、wise-transfer
+  （原 arrival，Phase AO 新增）、tw-esunbank、tw-taishinbank（原 taiwan）
+- **transport**（3）：gen-db、gen-bahncard、gen-google-maps（皆原 general）
+- **telecom**（4）：arr-alditalk、arr-lidl-connect（原 arrival）、
+  tw-cht-overseas、tw-fet-overseas（原 taiwan）
+- **housing**（4）：arr-wg-gesucht、arr-immoscout、arr-immowelt、
+  arr-studentenwerk（皆原 arrival）
+- **lookup**（6）：edu-uni-assist、edu-daad-programs、
+  edu-study-in-germany、edu-testdaf、edu-telc、edu-anabin（皆原 edu，
+  子分類名稱從「學程相關」改為「查詢」，內容範疇不變）
+- **scholarship**（6，不變）：sch-daad-scholarships、sch-erasmus、
+  sch-taiwan-moe、sch-studienstiftung、sch-konrad-adenauer、sch-boell
+  （分類鍵與全部內容皆原封不動）
+- **expense**（4）：visa-mawista、visa-care-concept（原 visa，保險）、
+  tw-moe-scholarship（原 taiwan，雖 id 含「scholarship」字樣但內容實為
+  留學貸款，依內容語意歸入 expense 而非沿用 id 命名）、
+  arr-rundfunkbeitrag（原 arrival，電視稅為週期性支出）
+- **general**（6，保底分類）：gen-reddit-germany、gen-reddit-de、
+  gen-lieferando（原 general 中無法歸入其他 7 類的社群/生活服務項目）、
+  visa-auswaertiges-amt、visa-taipei-diplo（原 visa，官方簽證資訊窗口，
+  不屬於財金/交通/電信/找房/學術查詢/獎學金/支出任一主題）、
+  tw-taipei-office-berlin（原 taiwan，領事服務，同樣屬於無法歸類的
+  官方資源，依保底分類原則放入 general）
+
+**圖示**：`src/assets/icons/recommendation/index.tsx` REGISTRY 改為
+`IconCoin`/`IconTrain`/`IconDeviceMobile`/`IconHome2`/`IconSearch`/
+`IconMedal`/`IconReceipt`/`IconApps`，spec 建議的 8 個圖標名稱皆於
+Tabler 庫內確認存在，未需替換。`RecommendationCategoryMeta` 移除 `emoji`
+欄位（原僅用於「其他分類」頁尾 pill 的文字前綴），改為 pill 也使用
+`RecommendationCategoryIcon` 元件渲染小型 Tabler 圖示，與 Hub 頁大卡
+圖示風格統一，符合 PAT-122 治理標準。
+
+**內部條目卡片**：`RecommendationCategory.tsx` 從直排列表改為正方形小卡
+grid（`aspect-square`，`sm:grid-cols-3 lg:grid-cols-4`），`line-clamp-2`/
+`line-clamp-3` 控制標題/描述行數（本專案 Tailwind v4 已內建支援，
+`HotSchoolsCarousel.tsx` 已有先例使用，未需額外套件）。
