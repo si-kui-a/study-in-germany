@@ -13,7 +13,8 @@
     "accreditation": [
       "Goethe-Zertifikat"
     ],
-    "price_hint": "€1,200–1,500 / 4 週密集班"
+    "price_hint": "€1,200–1,500 / 4 週密集班",
+    "updated_at": "2026-07"
   },
   {
     "id": "goethe-muenchen",
@@ -29,7 +30,8 @@
     "accreditation": [
       "Goethe-Zertifikat"
     ],
-    "price_hint": "€1,300–1,600 / 4 週密集班"
+    "price_hint": "€1,300–1,600 / 4 週密集班",
+    "updated_at": "2026-07"
   },
   {
     "id": "did-frankfurt",
@@ -43,7 +45,8 @@
     "accommodation": null,
     "founded_year": null,
     "accreditation": null,
-    "price_hint": "€800–1,100 / 4 週密集班"
+    "price_hint": "€800–1,100 / 4 週密集班",
+    "updated_at": "2026-07"
   },
   {
     "id": "fu-sprachenzentrum",
@@ -57,7 +60,8 @@
     "accommodation": null,
     "founded_year": null,
     "accreditation": null,
-    "price_hint": "€300–600 / 學期"
+    "price_hint": "€300–600 / 學期",
+    "updated_at": "2026-07"
   },
   {
     "id": "carl-duisberg-koeln",
@@ -73,7 +77,8 @@
     "accreditation": [
       "TestDaF"
     ],
-    "price_hint": "€900–1,250 / 4 週密集班"
+    "price_hint": "€900–1,250 / 4 週密集班",
+    "updated_at": "2026-07"
   },
   {
     "id": "did-berlin",
@@ -87,7 +92,8 @@
     "accommodation": null,
     "founded_year": null,
     "accreditation": null,
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "goethe-frankfurt",
@@ -103,7 +109,8 @@
     "accreditation": [
       "Goethe-Zertifikat"
     ],
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "goethe-duesseldorf",
@@ -119,7 +126,8 @@
     "accreditation": [
       "Goethe-Zertifikat"
     ],
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "iik-duesseldorf",
@@ -133,7 +141,8 @@
     "accommodation": null,
     "founded_year": 1989,
     "accreditation": null,
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "inlingua-berlin",
@@ -151,7 +160,8 @@
       "TestDaF",
       "DTZ"
     ],
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "inlingua-munich",
@@ -165,7 +175,8 @@
     "accommodation": null,
     "founded_year": null,
     "accreditation": null,
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "berlitz-berlin",
@@ -179,7 +190,8 @@
     "accommodation": null,
     "founded_year": null,
     "accreditation": null,
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "fu-heidelberg",
@@ -193,7 +205,8 @@
     "accommodation": null,
     "founded_year": null,
     "accreditation": null,
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "neue-schule-berlin",
@@ -207,7 +220,8 @@
     "accommodation": null,
     "founded_year": 1984,
     "accreditation": null,
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "sprachenatelier-berlin",
@@ -224,7 +238,8 @@
       "telc",
       "FaDaF"
     ],
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "gls-berlin",
@@ -241,7 +256,8 @@
       "TestDaF",
       "telc"
     ],
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "sprachcaffe-frankfurt",
@@ -255,7 +271,8 @@
     "accommodation": "提供學生宿舍與寄宿家庭",
     "founded_year": null,
     "accreditation": null,
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "evolanguage-frankfurt",
@@ -269,7 +286,8 @@
     "accommodation": "私人老師住家安排（第三方 Home Language International 合作）",
     "founded_year": null,
     "accreditation": null,
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "sprachschule-aktiv-stuttgart",
@@ -285,7 +303,8 @@
     "accreditation": [
       "telc"
     ],
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "sprachschule-aktiv-koeln",
@@ -301,7 +320,8 @@
     "accreditation": [
       "telc"
     ],
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "sprachschule-aktiv-bonn",
@@ -317,7 +337,8 @@
     "accreditation": [
       "telc"
     ],
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "humboldt-institut-berlin",
@@ -336,7 +357,8 @@
       "TestAS考場",
       "telc考場(A1-C1 Hochschule)"
     ],
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "alpadia-berlin",
@@ -352,7 +374,8 @@
     "accreditation": [
       "telc"
     ],
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "alpadia-freiburg",
@@ -368,7 +391,8 @@
     "accreditation": [
       "telc"
     ],
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "victoria-berlin",
@@ -389,7 +413,8 @@
       "DIN EN ISO 9001",
       "AZAV"
     ],
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "alpha-aktiv-heidelberg",
@@ -410,7 +435,8 @@
       "AZAV",
       "DIN EN ISO 9001"
     ],
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "horizonte-regensburg",
@@ -424,7 +450,8 @@
     "accommodation": "位於市中心、同棟宿舍",
     "founded_year": null,
     "accreditation": null,
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "deutschakademie-muenchen",
@@ -440,7 +467,8 @@
     "accreditation": [
       "telc官方授權考場(B1/B2)"
     ],
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "deutschakademie-berlin",
@@ -456,7 +484,8 @@
     "accreditation": [
       "telc官方授權考場(B1/B2)"
     ],
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "deutschakademie-hamburg",
@@ -472,7 +501,8 @@
     "accreditation": [
       "telc官方授權考場(B1/B2)"
     ],
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "bws-germanlingua-muenchen",
@@ -486,7 +516,8 @@
     "accommodation": "Studentenwohnung（校方自有）、Apartments（校方自有）、Gastfamilie（第三方）、Hotel（代訂）",
     "founded_year": null,
     "accreditation": null,
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "bws-germanlingua-koeln",
@@ -500,7 +531,8 @@
     "accommodation": "Studentenwohnung（校方自有）、Apartments（校方自有）、Gastfamilie（第三方）、Hotel（代訂）",
     "founded_year": null,
     "accreditation": null,
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "bws-germanlingua-berlin",
@@ -514,7 +546,8 @@
     "accommodation": "Studentenwohnung（校方自有）、Apartments（校方自有）、Gastfamilie（第三方）、Hotel（代訂）",
     "founded_year": null,
     "accreditation": null,
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "sprachschule-aktiv-essen",
@@ -528,7 +561,8 @@
     "accommodation": "Studentenwohnheim、Gastfamilie、Hostel（校方協助搜尋，第三方）",
     "founded_year": null,
     "accreditation": null,
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "sprachschule-aktiv-duesseldorf",
@@ -542,7 +576,8 @@
     "accommodation": "Gastfamilie、WG、Studentenwohnheim（校方媒合，第三方）",
     "founded_year": null,
     "accreditation": null,
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "sprachschule-aktiv-nuernberg",
@@ -556,7 +591,8 @@
     "accommodation": "Gastfamilie、WG、Hotel（校方媒合，第三方）",
     "founded_year": null,
     "accreditation": null,
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "sprachschule-aktiv-leipzig",
@@ -570,7 +606,8 @@
     "accommodation": "Gastfamilie、WG、私人房東、Hotel（校方媒合，第三方）",
     "founded_year": null,
     "accreditation": null,
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "sprachschule-aktiv-dresden",
@@ -584,7 +621,8 @@
     "accommodation": "住宿協助服務（具體形式未列舉）",
     "founded_year": null,
     "accreditation": null,
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "sprachschule-aktiv-bremen",
@@ -598,7 +636,8 @@
     "accommodation": "Hotel、Pension、Studentenwohnheim、Gastfamilie（校方媒合，第三方）",
     "founded_year": null,
     "accreditation": null,
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "sprachschule-aktiv-hannover",
@@ -612,7 +651,8 @@
     "accommodation": "WG／Wohngemeinschaft（細節未展開）",
     "founded_year": null,
     "accreditation": null,
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "sprachschule-aktiv-duisburg",
@@ -626,7 +666,8 @@
     "accommodation": "Studentenwohnheim、Gastfamilie、Hostel（校方協助搜尋，第三方）",
     "founded_year": null,
     "accreditation": null,
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "sprachschule-aktiv-dortmund",
@@ -640,7 +681,8 @@
     "accommodation": "WG、Gastfamilie、Hotel（校方媒合，第三方，約 400-600€/月）",
     "founded_year": null,
     "accreditation": null,
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "sprachschule-aktiv-aachen",
@@ -654,7 +696,8 @@
     "accommodation": "Gastfamilie、WG（約500€/月）、Hotel（350-600€/月，校方媒合，第三方）",
     "founded_year": null,
     "accreditation": null,
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "sprachschule-aktiv-frankfurt-2",
@@ -668,7 +711,8 @@
     "accommodation": "Gastfamilie、WG（校方媒合，第三方）",
     "founded_year": null,
     "accreditation": null,
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "sprachschule-aktiv-berlin-2",
@@ -682,7 +726,8 @@
     "accommodation": null,
     "founded_year": null,
     "accreditation": null,
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "sprachschule-aktiv-muenchen-2",
@@ -696,7 +741,8 @@
     "accommodation": "Gastfamilie、Studentenunterkunft（校方媒合，第三方）",
     "founded_year": null,
     "accreditation": null,
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "sprachschule-aktiv-hamburg-2",
@@ -710,7 +756,8 @@
     "accommodation": "Gastfamilie、WG（校方媒合，第三方）",
     "founded_year": null,
     "accreditation": null,
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "sprachschule-aktiv-mannheim",
@@ -726,7 +773,8 @@
     "accreditation": [
       "telc官方授權考場"
     ],
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "sprachschule-aktiv-karlsruhe",
@@ -740,7 +788,8 @@
     "accommodation": "Gastfamilie、Wohnheim、Hotel（校方協助搜尋，第三方）",
     "founded_year": null,
     "accreditation": null,
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "sprachschule-aktiv-freiburg",
@@ -754,7 +803,8 @@
     "accommodation": "Studentenwohnheim、Gastfamilie、Hostel（校方協助搜尋，第三方）",
     "founded_year": null,
     "accreditation": null,
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "tandem-koeln",
@@ -771,7 +821,8 @@
       "telc官方考場(A1-C1 Hochschule)",
       "TestDaF官方考場"
     ],
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   },
   {
     "id": "perfekt-deutsch-dortmund",
@@ -788,6 +839,7 @@
       "telc官方考場(多級)",
       "TestDaF官方考場"
     ],
-    "price_hint": null
+    "price_hint": null,
+    "updated_at": "2026-07"
   }
 ]

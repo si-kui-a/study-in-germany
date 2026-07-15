@@ -5,7 +5,8 @@
     "title": "N26 手機銀行",
     "description": "純網路銀行，手機 App 開戶，免除傳統銀行 SCHUFA 障礙。適合剛落地學生。",
     "tags": ["銀行", "App"],
-    "url": "https://n26.com/"
+    "url": "https://n26.com/",
+    "updated_at": "2026-07"
   },
   {
     "id": "gen-revolut",
@@ -13,7 +14,8 @@
     "title": "Revolut · 多幣別金融卡",
     "description": "支援台幣入金、歐元使用、匯率透明。適合台德兩地金流需求。",
     "tags": ["銀行", "App", "多幣別"],
-    "url": "https://www.revolut.com/"
+    "url": "https://www.revolut.com/",
+    "updated_at": "2026-07"
   },
   {
     "id": "visa-fintiba",
@@ -21,7 +23,8 @@
     "title": "Fintiba · 限制提領帳戶",
     "description": "最多留學生使用的線上限制提領帳戶服務商，全程線上、App 管理。",
     "tags": ["限制提領帳戶", "Sperrkonto"],
-    "url": "https://www.fintiba.com/"
+    "url": "https://www.fintiba.com/",
+    "updated_at": "2026-07"
   },
   {
     "id": "visa-expatrio",
@@ -29,7 +32,8 @@
     "title": "Expatrio · 限制提領帳戶",
     "description": "與 Fintiba 類似的服務商，也提供保險與其他留學生服務套裝。",
     "tags": ["限制提領帳戶", "Sperrkonto"],
-    "url": "https://www.expatrio.com/"
+    "url": "https://www.expatrio.com/",
+    "updated_at": "2026-07"
   },
   {
     "id": "arr-schufa",
@@ -37,15 +41,23 @@
     "title": "SCHUFA · 信用紀錄",
     "description": "德國信用紀錄機構，找房、簽電信合約時可能會被要求。剛到德國無紀錄可用其他證明替代。",
     "tags": ["信用", "官方"],
-    "url": "https://www.schufa.de/"
+    "url": "https://www.schufa.de/",
+    "updated_at": "2026-07"
   },
   {
     "id": "wise-transfer",
     "category": "finance",
     "title": "Wise（原 TransferWise）",
-    "description": "跨境匯款與多幣別帳戶服務，適合台灣與德國之間資金移轉，匯率透明、手續費較傳統銀行低。可申請當地帳戶資訊（IBAN）用於德國生活收付款。",
+    "summary": "跨境匯款與多幣別帳戶服務，適合台德資金移轉",
+    "points": [
+      "支援台灣與德國之間跨境資金移轉",
+      "匯率透明、手續費較傳統銀行低",
+      "可申請當地帳戶資訊（IBAN），用於德國生活收付款"
+    ],
+    "detail": "跨境匯款與多幣別帳戶服務，適合台灣與德國之間資金移轉，匯率透明、手續費較傳統銀行低。可申請當地帳戶資訊（IBAN）用於德國生活收付款。",
     "tags": ["銀行", "跨境匯款", "多幣別"],
-    "url": "https://wise.com/"
+    "url": "https://wise.com/",
+    "updated_at": "2026-07"
   },
   {
     "id": "tw-esunbank",
@@ -53,7 +65,8 @@
     "title": "玉山銀行 · 留學金融服務",
     "description": "教育部留學貸款承辦銀行之一，提供存款餘額財力證明、外幣帳戶與海外匯款服務。",
     "tags": ["銀行", "財力證明", "台灣"],
-    "url": "https://www.esunbank.com.tw/"
+    "url": "https://www.esunbank.com.tw/",
+    "updated_at": "2026-07"
   },
   {
     "id": "tw-taishinbank",
@@ -61,6 +74,7 @@
     "title": "台新銀行",
     "description": "台灣主要銀行之一，提供外幣帳戶、海外匯款等服務，可用於留學相關財力需求。",
     "tags": ["銀行", "台灣"],
-    "url": "https://www.taishinbank.com.tw/"
+    "url": "https://www.taishinbank.com.tw/",
+    "updated_at": "2026-07"
   }
 ]

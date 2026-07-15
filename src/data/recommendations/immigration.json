@@ -3,16 +3,30 @@
     "id": "auslaenderbehoerde-berlin",
     "category": "immigration",
     "title": "柏林 外事局（LEA）",
-    "description": "正式名稱為 Landesamt für Einwanderung（LEA）。⚠️ 柏林已於近期廢除傳統線上預約系統，改為全面數位化申請：透過官網線上表單上傳文件，經審核後由機關主動排定時間（多為email通知）。實際流程請以官網當下顯示內容為準。",
+    "summary": "柏林外事局已全面數位化申請，無傳統線上預約",
+    "points": [
+      "正式名稱：Landesamt für Einwanderung（LEA）",
+      "已廢除傳統線上預約系統",
+      "改為官網表單上傳文件、審核後由機關主動排定時間"
+    ],
+    "detail": "正式名稱為 Landesamt für Einwanderung（LEA）。⚠️ 柏林已於近期廢除傳統線上預約系統，改為全面數位化申請：透過官網線上表單上傳文件，經審核後由機關主動排定時間（多為email通知）。實際流程請以官網當下顯示內容為準。",
     "tags": ["外事局", "柏林"],
-    "url": "https://www.berlin.de/einwanderung/"
+    "url": "https://www.berlin.de/einwanderung/",
+    "updated_at": "2026-07"
   },
   {
     "id": "auslaenderbehoerde-muenchen",
     "category": "immigration",
     "title": "慕尼黑 外事局",
-    "description": "正式名稱為 Kreisverwaltungsreferat（KVR）– Ausländerbehörde，於 Servicestelle für Zuwanderung und Einbürgerung 辦理。實際預約與申請流程請以官網當下顯示內容為準，各城市制度變動頻繁。",
+    "summary": "慕尼黑外事局由 Servicestelle 統一辦理相關申請",
+    "points": [
+      "正式名稱：Kreisverwaltungsreferat（KVR）– Ausländerbehörde",
+      "於 Servicestelle für Zuwanderung und Einbürgerung 辦理",
+      "實際預約與申請流程請以官網當下顯示內容為準，各城市制度變動頻繁"
+    ],
+    "detail": "正式名稱為 Kreisverwaltungsreferat（KVR）– Ausländerbehörde，於 Servicestelle für Zuwanderung und Einbürgerung 辦理。實際預約與申請流程請以官網當下顯示內容為準，各城市制度變動頻繁。",
     "tags": ["外事局", "慕尼黑"],
-    "url": "https://stadt.muenchen.de/service/info/servicestelle-fur-zuwanderung-und-einburgerung/10339026/"
+    "url": "https://stadt.muenchen.de/service/info/servicestelle-fur-zuwanderung-und-einburgerung/10339026/",
+    "updated_at": "2026-07"
   }
 ]

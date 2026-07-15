@@ -5,7 +5,8 @@
     "title": "Deutsche Bahn 官方 App",
     "description": "德國國鐵官方 App，全德鐵路時刻表、購票、即時延誤資訊。搭火車必備。",
     "tags": ["交通", "App", "官方"],
-    "url": "https://www.bahn.de/service/mobile/db-navigator"
+    "url": "https://www.bahn.de/service/mobile/db-navigator",
+    "updated_at": "2026-07"
   },
   {
     "id": "gen-bahncard",
@@ -13,7 +14,8 @@
     "title": "BahnCard 折扣卡",
     "description": "德鐵發行的年度折扣卡。BahnCard 25 / 50 / 100 有不同折扣級別，適合常搭火車的人。",
     "tags": ["交通", "折扣"],
-    "url": "https://www.bahn.de/angebot/bahncard"
+    "url": "https://www.bahn.de/angebot/bahncard",
+    "updated_at": "2026-07"
   },
   {
     "id": "gen-google-maps",
@@ -21,6 +23,7 @@
     "title": "Google 地圖 · 大眾運輸",
     "description": "德國大眾運輸整合完整。輸入目的地即可查公車、地鐵、電車、火車最佳路線。",
     "tags": ["交通", "App"],
-    "url": "https://maps.google.com/"
+    "url": "https://maps.google.com/",
+    "updated_at": "2026-07"
   }
 ]

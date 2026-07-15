@@ -28,6 +28,8 @@ const DATA_MAP: Record<string, Recommendation[]> = {
 /**
  * Phase AQ：條目卡片改為正方形小卡 grid（原直排列表形式），
  * 分類重組為 8 新分類（PAT-145）
+ * Phase AS：描述過長項目改用 summary/points/detail 三層結構（PAT-147），
+ * 卡片補上 updated_at 顯示（PAT-148）
  */
 export default function RecommendationCategory() {
   const { slug } = useParams<{ slug: string }>();
@@ -78,33 +80,88 @@ export default function RecommendationCategory() {
       )}
 
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3">
-        {items.map((item) => (
-          <a
-            key={item.id}
-            href={item.url}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="aspect-square flex flex-col justify-between p-3
-                       rounded-lg border border-border-subtle
-                       hover:border-brand-gold transition-colors no-underline"
-          >
-            <div>
-              <div className="text-sm font-semibold text-content-primary line-clamp-2">
-                {item.title}
+        {items.map((item) =>
+          item.summary ? (
+            // Phase AS：描述過長項目改用 summary/points/detail，跳出正方形小卡改為
+            // 較寬的卡片以容納條列重點（PAT-147）；整卡可點擊改為 stretched-link
+            // pattern（絕對定位覆蓋 <a> + 內容 pointer-events-none），因 <details>
+            // 收合區塊不可巢狀在 <a> 內（無效 HTML，且點擊會誤觸外部連結）
+            <div
+              key={item.id}
+              className="relative sm:col-span-2 flex flex-col gap-2 p-3
+                         rounded-lg border border-border-subtle
+                         hover:border-brand-gold transition-colors"
+            >
+              <a
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="absolute inset-0"
+                aria-label={item.title}
+              />
+              <div className="relative pointer-events-none">
+                <div className="text-sm font-semibold text-content-primary line-clamp-2">
+                  {item.title}
+                </div>
+                <p className="text-xs text-content-secondary mt-1">{item.summary}</p>
               </div>
-              <div className="text-xs text-content-muted mt-1 line-clamp-3">
-                {item.description}
+              {item.points && (
+                <ul className="relative pointer-events-none space-y-0.5 text-xs text-content-muted list-disc pl-3.5">
+                  {item.points.map((p, i) => (
+                    <li key={i}>{p}</li>
+                  ))}
+                </ul>
+              )}
+              {item.detail && (
+                <details className="relative z-10 text-xs">
+                  <summary className="cursor-pointer text-content-muted hover:text-content-primary">
+                    查看完整說明
+                  </summary>
+                  <p className="mt-1.5 text-content-secondary leading-relaxed">{item.detail}</p>
+                </details>
+              )}
+              <div className="relative pointer-events-none flex flex-wrap items-center gap-1 mt-auto pt-1">
+                {item.tags?.slice(0, 2).map((tag) => (
+                  <span key={tag} className="text-xs px-1.5 py-0.5 rounded bg-surface-hover text-content-muted">
+                    {tag}
+                  </span>
+                ))}
+                {item.updated_at && (
+                  <span className="text-xs text-content-muted ml-auto">更新於 {item.updated_at}</span>
+                )}
               </div>
             </div>
-            <div className="flex flex-wrap gap-1 mt-2">
-              {item.tags?.slice(0, 2).map((tag) => (
-                <span key={tag} className="text-xs px-1.5 py-0.5 rounded bg-surface-hover text-content-muted">
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </a>
-        ))}
+          ) : (
+            <a
+              key={item.id}
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="aspect-square flex flex-col justify-between p-3
+                         rounded-lg border border-border-subtle
+                         hover:border-brand-gold transition-colors no-underline"
+            >
+              <div>
+                <div className="text-sm font-semibold text-content-primary line-clamp-2">
+                  {item.title}
+                </div>
+                <div className="text-xs text-content-muted mt-1 line-clamp-3">
+                  {item.description}
+                </div>
+              </div>
+              <div className="flex flex-wrap items-center gap-1 mt-2">
+                {item.tags?.slice(0, 2).map((tag) => (
+                  <span key={tag} className="text-xs px-1.5 py-0.5 rounded bg-surface-hover text-content-muted">
+                    {tag}
+                  </span>
+                ))}
+                {item.updated_at && (
+                  <span className="text-xs text-content-muted ml-auto">更新於 {item.updated_at}</span>
+                )}
+              </div>
+            </a>
+          )
+        )}
       </div>
 
       <UserSubmissionsList

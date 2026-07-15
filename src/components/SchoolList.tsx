@@ -22,6 +22,13 @@ export default function SchoolList({ schools }: Props) {
             <span className="text-brand-gold">{s.level}</span>
             <span className="text-content-muted">查看評價 →</span>
           </div>
+          {/* Phase AS：資料查證/建立月份，PAT-148。types.ts 受保護，比照
+              accommodation 既有 as any 慣例讀取未定義於 School 介面的欄位 */}
+          {(s as any).updated_at && (
+            <div className="mt-1 text-xs text-content-muted">
+              更新於 {(s as any).updated_at}
+            </div>
+          )}
         </Link>
       ))}
     </div>

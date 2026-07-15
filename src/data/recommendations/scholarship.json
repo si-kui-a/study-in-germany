@@ -5,7 +5,8 @@
     "title": "DAAD 獎學金資料庫",
     "description": "德國學術交流總署的獎學金資料庫，涵蓋碩士、博士、短期研究等各類獎助。",
     "tags": ["獎學金", "官方", "德國"],
-    "url": "https://www2.daad.de/deutschland/stipendium/en/"
+    "url": "https://www2.daad.de/deutschland/stipendium/en/",
+    "updated_at": "2026-07"
   },
   {
     "id": "sch-erasmus",
@@ -13,7 +14,8 @@
     "title": "Erasmus+ · 歐盟交換計畫",
     "description": "適用於已在歐洲讀書、想去德國交換 3-12 個月的學生。從所屬大學國際處申請。",
     "tags": ["交換", "歐盟"],
-    "url": "https://erasmus-plus.ec.europa.eu/"
+    "url": "https://erasmus-plus.ec.europa.eu/",
+    "updated_at": "2026-07"
   },
   {
     "id": "sch-taiwan-moe",
@@ -21,7 +23,8 @@
     "title": "教育部 · 公費留學與獎學金專區",
     "description": "台灣教育部辦理的公費留學與各項獎學金甄試資訊彙整。",
     "tags": ["獎學金", "官方", "台灣"],
-    "url": "https://depart.moe.edu.tw/ed2500/Content_List.aspx?n=67BD8E03DCFE9837"
+    "url": "https://depart.moe.edu.tw/ed2500/Content_List.aspx?n=67BD8E03DCFE9837",
+    "updated_at": "2026-07"
   },
   {
     "id": "sch-studienstiftung",
@@ -29,7 +32,8 @@
     "title": "Studienstiftung des deutschen Volkes",
     "description": "德國最高等級的學術基金會，門檻極高、需教授強力推薦，含學術網絡與國際會議機會。",
     "tags": ["獎學金", "德國", "頂尖"],
-    "url": "https://www.studienstiftung.de/"
+    "url": "https://www.studienstiftung.de/",
+    "updated_at": "2026-07"
   },
   {
     "id": "sch-konrad-adenauer",
@@ -37,7 +41,8 @@
     "title": "Konrad-Adenauer-Stiftung",
     "description": "CDU 政黨背景的基金會，偏向政治、經濟、法律領域。申請含理念討論。",
     "tags": ["獎學金", "德國", "政黨"],
-    "url": "https://www.kas.de/"
+    "url": "https://www.kas.de/",
+    "updated_at": "2026-07"
   },
   {
     "id": "sch-boell",
@@ -45,6 +50,7 @@
     "title": "Heinrich-Böll-Stiftung",
     "description": "綠黨背景的基金會，偏向環境、性別、人權領域。",
     "tags": ["獎學金", "德國", "政黨"],
-    "url": "https://www.boell.de/"
+    "url": "https://www.boell.de/",
+    "updated_at": "2026-07"
   }
 ]

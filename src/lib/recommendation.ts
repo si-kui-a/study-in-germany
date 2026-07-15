@@ -8,6 +8,8 @@
  * taiwan）→ 新 8 分類（finance/transport/telecom/housing/lookup/scholarship/
  * expense/general），依實用主題而非留德階段分類，見 PAT-145。
  * Phase AR：新增第 9 分類 immigration（外事局），僅收錄已查證連結，見 PAT-146。
+ * Phase AS：描述過長項目改用 summary/points/detail 三層結構（沿用 PAT-135
+ * FAQ 已建立的格式），並全面補上 updated_at，見 PAT-147/148。
  */
 
 export type RecommendationCategory =
@@ -79,7 +81,11 @@ export interface Recommendation {
   id: string;
   category: RecommendationCategory;
   title: string;
-  description: string;
+  description?: string; // 短描述；描述過長改用 summary/points/detail 時可省略
+  summary?: string;    // 首句摘要，開門見山點出用途
+  points?: string[];   // 條列重點，只含原文已有的具體事實，不虛構新數據
+  detail?: string;     // 完整原文，收合顯示
+  updated_at?: string; // 'YYYY-MM'，內容查證/建立月份
   tags: string[];
   url: string;
   note?: string; // 額外註記，例如「需 GitHub 帳號」

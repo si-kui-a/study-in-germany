@@ -145,6 +145,8 @@
 | PAT-144 | CORE_IMMUTABLE | persona_stage 循序推進：全部完成後「前往下一階段」按鈕，await 雲端寫入避免 PAT-139 重演 |
 | PAT-145 | CORE_IMMUTABLE | 推薦專區分類重組：8 新分類（金融/交通/電信/找房/查詢/獎學金/支出/通用）取代舊 6 分類 |
 | PAT-146 | CORE_IMMUTABLE | 加油站新增第 9 分類「外事局」，僅收錄柏林/慕尼黑 2 筆已查證連結；已知缺口：schema.sql CHECK constraint 未含 immigration |
+| PAT-147 | CORE_IMMUTABLE | 加油站卡片摘要化：description>60 字改用 summary/points/detail（PAT-135 格式），stretched-link 解決 details 巢狀在 a 內的問題 |
+| PAT-148 | CORE_IMMUTABLE | 加油站推薦 + 語言學校補 updated_at（YYYY-MM），依 git log 實際 commit 日期核實；修正 spec 誤植的 Phase L→實為 Phase U |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance

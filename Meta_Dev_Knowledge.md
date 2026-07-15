@@ -1648,3 +1648,66 @@ scholarship/expense/general` 8 值，**不含 `immigration`**。若使用者於
 本輪「DB 零觸碰」為明確硬性限制，未獲授權修改 schema.sql，故僅記錄不修復；
 待 Lily 執行一段追加 SQL（`DROP CONSTRAINT` + `ADD CONSTRAINT` 加入
 `'immigration'`）後方可解除此缺口。
+
+## PAT-147 [CORE_IMMUTABLE]: 加油站卡片摘要化結構
+
+`Recommendation` 型別（`src/lib/recommendation.ts`）擴展 `summary`/`points`/
+`detail`/`updated_at`（皆 optional），沿用 FAQ 的三層結構（PAT-135／
+`src/lib/faq.ts` 的 `FaqEntry`）。`description` 同步改為 optional——採用
+`summary` 格式的項目省略 `description`，比照 `FaqEntry.a?` 的既有作法（切換
+格式後簡單欄位省略，而非兩者並存造成內容重複）。
+
+**判定門檻**：以字元數（非位元組，`[...text].length`）逐一量測全部 9 個分類
+JSON 檔案的 `description`，僅 3 筆超過 60 字（`finance.json` 的
+`wise-transfer` 67 字、`immigration.json` 的兩筆分別 123/137 字），依此
+客觀門檻重構，未觸碰其餘 38 筆已經精簡的項目（例如 `arr-studentenwerk`/
+`tw-taipei-office-berlin` 雖為複句但皆在門檻內，維持現狀不強行拆解）。
+
+**卡片渲染結構性問題與修正**（`RecommendationCategory.tsx`）：原本整張卡是
+單一 `<a>`（點擊即開外部連結），若直接把 `<details>`「查看完整說明」嵌入
+`<a>` 內屬無效 HTML，且點擊 summary 展開時點擊事件會冒泡觸發外層 `<a>`
+一併跳轉離開頁面。改為含 `summary` 的項目使用「stretched-link」寫法：外層
+改為 `<div className="relative">`，內部疊一個 `absolute inset-0` 的
+`<a>` 作為全卡點擊區，上層文字內容（標題/摘要/條列/標籤）加
+`pointer-events-none` 讓點擊穿透到底層連結，唯獨 `<details>` 本身維持
+預設 `pointer-events: auto` 並給 `relative z-10`，使其點擊在到達底層連結前
+被攔截。已透過瀏覽器實測驗證：點擊「查看完整說明」僅展開/收合，不會觸發
+外部連結跳轉。
+
+無 `summary` 的項目（多數，38/41）維持原 `aspect-square` 正方形小卡不變；
+有 `summary` 的項目改用 `sm:col-span-2` 讓出較寬空間容納條列重點，自然高度
+（無 `aspect-square`），已於桌面（1280px）與手機（375px）寬度分別實測，
+CSS Grid + 相鄰格 `aspect-square` 各自依寬度獨立計算高度，未因同列出現一張
+較高的寬卡而被拉伸變形（`aspect-ratio` 優先於 grid stretch）。
+
+## PAT-148 [CORE_IMMUTABLE]: 靜態內容補齊更新日期
+
+加油站推薦項目（9 個分類、41 項，含 Phase AR 新增的 2 項）與語言學校資料
+（52 所）皆補上 `updated_at`（`YYYY-MM`）並於卡片顯示。範圍界定：僅適用於
+「網站方查證提供的靜態知識內容」，佈告欄使用者貼文已有 `created_at` 時間戳、
+性質不同，不在此範圍。
+
+**日期依據**（逐一以 `git log` 核對實際建檔/查證的 commit 日期，不可虛構）：
+- 加油站推薦：原 39 項（現 8 分類，`finance`/`transport`/`telecom`/
+  `housing`/`lookup`/`scholarship`/`expense`/`general`）建於 Phase H
+  （commit `6067bbc`，2026-07-11）；Wise（`wise-transfer`）建於 Phase AO
+  （commit `e2332f4`，2026-07-15）；外事局 2 項建於 Phase AR（commit
+  `45b369c`，2026-07-15）。
+- 語言學校（52 所）：初版 5 所（`goethe-berlin`/`goethe-muenchen`/
+  `did-frankfurt`/`fu-sprachenzentrum`/`carl-duisberg-koeln`）於未使用
+  Phase 字母命名前的 MVP v2 基礎 commit（`a6e4edc`，2026-07-07）建立；
+  Phase E（commit `8d06309`，2026-07-11）擴充 12 所（5→17）；Phase L
+  （commit `9a9d4fe`，2026-07-12）擴充 10 所已核實（17→27）；Batch 2 的
+  25 所（27→52）實際屬於 **Phase U**（commit `b9278e8`，2026-07-12），
+  **非 spec 描述的「Phase L（Batch 2 · 25 所）」**——已依 `git show` 逐筆
+  比對各 commit 新增的學校 `id` 清單修正此誤植，詳見 activity.log DEV-N。
+
+因本專案開發歷程截至目前（2026-07-15）全數集中於同一個月，上述所有
+`updated_at` 實際查證/建立日期換算為 `YYYY-MM` 後皆為 `"2026-07"`，故
+目前全站顯示值完全相同——這是真實查證後的結果，非簡化偷懶；此欄位的
+區辨效果會隨未來跨月份的新增/查證內容而逐漸顯現。
+
+`School` 型別定義於受保護的 `src/lib/types.ts`，未新增 `updated_at`
+欄位；比照既有 `accommodation`/`founded_year` 等擴充欄位的既定作法
+（`SchoolDetail.tsx`/`Schools.tsx` 已有 `(school as any).accommodation`
+先例），改用 `(s as any).updated_at` 型別斷言讀取，不觸碰保護檔案。

@@ -137,6 +137,12 @@ export default function SchoolDetail() {
                   · {reviews.length} 則評價
                 </span>
               )}
+              {/* Phase AS：資料查證/建立月份，PAT-148（as any 慣例同 accommodation） */}
+              {(school as any).updated_at && (
+                <span className="text-content-muted">
+                  更新於 {(school as any).updated_at}
+                </span>
+              )}
             </div>
 
             {reviews.length > 0 && (
