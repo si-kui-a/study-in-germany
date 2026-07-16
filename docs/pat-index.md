@@ -160,6 +160,7 @@
 | PAT-159 | CORE_IMMUTABLE | 導覽完成後續彈窗須掛 App 根層級：OnboardingModal 完成時 navigate() 會卸載 Home，狀態需用 window CustomEvent 廣播而非 props/state 耦合 |
 | PAT-160 | CORE_IMMUTABLE | 多重觸發路徑功能規則：每條獨立使用者路徑須各自瀏覽器實測，程式碼審閱不可替代任一路徑的實機驗證（起因：略過導覽路徑未實測即宣稱不觸發） |
 | PAT-161 | CORE_IMMUTABLE | Phase BA 推翻 AX Path B「略過→永久不再彈」設計：每次造訪皆彈導覽視窗+登入同意提示，直到登入為止；Lily 三輪確認的產品方向調整，非工程失誤，與低摩擦原則有意張力 |
+| PAT-162 | CORE_IMMUTABLE | 全站文案準則（Phase BB 建立）+ 判斷框架：「使用者」作內容標籤/第三方署名可留，取代「你」對讀者說話則違規；導覽短詞彙不套用散文結構要求 |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance

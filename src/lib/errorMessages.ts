@@ -15,7 +15,7 @@ const CODE_MAP: Record<string, string> = {
   '42P01':    '資料表不存在——資料庫可能尚未遷移完成',
   '42703':    '欄位不存在——資料庫 schema 版本可能過舊',
   'PGRST116': '找不到資料',
-  'PGRST204': '欄位不匹配——請檢查 payload',
+  'PGRST204': '欄位不匹配，請重新整理頁面後再試',
 };
 
 const MESSAGE_PATTERNS: [RegExp, string][] = [

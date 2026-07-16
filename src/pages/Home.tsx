@@ -12,6 +12,7 @@ import {
 import HeroSection from '../components/HeroSection';
 import Announcements from '../components/Announcements';
 import HotSchoolsCarousel from '../components/HotSchoolsCarousel';
+import HotBoardCarousel from '../components/HotBoardCarousel';
 import OnboardingModal from '../components/OnboardingModal';
 import { notifyOnboardingStageSelected } from '../components/PostOnboardingLoginPrompt';
 import { notifyOnboardingModalClosed } from '../components/SkipLoginConsentPrompt';
@@ -103,7 +104,10 @@ const PORTAL_ITEMS = [
  * Phase AQ：全部完成訊息追加「前往下一階段」按鈕，persona_stage 循序推進
  *   （visa_prep→landing→settled→leaving），非自動跳轉、使用者需主動點擊
  *   （PAT-144）
- * 結構：Hero 天際線 → 下一步提示（條件式）→ Portal (6 卡) → 熱門語校 → 最新公告
+ * Phase BB：新增「熱門討論區」區塊（比照熱門語校視覺結構，排序依讚數/留言數，
+ *   見 PAT-162）；全站文案語氣治理同步進行，此頁的填詞式贅語一併簡化
+ * 結構：Hero 天際線 → 下一步提示（條件式）→ Portal (6 卡) → 熱門語校 →
+ *   熱門討論區 → 最新公告
  */
 export default function Home() {
   const [onboardingOpen, setOnboardingOpen] = useState(false);
@@ -166,7 +170,7 @@ export default function Home() {
           {nextStage ? (
             <>
               <p className="text-xs text-content-muted mt-1">
-                準備好了嗎？可以前往下一個階段查看對應的推薦步驟。
+                可前往下一個階段查看對應的推薦步驟。
               </p>
               <button
                 type="button"
@@ -246,6 +250,17 @@ export default function Home() {
           </Link>
         </div>
         <HotSchoolsCarousel />
+      </section>
+
+      {/* Hot Board */}
+      <section>
+        <div className="flex items-baseline justify-between mb-4">
+          <h2 className="text-lg font-medium">熱門討論區</h2>
+          <Link to="/board" className="text-xs no-underline">
+            全部討論 →
+          </Link>
+        </div>
+        <HotBoardCarousel />
       </section>
 
       {/* Announcements */}

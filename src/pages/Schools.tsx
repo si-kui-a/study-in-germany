@@ -73,7 +73,7 @@ export default function Schools() {
 
       {filtered.length === 0 ? (
         <div className="card text-center text-content-muted py-8">
-          沒有符合條件的學校
+          沒有符合條件的學校，試試調整篩選條件。
         </div>
       ) : (
         <SchoolList schools={filtered} />

@@ -172,7 +172,7 @@ export default function MyProfile() {
   if (!user) {
     return (
       <div className="py-16 text-center text-content-secondary">
-        請先登入
+        請先登入以查看你的個人資料。
       </div>
     );
   }
