@@ -1,51 +1,346 @@
 [
   {
-    "id": "arr-wg-gesucht",
+    "id": "housing-wg-gesucht",
     "category": "housing",
-    "title": "wg-gesucht.de · 找 WG",
-    "summary": "德國最大的合租房搜尋平台，找 WG 首選",
+    "title": "WG-Gesucht",
+    "summary": "德國最大免佣金合租平台，1999 年起經營至今",
     "points": [
-      "有中文介面"
+      "FEE：部分收費（基本免費，進階 WG-Gesucht+ 需付費）",
+      "適合：學生／上班族／通用",
+      "長租"
     ],
-    "tags": ["找房", "WG"],
+    "tags": ["合租", "套房", "通用"],
     "url": "https://www.wg-gesucht.de/",
-    "updated_at": "2026-07"
+    "updated_at": "2026-07",
+    "fee_status": "partial",
+    "term": ["long"],
+    "target": ["student", "shared", "room", "general"]
   },
   {
-    "id": "arr-immoscout",
+    "id": "housing-kleinanzeigen",
     "category": "housing",
-    "title": "ImmobilienScout24 · 找整套房",
-    "summary": "整套公寓、長租房源平台",
+    "title": "Kleinanzeigen（原 eBay 分類廣告）",
+    "summary": "私人房東直聯的德國最大分類廣告平台",
     "points": [
-      "適合家庭或想獨居的學生"
+      "FEE：免費",
+      "適合：通用",
+      "長租、短租皆有"
     ],
-    "tags": ["找房", "整套房"],
+    "tags": ["合租", "套房", "通用"],
+    "url": "https://www.kleinanzeigen.de/",
+    "updated_at": "2026-07",
+    "fee_status": "free",
+    "term": ["long", "short"],
+    "target": ["general", "shared", "room"]
+  },
+  {
+    "id": "housing-studenten-wg",
+    "category": "housing",
+    "title": "Studenten-WG",
+    "summary": "專攻學生族群的合租媒合平台",
+    "points": [
+      "FEE：免費",
+      "適合：學生",
+      "長租"
+    ],
+    "tags": ["合租", "學生"],
+    "url": "https://www.studenten-wg.de/",
+    "updated_at": "2026-07",
+    "fee_status": "free",
+    "term": ["long"],
+    "target": ["student", "shared"]
+  },
+  {
+    "id": "housing-studenten-wohnung",
+    "category": "housing",
+    "title": "studenten-wohnung.de",
+    "summary": "學生公寓／WG 媒合平台",
+    "points": [
+      "FEE：免費",
+      "適合：學生",
+      "長租"
+    ],
+    "tags": ["合租", "學生"],
+    "url": "https://www.studenten-wohnung.de/",
+    "updated_at": "2026-07",
+    "fee_status": "free",
+    "term": ["long"],
+    "target": ["student", "shared"]
+  },
+  {
+    "id": "housing-wg-welt",
+    "category": "housing",
+    "title": "wg-welt.de",
+    "summary": "合租媒合平台，附 WG 生活指南",
+    "points": [
+      "FEE：免費",
+      "適合：學生／通用",
+      "長租"
+    ],
+    "tags": ["合租", "學生", "通用"],
+    "url": "https://www.wg-welt.de/",
+    "updated_at": "2026-07",
+    "fee_status": "free",
+    "term": ["long"],
+    "target": ["shared", "student", "general"]
+  },
+  {
+    "id": "housing-easywg",
+    "category": "housing",
+    "title": "easywg.de",
+    "summary": "合租／短租房源平台，多地與 Mitwohnzentrale 業者合作",
+    "points": [
+      "FEE：免費／部分功能收費",
+      "適合：通用",
+      "短租"
+    ],
+    "detail": "原查證文檔曾標記本平台「已停用」，本次查證更正：2023 年後仍持續被引用，多地 Mitwohnzentrale 合作業者仍在使用，非停業狀態。",
+    "tags": ["合租", "短租"],
+    "url": "https://www.easywg.de/",
+    "updated_at": "2026-07",
+    "fee_status": "partial",
+    "term": ["short"],
+    "target": ["shared", "general"]
+  },
+  {
+    "id": "housing-wohnungsboerse",
+    "category": "housing",
+    "title": "wohnungsboerse.net",
+    "summary": "雙邊免費刊登的房源平台",
+    "points": [
+      "FEE：免費",
+      "適合：通用",
+      "長租"
+    ],
+    "tags": ["合租", "通用"],
+    "url": "https://www.wohnungsboerse.net/",
+    "updated_at": "2026-07",
+    "fee_status": "free",
+    "term": ["long"],
+    "target": ["general", "shared"]
+  },
+  {
+    "id": "housing-zwischenmiete",
+    "category": "housing",
+    "title": "zwischenmiete.de",
+    "summary": "主打取代傳統 Mitwohnzentrale 收費模式的短租平台",
+    "points": [
+      "FEE：免費（官網聲明無仲介費）",
+      "適合：通用／學生",
+      "短租"
+    ],
+    "tags": ["合租", "短租"],
+    "url": "https://www.zwischenmiete.de/",
+    "updated_at": "2026-07",
+    "fee_status": "free",
+    "term": ["short"],
+    "target": ["shared", "general", "student"]
+  },
+  {
+    "id": "housing-wohnpool",
+    "category": "housing",
+    "title": "wohnpool.de",
+    "summary": "傳統 Mitwohnzentrale 性質的短租房源平台",
+    "points": [
+      "FEE：部分收費（傳統 Mitwohnzentrale 性質）",
+      "適合：通用",
+      "短租"
+    ],
+    "tags": ["套房", "短租"],
+    "url": "https://www.wohnpool.de/",
+    "updated_at": "2026-07",
+    "fee_status": "partial",
+    "term": ["short"],
+    "target": ["room", "general"]
+  },
+  {
+    "id": "housing-immobilienscout24",
+    "category": "housing",
+    "title": "ImmobilienScout24",
+    "summary": "德國房源量最大的整合型房產平台",
+    "points": [
+      "FEE：部分收費（Premium／仲介物件收費）",
+      "適合：通用",
+      "長租"
+    ],
+    "tags": ["合租", "套房", "通用"],
     "url": "https://www.immobilienscout24.de/",
-    "updated_at": "2026-07"
+    "updated_at": "2026-07",
+    "fee_status": "partial",
+    "term": ["long"],
+    "target": ["general", "shared", "room"]
   },
   {
-    "id": "arr-immowelt",
+    "id": "housing-immowelt",
     "category": "housing",
-    "title": "Immowelt · 房源平台",
-    "summary": "另一常見的找房平台",
+    "title": "Immowelt",
+    "summary": "房源平台，仲介物件占比高",
     "points": [
-      "介面較簡潔"
+      "FEE：部分收費（仲介費）",
+      "適合：通用",
+      "長租"
     ],
-    "tags": ["找房"],
+    "tags": ["通用"],
     "url": "https://www.immowelt.de/",
-    "updated_at": "2026-07"
+    "updated_at": "2026-07",
+    "fee_status": "partial",
+    "term": ["long"],
+    "target": ["general"]
   },
   {
-    "id": "arr-studentenwerk",
+    "id": "housing-housinganywhere",
     "category": "housing",
-    "title": "Studentenwerk · 學生宿舍",
-    "summary": "各大學所屬的學生服務機構，管理學生宿舍申請",
+    "title": "HousingAnywhere",
+    "summary": "國際學生取向、線上付款保障機制的長租平台",
     "points": [
-      "宿舍便宜但等候期長",
-      "建議儘早申請"
+      "FEE：收費（Tenant Protection 費）",
+      "適合：國際學生",
+      "長租"
     ],
-    "tags": ["宿舍", "官方"],
+    "tags": ["合租", "套房", "學生"],
+    "url": "https://housinganywhere.com/",
+    "updated_at": "2026-07",
+    "fee_status": "paid",
+    "term": ["long"],
+    "target": ["student", "shared", "room"]
+  },
+  {
+    "id": "housing-nestpick",
+    "category": "housing",
+    "title": "Nestpick",
+    "summary": "整合型國際學生房源搜尋平台",
+    "points": [
+      "FEE：瀏覽免費／部分服務收費",
+      "適合：國際學生",
+      "長租"
+    ],
+    "tags": ["套房", "學生"],
+    "url": "https://www.nestpick.com/",
+    "updated_at": "2026-07",
+    "fee_status": "partial",
+    "term": ["long"],
+    "target": ["student", "room"]
+  },
+  {
+    "id": "housing-uhomes",
+    "category": "housing",
+    "title": "Uhomes",
+    "summary": "涵蓋 The Fizz／Yugo 等品牌房源的國際學生住宿平台",
+    "points": [
+      "FEE：依房源而定，部分收費",
+      "適合：國際學生",
+      "長租"
+    ],
+    "tags": ["套房", "合租", "學生"],
+    "url": "https://www.uhomes.com/",
+    "updated_at": "2026-07",
+    "fee_status": "partial",
+    "term": ["long"],
+    "target": ["student", "room", "shared"]
+  },
+  {
+    "id": "housing-the-fizz",
+    "category": "housing",
+    "title": "The Fizz",
+    "summary": "國際學生公寓品牌，服務費內含租金（bill-inclusive）",
+    "points": [
+      "FEE：服務費內含租金，無額外仲介費",
+      "適合：國際學生",
+      "長租",
+      "多城：柏林／漢堡／慕尼黑／亞琛／法蘭克福"
+    ],
+    "tags": ["套房", "學生"],
+    "url": "https://www.thefizz.com/",
+    "updated_at": "2026-07",
+    "fee_status": "free",
+    "term": ["long"],
+    "target": ["student", "room"]
+  },
+  {
+    "id": "housing-yugo",
+    "category": "housing",
+    "title": "Yugo",
+    "summary": "國際學生公寓品牌，官方標示 No Service Fee",
+    "points": [
+      "FEE：官方標示無服務費，租金內含帳單",
+      "適合：國際學生",
+      "長租",
+      "9 國 76 城市"
+    ],
+    "tags": ["套房", "學生"],
+    "url": "https://www.yugo.com/",
+    "updated_at": "2026-07",
+    "fee_status": "free",
+    "term": ["long"],
+    "target": ["student", "room"]
+  },
+  {
+    "id": "housing-daad-wohnheimfinder",
+    "category": "housing",
+    "title": "DAAD Wohnheimfinder",
+    "summary": "官方學生宿舍資料庫",
+    "points": [
+      "FEE：免費查詢",
+      "適合：學生",
+      "長租"
+    ],
+    "tags": ["宿舍", "學生", "官方"],
+    "url": "https://www.daad.de/",
+    "updated_at": "2026-07",
+    "fee_status": "free",
+    "term": ["long"],
+    "target": ["student"]
+  },
+  {
+    "id": "housing-studierendenwerk",
+    "category": "housing",
+    "title": "Studierendenwerk（各地）",
+    "summary": "各地學生服務機構管理的官方學生宿舍",
+    "points": [
+      "FEE：免費申請（需另付租金）",
+      "適合：學生",
+      "長租",
+      "非單一網址，依所在城市查詢"
+    ],
+    "tags": ["宿舍", "學生", "官方"],
     "url": "https://www.studentenwerke.de/",
-    "updated_at": "2026-07"
+    "updated_at": "2026-07",
+    "fee_status": "free",
+    "term": ["long"],
+    "target": ["student"]
+  },
+  {
+    "id": "housing-dolc",
+    "category": "housing",
+    "title": "萍聚社區／德國熱線",
+    "summary": "全德適用的華人社群論壇，租房／二手板塊活躍",
+    "points": [
+      "FEE：免費",
+      "適合：華人（通用／合租／學生皆有）",
+      "長租、短租皆有"
+    ],
+    "tags": ["通用", "合租", "學生"],
+    "url": "https://www.dolc.de/",
+    "updated_at": "2026-07",
+    "fee_status": "free",
+    "term": ["long", "short"],
+    "target": ["general", "shared", "student"]
+  },
+  {
+    "id": "housing-kaiyuan",
+    "category": "housing",
+    "title": "開元",
+    "summary": "華人社群論壇（南德為主），租房資訊活躍",
+    "points": [
+      "FEE：免費",
+      "適合：華人（南德為主）",
+      "長租、短租皆有"
+    ],
+    "tags": ["通用", "學生"],
+    "url": "https://www.kaiyuan.de/",
+    "updated_at": "2026-07",
+    "fee_status": "free",
+    "term": ["long", "short"],
+    "target": ["general", "student"]
   }
 ]

@@ -841,5 +841,23 @@
     ],
     "price_hint": null,
     "updated_at": "2026-07"
+  },
+  {
+    "id": "humboldt-institut-konstanz",
+    "name_zh": "洪堡學院 Konstanz",
+    "name_de": "Humboldt-Institut Konstanz",
+    "city": "Konstanz",
+    "city_key": "konstanz",
+    "level": "A1–C2",
+    "website": "https://www.humboldt-institut.org/deutschkurse-in/konstanz/",
+    "note": "與柏林為洪堡學院全德僅二處成人常年校區之一；TestDaF、telc 官方考試中心，A1–C2 全級別皆有密集班與個人班。",
+    "accommodation": "校內附設單人/雙人房（含衛浴）",
+    "founded_year": null,
+    "accreditation": [
+      "TestDaF考場",
+      "telc考場"
+    ],
+    "price_hint": null,
+    "updated_at": "2026-07"
   }
 ]

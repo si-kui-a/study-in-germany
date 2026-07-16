@@ -21,6 +21,7 @@ import Duisburg from './Duisburg';
 import Dortmund from './Dortmund';
 import Karlsruhe from './Karlsruhe';
 import Regensburg from './Regensburg';
+import Konstanz from './Konstanz';
 import Fallback from './Fallback';
 
 const REGISTRY: Record<string, FC<{ className?: string }>> = {
@@ -46,6 +47,7 @@ const REGISTRY: Record<string, FC<{ className?: string }>> = {
   dortmund: Dortmund,
   karlsruhe: Karlsruhe,
   regensburg: Regensburg,
+  konstanz: Konstanz,
 };
 
 export function CityIllustration({ cityKey, className }: { cityKey?: string; className?: string }) {

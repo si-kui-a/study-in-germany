@@ -89,4 +89,34 @@ export interface Recommendation {
   tags: string[];
   url: string;
   note?: string; // 額外註記，例如「需 GitHub 帳號」
+
+  // Phase BD：找房分類篩選欄位（僅 category === 'housing' 使用，其餘分類留空）
+  fee_status?: HousingFeeStatus;
+  term?: HousingTerm[];
+  target?: HousingTarget[];
 }
+
+/** 服務費/仲介費狀態 */
+export type HousingFeeStatus = 'free' | 'partial' | 'paid' | 'unknown';
+export const HOUSING_FEE_STATUS_LABEL: Record<HousingFeeStatus, string> = {
+  free: '免費',
+  partial: '部分收費',
+  paid: '收費',
+  unknown: '未知',
+};
+
+/** 長租／短租，同一平台可能兩者皆支援 */
+export type HousingTerm = 'long' | 'short';
+export const HOUSING_TERM_LABEL: Record<HousingTerm, string> = {
+  long: '長租',
+  short: '短租',
+};
+
+/** 適合族群，同一平台可能對應多個 */
+export type HousingTarget = 'student' | 'general' | 'shared' | 'room';
+export const HOUSING_TARGET_LABEL: Record<HousingTarget, string> = {
+  student: '學生',
+  general: '通用',
+  shared: '合租',
+  room: '套房',
+};

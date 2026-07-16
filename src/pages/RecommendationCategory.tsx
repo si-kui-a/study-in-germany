@@ -1,6 +1,9 @@
+import { useMemo, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { RECOMMENDATION_CATEGORIES } from '../lib/recommendation';
-import type { Recommendation } from '../lib/recommendation';
+import {
+  RECOMMENDATION_CATEGORIES, HOUSING_FEE_STATUS_LABEL, HOUSING_TERM_LABEL, HOUSING_TARGET_LABEL,
+} from '../lib/recommendation';
+import type { Recommendation, HousingFeeStatus, HousingTerm, HousingTarget } from '../lib/recommendation';
 import { RecommendationCategoryIcon } from '../assets/icons/recommendation';
 import UserSubmissionsList from '../components/UserSubmissionsList';
 import ImmigrationGuide from '../components/ImmigrationGuide';
@@ -26,6 +29,13 @@ const DATA_MAP: Record<string, Recommendation[]> = {
   general: generalData as Recommendation[],
 };
 
+type FeeStatusFilter = 'all' | HousingFeeStatus;
+type TermFilter = 'all' | HousingTerm;
+
+const FEE_STATUS_OPTIONS: FeeStatusFilter[] = ['all', 'free', 'partial', 'paid', 'unknown'];
+const TERM_OPTIONS: TermFilter[] = ['all', 'long', 'short'];
+const TARGET_OPTIONS: HousingTarget[] = ['student', 'general', 'shared', 'room'];
+
 /**
  * Phase AQ：分類重組為 8 新分類（PAT-145）
  * Phase AS：描述過長項目改用 summary/points/detail 三層結構（PAT-147）
@@ -41,6 +51,29 @@ export default function RecommendationCategory() {
   const { slug } = useParams<{ slug: string }>();
   const meta = RECOMMENDATION_CATEGORIES.find((c) => c.key === slug);
   const items = slug ? DATA_MAP[slug] : null;
+  const isHousing = slug === 'housing';
+
+  // Phase BD：找房分類篩選（fee_status/term 單選、target 可複選），沿用
+  // Schools.tsx 的 <select> 互動模式；target 因需複選改用 chip 切換
+  // （比照 Board.tsx 既有的 filter chip 視覺樣式，選取邏輯改為獨立切換）
+  const [feeStatusFilter, setFeeStatusFilter] = useState<FeeStatusFilter>('all');
+  const [termFilter, setTermFilter] = useState<TermFilter>('all');
+  const [targetFilter, setTargetFilter] = useState<HousingTarget[]>([]);
+
+  const toggleTarget = (t: HousingTarget) => {
+    setTargetFilter((prev) => (prev.includes(t) ? prev.filter((x) => x !== t) : [...prev, t]));
+  };
+
+  const visibleItems = useMemo(() => {
+    if (!items || !isHousing) return items ?? [];
+    return items.filter((item) => {
+      if (feeStatusFilter !== 'all' && item.fee_status !== feeStatusFilter) return false;
+      if (termFilter !== 'all' && !item.term?.includes(termFilter)) return false;
+      if (targetFilter.length > 0 && !targetFilter.some((t) => item.target?.includes(t))) return false;
+      return true;
+    });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [items, isHousing, feeStatusFilter, termFilter, targetFilter]);
 
   if (!meta || !items) {
     return (
@@ -96,8 +129,68 @@ export default function RecommendationCategory() {
         </div>
       )}
 
+      {/* Phase BD：找房分類篩選（PAT-55 既有 <select> 互動模式 + Board.tsx
+          既有 chip 視覺樣式，選取邏輯改為可複選切換） */}
+      {isHousing && (
+        <div className="flex flex-wrap items-center gap-3">
+          <select
+            value={feeStatusFilter}
+            onChange={(e) => setFeeStatusFilter(e.target.value as FeeStatusFilter)}
+            className="text-sm px-3 py-2 rounded-lg border border-border-subtle
+                       bg-surface-canvas text-content-primary
+                       focus:outline-none focus:border-brand-burgundy
+                       hover:border-brand-gold transition-colors"
+          >
+            <option value="all">FEE：任意</option>
+            {FEE_STATUS_OPTIONS.filter((f) => f !== 'all').map((f) => (
+              <option key={f} value={f}>{HOUSING_FEE_STATUS_LABEL[f]}</option>
+            ))}
+          </select>
+
+          <select
+            value={termFilter}
+            onChange={(e) => setTermFilter(e.target.value as TermFilter)}
+            className="text-sm px-3 py-2 rounded-lg border border-border-subtle
+                       bg-surface-canvas text-content-primary
+                       focus:outline-none focus:border-brand-burgundy
+                       hover:border-brand-gold transition-colors"
+          >
+            <option value="all">租期：任意</option>
+            {TERM_OPTIONS.filter((t) => t !== 'all').map((t) => (
+              <option key={t} value={t}>{HOUSING_TERM_LABEL[t]}</option>
+            ))}
+          </select>
+
+          <div className="flex flex-wrap gap-2">
+            {TARGET_OPTIONS.map((t) => (
+              <button
+                key={t}
+                type="button"
+                onClick={() => toggleTarget(t)}
+                className={`px-3 py-1.5 text-xs rounded-lg border transition-colors ${
+                  targetFilter.includes(t)
+                    ? 'border-brand-burgundy text-brand-burgundy bg-brand-burgundy/5'
+                    : 'border-border-subtle text-content-secondary hover:border-border-strong'
+                }`}
+              >
+                {HOUSING_TARGET_LABEL[t]}
+              </button>
+            ))}
+          </div>
+
+          <span className="text-xs text-content-muted ml-auto">
+            共 {visibleItems.length} 項
+          </span>
+        </div>
+      )}
+
+      {isHousing && visibleItems.length === 0 ? (
+        <div className="card text-center text-content-muted py-8">
+          沒有符合條件的平台，試試調整篩選條件。
+        </div>
+      ) : (
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-        {items.map((item) => (
+        {visibleItems.map((item) => (
           <div key={item.id} className="card space-y-2">
             <div className="flex items-start justify-between gap-3">
               <h3 className="text-sm font-semibold text-content-primary leading-snug">
@@ -149,6 +242,7 @@ export default function RecommendationCategory() {
           </div>
         ))}
       </div>
+      )}
 
       <UserSubmissionsList
         submissionType="new_recommendation"
