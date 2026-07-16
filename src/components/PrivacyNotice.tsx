@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-type Variant = 'listing' | 'review';
+type Variant = 'listing' | 'review' | 'login';
 
 interface Props {
   checked: boolean;
@@ -13,6 +13,8 @@ const MESSAGE: Record<Variant, string> = {
     '我同意將填寫的聯絡方式公開顯示於討論區（任何訪客皆可見），且貼文於 60 天後自動下架。',
   review:
     '我了解此評價將公開顯示，且我的 Google 顯示名稱與頭像會一併公開。',
+  // Phase BA：登入前同意勾選，訊息留空，僅呈現後方固定的「我已閱讀並同意隱私政策」
+  login: '',
 };
 
 /** 發文前的隱私同意勾選。未勾選時表單不得送出。 */

@@ -14,8 +14,9 @@ import Announcements from '../components/Announcements';
 import HotSchoolsCarousel from '../components/HotSchoolsCarousel';
 import OnboardingModal from '../components/OnboardingModal';
 import { notifyOnboardingStageSelected } from '../components/PostOnboardingLoginPrompt';
+import { notifyOnboardingModalClosed } from '../components/SkipLoginConsentPrompt';
 import {
-  isOnboardingCompleted, getLocalPersonaStage, setLocalPersonaStage, PERSONA_STAGE_LABELS,
+  getLocalPersonaStage, setLocalPersonaStage, PERSONA_STAGE_LABELS,
 } from '../lib/onboarding';
 import type { PersonaStage } from '../lib/onboarding';
 import { getNextStepSuggestion } from '../lib/nextStep';
@@ -109,7 +110,7 @@ export default function Home() {
   const [advancing, setAdvancing] = useState(false);
   const localStage = getLocalPersonaStage();
   const { progress } = useWorkflowProgressContext();
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
 
   let nudge: { moduleSlug: string; moduleName: string; stepNumber: number; stepTitle: string } | null = null;
   let allStepsDone = false;
@@ -130,11 +131,15 @@ export default function Home() {
     }
   }
 
+  // Phase BA：導覽視窗顯示與否改綁定登入狀態，不再綁定 onboarding_completed
+  // 旗標——未登入者每次造訪都顯示（推翻 AX 的「只在首次造訪跳一次」設計，
+  // 見 PAT-159）；等 authLoading 結束才判斷，避免已登入者在 session 判定
+  // 完成前短暫閃現導覽視窗
   useEffect(() => {
-    if (!isOnboardingCompleted()) {
-      setOnboardingOpen(true);
+    if (!authLoading) {
+      setOnboardingOpen(!user);
     }
-  }, []);
+  }, [authLoading, user]);
 
   const nextStage = localStage ? getNextStage(localStage) : null;
 
@@ -257,7 +262,10 @@ export default function Home() {
 
       <OnboardingModal
         open={onboardingOpen}
-        onClose={() => setOnboardingOpen(false)}
+        onClose={() => {
+          setOnboardingOpen(false);
+          notifyOnboardingModalClosed();
+        }}
         onStageSelected={notifyOnboardingStageSelected}
       />
     </div>

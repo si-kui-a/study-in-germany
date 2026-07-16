@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/useAuth';
@@ -6,6 +6,7 @@ import {
   PERSONA_STAGE_LABELS,
   PERSONA_MODULE_MAP,
   markOnboardingCompleted,
+  markSkippedOnboardingBefore,
   setLocalPersonaStage,
 } from '../lib/onboarding';
 import type { PersonaStage } from '../lib/onboarding';
@@ -29,12 +30,32 @@ export default function OnboardingModal({ open, onClose, onStageSelected }: Prop
   const [step, setStep] = useState<Step>('stage');
   const [selectedStage, setSelectedStage] = useState<PersonaStage | null>(null);
 
+  /** Phase BA：略過導覽的統一出口——略過按鈕／ESC／背景點擊／關閉 X 皆走這裡，
+   * 一律寫入 has_skipped_onboarding_before 永久旗標（見 PAT-161）。與
+   * handleFinish（選定階段完成）路徑完全分開，不影響 AX 既有 Path A 邏輯 */
+  const handleSkipClose = () => {
+    markOnboardingCompleted();
+    markSkippedOnboardingBefore();
+    onClose();
+  };
+
+  useEffect(() => {
+    if (!open) return;
+    const handler = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        handleSkipClose();
+      }
+    };
+    window.addEventListener('keydown', handler);
+    return () => window.removeEventListener('keydown', handler);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [open]);
+
   if (!open) return null;
 
   const handleSelectStage = async (stage: PersonaStage | 'skip') => {
     if (stage === 'skip') {
-      markOnboardingCompleted();
-      onClose();
+      handleSkipClose();
       return;
     }
 
@@ -59,12 +80,23 @@ export default function OnboardingModal({ open, onClose, onStageSelected }: Prop
 
   return (
     <div className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center
-                    bg-black/40 backdrop-blur-sm" onClick={onClose}>
+                    bg-black/40 backdrop-blur-sm" onClick={handleSkipClose}>
       <div
-        className="w-full sm:max-w-md bg-surface-canvas rounded-t-2xl sm:rounded-2xl
+        className="relative w-full sm:max-w-md bg-surface-canvas rounded-t-2xl sm:rounded-2xl
                    border border-border-subtle shadow-xl p-6"
         onClick={(e) => e.stopPropagation()}
       >
+        {/* Phase BA：關閉 X（略過導覽的其中一種出口，見 handleSkipClose） */}
+        <button
+          type="button"
+          onClick={handleSkipClose}
+          aria-label="關閉"
+          className="absolute top-3 right-3 text-content-muted hover:text-content-primary
+                     transition-colors p-1"
+        >
+          ✕
+        </button>
+
         {step === 'stage' && (
           <>
             <h2 className="text-lg font-semibold text-content-primary mb-1">
