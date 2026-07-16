@@ -115,7 +115,7 @@ export default function Edu() {
           內容以官方公開資料為基礎，仍持續補充中。
           若你走過某段流程有實用細節，請於
           <Link to="/board" className="mx-1">討論區</Link>
-          留言分享，或直接開 GitHub issue。留言功能將於後續版本上線。
+          留言分享，或直接開 GitHub issue。
         </p>
       </section>
     </div>
