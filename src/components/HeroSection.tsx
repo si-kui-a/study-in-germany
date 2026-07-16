@@ -38,7 +38,7 @@ export default function HeroSection() {
         </h1>
         <p className="text-content-secondary max-w-xl mx-auto leading-relaxed">
           給留德台灣人的一站式基地：語校真實評價、作戰手冊逐步指引、討論區、資源庫與外事局應對指南、常見問答。
-          內容全公開，寫入需登入以確保問責。
+          瀏覽內容無需登入，登入僅用於留言與追蹤等寫入功能，並確保問責。
         </p>
         <div className="pt-2 flex flex-wrap justify-center gap-3">
           <Link to="/schools" className="btn-primary no-underline">

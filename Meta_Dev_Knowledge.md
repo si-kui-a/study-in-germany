@@ -2161,3 +2161,67 @@ preview 實測後回報「略過導覽路徑，登入提示同樣跳出」，要
   正常」的案例）——若後續仍能穩定重現，需要 Lily 提供具體重現步驟
   （包含是否為同一分頁連續測試兩條路徑、是否曾手動重新整理）以便進一步
   排查。
+
+## PAT-161 [CORE_IMMUTABLE]: Phase BA 推翻 AX Path B「略過→永久不再彈」設計——產品方向調整，非工程判斷失誤
+
+**決策記錄**（Lily 三輪明確確認，非工程端自行判斷）：
+1. 未登入者的導覽視窗（`OnboardingModal.tsx`）：**每次造訪都彈**，推翻
+   AX 原本「只在首次造訪跳一次」（`onboarding_completed` 旗標控制）的
+   設計。
+2. 略過導覽者：之後**每次造訪都要被彈登入＋隱私政策同意提示**，推翻
+   AX 的 Path B（略過導覽→`PostOnboardingLoginPrompt` 永久 dismiss，
+   PAT-159 記錄的原始 App 根層級架構本身沿用不變，但其上層的「略過後
+   永久不再詢問」行為由本輪推翻）。
+3. 登入＋同意彈窗頻率：每次造訪都彈，**直到使用者登入為止**。
+
+**與既有原則的張力（如實記錄，非隱藏）**：此設計對未登入使用者的每次
+造訪造成中斷，與 Phase AX 指令書本身明確定調的「此彈窗是『順手問一句』
+不是強制關卡」「略過即永久略過，不做每 N 次造訪重新詢問的重試邏輯，
+符合站台一貫的低摩擦、不騷擾原則」直接衝突——這個原則當時是寫在指令
+文字裡，而非本檔案先前已存在的獨立 PAT 條目，此處特別記錄下來是因為
+Phase BA 正是明確推翻了這個原則本身。這是 Lily 對產品方向的明確調整
+（優先促進登入轉換率），**非工程實作判斷失誤**，未來若要理解「為什麼
+同一個網站對『略過』的
+處理方式前後不一致」，答案就在這裡——不是 bug，是刻意的方向轉彎。
+
+**實作方式**（區別於 AX 既有機制，兩者並存不互相影響）：
+- `Home.tsx` 的導覽視窗顯示條件從 `!isOnboardingCompleted()`（永久
+  旗標，一次為真後不再顯示）改為 `!user`（純粹綁定登入狀態，`user`
+  為 null 就顯示，無視過去是否顯示過）；等 `useAuth().loading` 結束
+  才判斷，避免已登入者在 session 判定完成前短暫閃現導覽視窗。
+- 新增獨立永久旗標 `has_skipped_onboarding_before`（`src/lib/
+  onboarding.ts`），與既有的 `onboarding_completed` 是兩個不同旗標、
+  互不取代——`onboarding_completed` 保留給其他既有邏輯（如 MyProfile
+  「重新設定我的階段」呼叫 `resetOnboarding()`）沿用，不因本輪而移除。
+- `OnboardingModal.tsx` 新增統一的 `handleSkipClose`：略過按鈕／ESC
+  （原本未支援，本輪新增鍵盤處理）／背景點擊／新增的關閉 X 按鈕，
+  四種出口皆走同一函式，一律寫入 `has_skipped_onboarding_before =
+  true`（不可逆）。與 `handleFinish`（選定階段完成，AX 既有的 Path A）
+  完全分開，`handleFinish` 不受影響、不寫入此旗標。
+- 新增獨立元件 `SkipLoginConsentPrompt.tsx`（掛載於 App.tsx 根層級，
+  沿用 AX 建立的 window CustomEvent 架構，見 PAT-159），監聽新事件
+  `onboarding-modal-closed`（`Home.tsx` 的 `OnboardingModal.onClose`
+  呼叫，涵蓋 Path A 與 Path B 兩種關閉方式），收到事件後檢查
+  `!user && hasSkippedOnboardingBefore()`，成立才顯示——確保與導覽
+  視窗依序出現、不同時疊加。此元件**不可永久略過**：X／ESC／背景
+  點擊三種關閉方式僅本次造訪不再重複彈出，不寫入任何旗標，下次整頁
+  載入重新判斷；與 AX 既有的 `PostOnboardingLoginPrompt`（Path A 專用，
+  dismiss-once-永久）是兩個獨立元件，互不影響，`git diff` 確認 AX
+  原有檔案的 Path A 邏輯本輪零改動（僅 `OnboardingModal.tsx` 新增
+  `handleSkipClose` 與 ESC/X 處理，`handleSelectStage`/`handleFinish`
+  的既有邏輯行數與內容未變）。
+- 隱私同意元件：擴充既有 `PrivacyNotice.tsx` 新增 `'login'` variant
+  （訊息留空，僅呈現固定的「我已閱讀並同意隱私政策」+ `/privacy` 連結），
+  沿用既有的 checkbox 樣式與 GDPR 相關約定（未預先勾選），而非另建
+  重複元件。Google 登入按鈕使用原生 `disabled={!agreed}` 屬性，瀏覽器
+  層級阻擋未同意時的點擊（非僅視覺變灰）。
+- `HeroSection.tsx` 首頁介紹文案同步修正（AW.c 遺留的「內容全公開」與
+  本輪「未登入者每次造訪被彈窗」的實際體驗矛盾）：僅將「內容全公開」
+  改為「瀏覽內容無需登入」，其餘文字不動——核心事實仍正確（內容確實
+  不需登入即可讀取，只是路徑上會被彈窗打斷），故採字面調整而非整段
+  重寫。
+
+**已知的未涉及範圍**：GDPR 第 7(4) 條的「捆綁同意」疑慮已由 Lily 於
+指令書內定調——本彈窗必須可關閉（當次造訪可略過），不得做成無法關閉
+的強制牆；若未來要改為不可關閉的硬擋牆，需使用者另行明確指示，本輪
+未做此改動。

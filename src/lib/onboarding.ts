@@ -17,6 +17,8 @@ export const PERSONA_MODULE_MAP: Record<PersonaStage, string> = {
 
 const STORAGE_KEY = 'onboarding_completed';
 const LOCAL_STAGE_KEY = 'persona_stage_local';
+/** Phase BA：略過導覽（非選定階段完成）的永久旗標，不可逆，見 PAT-161 */
+const SKIPPED_KEY = 'has_skipped_onboarding_before';
 
 export function isOnboardingCompleted(): boolean {
   return localStorage.getItem(STORAGE_KEY) === 'true';
@@ -24,6 +26,16 @@ export function isOnboardingCompleted(): boolean {
 
 export function markOnboardingCompleted(): void {
   localStorage.setItem(STORAGE_KEY, 'true');
+}
+
+/** Phase BA：導覽視窗顯示與否已改綁定登入狀態（見 Home.tsx），此旗標僅供
+ * 其他既有邏輯（如 MyProfile「重新設定我的階段」）沿用，不再作為顯示判斷依據 */
+export function hasSkippedOnboardingBefore(): boolean {
+  return localStorage.getItem(SKIPPED_KEY) === 'true';
+}
+
+export function markSkippedOnboardingBefore(): void {
+  localStorage.setItem(SKIPPED_KEY, 'true');
 }
 
 export function getLocalPersonaStage(): PersonaStage | null {

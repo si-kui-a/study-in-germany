@@ -159,6 +159,7 @@
 | PAT-158 | CORE_IMMUTABLE | schema.sql 校正唯一合法依據是 audit.sql 對正式 DB 的真實查詢結果，程式碼推論只能當線索不能當校正依據（起因：AV 用程式碼推論校正 user_id 外鍵，猜錯目標） |
 | PAT-159 | CORE_IMMUTABLE | 導覽完成後續彈窗須掛 App 根層級：OnboardingModal 完成時 navigate() 會卸載 Home，狀態需用 window CustomEvent 廣播而非 props/state 耦合 |
 | PAT-160 | CORE_IMMUTABLE | 多重觸發路徑功能規則：每條獨立使用者路徑須各自瀏覽器實測，程式碼審閱不可替代任一路徑的實機驗證（起因：略過導覽路徑未實測即宣稱不觸發） |
+| PAT-161 | CORE_IMMUTABLE | Phase BA 推翻 AX Path B「略過→永久不再彈」設計：每次造訪皆彈導覽視窗+登入同意提示，直到登入為止；Lily 三輪確認的產品方向調整，非工程失誤，與低摩擦原則有意張力 |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance

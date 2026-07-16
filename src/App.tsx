@@ -22,6 +22,7 @@ import Support from './pages/Support';
 import NotFound from './pages/NotFound';
 import { WorkflowProgressProvider } from './lib/WorkflowProgressContext';
 import PostOnboardingLoginPrompt from './components/PostOnboardingLoginPrompt';
+import SkipLoginConsentPrompt from './components/SkipLoginConsentPrompt';
 
 export default function App() {
   return (
@@ -63,6 +64,7 @@ export default function App() {
           <Footer />
           <DevBadge />
           <PostOnboardingLoginPrompt />
+          <SkipLoginConsentPrompt />
         </div>
       </WorkflowProgressProvider>
     </HashRouter>
