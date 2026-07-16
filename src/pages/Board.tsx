@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
 import type { Listing, SchoolReview } from '../lib/types';
 import { attachProfiles } from '../lib/types';
+import { fetchWithRetry } from '../lib/fetchWithRetry';
 import BoardList from '../components/BoardList';
 import ReviewList from '../components/ReviewList';
 import PostModal from '../components/PostModal';
@@ -10,8 +11,6 @@ import FloatingActionButton from '../components/FloatingActionButton';
 import EmptyState from '../components/EmptyState';
 import { SkeletonList } from '../components/Skeleton';
 import BoardIcon from '../assets/icons/BoardIcon';
-import { useToast } from '../lib/toast';
-import { translateError } from '../lib/errorMessages';
 import { useAuth } from '../lib/useAuth';
 import { useFollowingList } from '../lib/useFollow';
 import { MOCK_MODE, mockLog } from '../lib/mockMode';
@@ -58,15 +57,16 @@ const SUB_FILTERS_DISCUSSION: { key: SubFilter; label: string }[] = [
 ];
 
 export default function Board() {
-  const { push } = useToast();
   const { user } = useAuth();
   const [searchParams] = useSearchParams();
   const { followingIds, loading: followingLoading } = useFollowingList(user?.id ?? null);
   const [listings, setListings] = useState<Listing[]>([]);
   const [badgesMap, setBadgesMap] = useState<Map<string, BadgeId[]>>(new Map());
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
   const [myReviews, setMyReviews] = useState<SchoolReview[]>([]);
   const [reviewsLoading, setReviewsLoading] = useState(true);
+  const [reviewsLoadError, setReviewsLoadError] = useState(false);
   const [mainFilter, setMainFilter] = useState<MainFilter>('all');
   const [subFilter, setSubFilter] = useState<SubFilter>('all_discussion');
   const [postModalOpen, setPostModalOpen] = useState(false);
@@ -96,20 +96,23 @@ export default function Board() {
 
   const load = useCallback(async () => {
     setLoading(true);
+    setLoadError(false);
     if (MOCK_MODE) {
       mockLog('board', 'using MOCK_LISTINGS');
       setListings(MOCK_LISTINGS);
       setLoading(false);
       return;
     }
-    const { data, error } = await supabase
-      .from('listings')
-      .select('*')
-      .order('created_at', { ascending: false });
+    const { data, error } = await fetchWithRetry(
+      () => supabase
+        .from('listings')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .retry(false),
+      { table: 'listings', source: 'Board.load' },
+    );
     if (error) {
-      const friendly = translateError(error);
-      push('error', `讀取討論區失敗：${friendly.message}`);
-      console.error('[Board] raw:', friendly.raw, 'code:', friendly.code);
+      setLoadError(true);
       setLoading(false);
       return;
     }
@@ -117,7 +120,7 @@ export default function Board() {
     setListings(withProfiles);
     setBadgesMap(await fetchBadgesMap(withProfiles.map((l) => l.user_id)));
     setLoading(false);
-  }, [push]);
+  }, []);
 
   useEffect(() => { load(); }, [load]);
 
@@ -130,28 +133,31 @@ export default function Board() {
       return;
     }
     setReviewsLoading(true);
+    setReviewsLoadError(false);
     if (MOCK_MODE) {
       mockLog('board', 'using empty MOCK data for my_reviews view');
       setMyReviews([]);
       setReviewsLoading(false);
       return;
     }
-    const { data, error } = await supabase
-      .from('school_reviews')
-      .select('*')
-      .eq('user_id', user.id)
-      .order('created_at', { ascending: false });
+    const { data, error } = await fetchWithRetry(
+      () => supabase
+        .from('school_reviews')
+        .select('*')
+        .eq('user_id', user.id)
+        .order('created_at', { ascending: false })
+        .retry(false),
+      { table: 'school_reviews', source: 'Board.loadReviews' },
+    );
     if (error) {
-      const friendly = translateError(error);
-      push('error', `讀取評價失敗：${friendly.message}`);
-      console.error('[Board] loadReviews raw:', friendly.raw, 'code:', friendly.code);
+      setReviewsLoadError(true);
       setReviewsLoading(false);
       return;
     }
     const withProfiles = await attachProfiles((data ?? []) as SchoolReview[]);
     setMyReviews(withProfiles);
     setReviewsLoading(false);
-  }, [user, push]);
+  }, [user]);
 
   useEffect(() => { loadReviews(); }, [loadReviews]);
 
@@ -325,6 +331,12 @@ export default function Board() {
         {viewMode === 'mine' && mineSubTab === 'reviews' ? (
           reviewsLoading ? (
             <SkeletonList n={3} />
+          ) : reviewsLoadError ? (
+            <EmptyState
+              icon={<BoardIcon className="w-full h-full" />}
+              title="讀取失敗"
+              description="請檢查網路連線後重新整理頁面。"
+            />
           ) : !user ? (
             <EmptyState
               icon={<BoardIcon className="w-full h-full" />}
@@ -347,6 +359,12 @@ export default function Board() {
           )
         ) : loading || (viewMode === 'following' && followingLoading) ? (
           <SkeletonList n={3} />
+        ) : loadError ? (
+          <EmptyState
+            icon={<BoardIcon className="w-full h-full" />}
+            title="讀取失敗"
+            description="請檢查網路連線後重新整理頁面。"
+          />
         ) : viewMode === 'following' && !user ? (
           <EmptyState
             icon={<BoardIcon className="w-full h-full" />}

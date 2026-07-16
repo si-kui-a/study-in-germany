@@ -2,14 +2,14 @@ import type { Listing } from '../lib/types';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../lib/useAuth';
 import { deletePhoto } from '../lib/storage';
-import PhotoGallery from './PhotoGallery';
+import ListingCardBody from './ListingCardBody';
 import UserAvatar from './UserAvatar';
 import FollowButton from './FollowButton';
 import ReportButton from './ReportButton';
 import LikeButton from './LikeButton';
 import CommentSection from './CommentSection';
 import type { BadgeId } from '../lib/badges';
-import { boardTypeOf, isDiscussion, isDiscussionType, stripDiscussionPrefix, BOARD_TYPE_LABEL, EXPIRY_DAYS } from '../lib/board';
+import { boardTypeOf, isDiscussionType, EXPIRY_DAYS } from '../lib/board';
 import { useToast } from '../lib/toast';
 import { translateError } from '../lib/errorMessages';
 
@@ -64,60 +64,14 @@ export default function BoardList({ listings, onDeleted, onRenewed, badgesMap }:
   return (
     <div className="space-y-3">
       {listings.map((l) => {
-        const kind = boardTypeOf(l);
-        const kindIsDiscussion = isDiscussionType(kind);
-        const displayTitle = isDiscussion(l) ? stripDiscussionPrefix(l.title) : l.title;
+        const kindIsDiscussion = isDiscussionType(boardTypeOf(l));
 
         return (
           <div
             key={l.id}
             className={`card ${kindIsDiscussion ? 'bg-surface-section border-brand-gold/30' : ''}`}
           >
-            <div className="flex flex-wrap items-center gap-2 text-xs">
-              <span
-                className={`px-2 py-0.5 rounded font-medium ${
-                  kindIsDiscussion
-                    ? 'bg-brand-gold-soft text-brand-gold-hover'
-                    : 'bg-brand-gold/15 text-brand-burgundy'
-                }`}
-              >
-                {BOARD_TYPE_LABEL[kind]}
-              </span>
-              {!kindIsDiscussion && <span className="text-content-muted">{l.region}</span>}
-              <span className="text-content-muted">·</span>
-              <span className="text-content-muted">
-                {new Date(l.created_at).toLocaleDateString('zh-Hant')}
-              </span>
-              {l.expires_at && (() => {
-                const daysLeft = Math.ceil(
-                  (new Date(l.expires_at).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
-                );
-                if (daysLeft <= 0) {
-                  // Phase AJ：「我的貼文」viewMode 會顯示已過期貼文（供續期），
-                  // 其他 viewMode 因 Board.tsx 的 visibleListings 過濾不會出現過期項目
-                  return <span className="text-state-danger font-medium">已過期</span>;
-                }
-                return (
-                  <span className={daysLeft <= 7 ? 'text-state-danger' : 'text-content-muted'}>
-                    {daysLeft <= 7 ? `⚠️ 剩 ${daysLeft} 天下架` : `${daysLeft} 天後下架`}
-                  </span>
-                );
-              })()}
-              {!kindIsDiscussion && l.price && (
-                <span className="ml-auto text-brand-burgundy font-medium">{l.price}</span>
-              )}
-            </div>
-
-            <h3 className="mt-2 font-semibold text-content-primary">{displayTitle}</h3>
-            <p className="mt-1 text-sm text-content-secondary whitespace-pre-wrap">
-              {l.description}
-            </p>
-
-            {!kindIsDiscussion && l.photo_urls.length > 0 && (
-              <div className="mt-3">
-                <PhotoGallery photos={l.photo_urls} />
-              </div>
-            )}
+            <ListingCardBody listing={l} showExpiry />
 
             {l.profile && (
               <div className="flex items-center gap-2 mt-2 pt-2 border-t border-border-subtle">

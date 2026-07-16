@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
-import { translateError } from '../lib/errorMessages';
-import { useToast } from '../lib/toast';
+import { fetchWithRetry } from '../lib/fetchWithRetry';
 import type { SubmissionType, UserSubmission } from '../lib/userSubmissions';
 import { fetchBadgesMap } from '../lib/badges';
 import type { BadgeId } from '../lib/badges';
@@ -42,32 +41,34 @@ interface Props {
 export default function UserSubmissionsList({
   submissionType, targetId, targetCategory, emptyMessage, title,
 }: Props) {
-  const { push } = useToast();
   const [submissions, setSubmissions] = useState<UserSubmission[]>([]);
   const [profilesMap, setProfilesMap] = useState<Map<string, SubmitterProfile>>(new Map());
   const [badgesMap, setBadgesMap] = useState<Map<string, BadgeId[]>>(new Map());
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
 
   useEffect(() => {
     (async () => {
       setLoading(true);
-      let query = supabase
-        .from('user_submissions')
-        .select('*')
-        .eq('submission_type', submissionType)
-        .in('status', ['pending', 'approved'])
-        .order('created_at', { ascending: false });
+      setLoadError(false);
 
-      if (targetId) query = query.eq('target_id', targetId);
-      if (targetCategory) query = query.eq('target_category', targetCategory);
-
-      const { data, error } = await query;
+      const { data, error } = await fetchWithRetry(
+        () => {
+          let query = supabase
+            .from('user_submissions')
+            .select('*')
+            .eq('submission_type', submissionType)
+            .in('status', ['pending', 'approved'])
+            .order('created_at', { ascending: false });
+          if (targetId) query = query.eq('target_id', targetId);
+          if (targetCategory) query = query.eq('target_category', targetCategory);
+          return query.retry(false);
+        },
+        { table: 'user_submissions', source: 'UserSubmissionsList' },
+      );
 
       if (error) {
-        const f = translateError(error);
-        push('error', f.message);
-        // eslint-disable-next-line no-console
-        console.error('[UserSubmissionsList] fetch failed:', f.raw);
+        setLoadError(true);
         setLoading(false);
         return;
       }
@@ -82,7 +83,14 @@ export default function UserSubmissionsList({
       if (userIds.length > 0) {
         const uniqueIds = Array.from(new Set(userIds));
         const [{ data: profileRows }, badges] = await Promise.all([
-          supabase.from('profiles').select('id, display_name, avatar_url').in('id', uniqueIds),
+          fetchWithRetry(
+            () => supabase
+              .from('profiles')
+              .select('id, display_name, avatar_url')
+              .in('id', uniqueIds)
+              .retry(false),
+            { table: 'profiles', source: 'UserSubmissionsList.submitters' },
+          ),
           fetchBadgesMap(uniqueIds),
         ]);
         const pMap = new Map<string, SubmitterProfile>();
@@ -98,12 +106,20 @@ export default function UserSubmissionsList({
 
       setLoading(false);
     })();
-  }, [submissionType, targetId, targetCategory, push]);
+  }, [submissionType, targetId, targetCategory]);
 
   if (loading) {
     return (
       <div className="pt-4 text-xs text-content-muted">
         載入使用者提交…
+      </div>
+    );
+  }
+
+  if (loadError) {
+    return (
+      <div className="pt-4 text-xs text-content-muted">
+        讀取失敗，請檢查網路連線後重新整理頁面。
       </div>
     );
   }

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
 import { supabase } from '../lib/supabase';
+import { fetchWithRetry } from '../lib/fetchWithRetry';
 import { useAuth } from '../lib/useAuth';
 import { translateError } from '../lib/errorMessages';
 import { useToast } from '../lib/toast';
@@ -19,19 +20,25 @@ export default function CommentSection({ listingId }: { listingId: string }) {
   const [open, setOpen] = useState(false);
   const [comments, setComments] = useState<Comment[]>([]);
   const [loading, setLoading] = useState(false);
+  const [loadError, setLoadError] = useState(false);
   const [input, setInput] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
   const loadComments = async () => {
     setLoading(true);
-    const { data, error } = await supabase
-      .from('listing_comments')
-      .select('*')
-      .eq('listing_id', listingId)
-      .order('created_at', { ascending: true });
+    setLoadError(false);
+    const { data, error } = await fetchWithRetry(
+      () => supabase
+        .from('listing_comments')
+        .select('*')
+        .eq('listing_id', listingId)
+        .order('created_at', { ascending: true })
+        .retry(false),
+      { table: 'listing_comments', source: 'CommentSection.load' },
+    );
 
     if (error) {
-      push('error', translateError(error).message);
+      setLoadError(true);
     } else {
       setComments((data as Comment[]) ?? []);
     }
@@ -78,6 +85,8 @@ export default function CommentSection({ listingId }: { listingId: string }) {
         <div className="mt-2 pl-3 border-l-2 border-border-subtle space-y-2">
           {loading ? (
             <div className="text-xs text-content-muted">載入中…</div>
+          ) : loadError ? (
+            <div className="text-xs text-content-muted">讀取失敗，請稍後再試。</div>
           ) : comments.length === 0 ? (
             <div className="text-xs text-content-muted italic">還沒有留言</div>
           ) : (

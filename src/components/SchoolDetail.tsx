@@ -4,13 +4,13 @@ import schools from '../data/schools.json';
 import type { School, SchoolReview } from '../lib/types';
 import { attachProfiles } from '../lib/types';
 import { supabase } from '../lib/supabase';
-import { translateError } from '../lib/errorMessages';
-import { useToast } from '../lib/toast';
+import { fetchWithRetry } from '../lib/fetchWithRetry';
 import { MOCK_MODE, mockLog } from '../lib/mockMode';
 import { MOCK_REVIEWS } from '../lib/mockData';
 import AuthGate from './AuthGate';
 import ReviewForm from './ReviewForm';
 import ReviewList from './ReviewList';
+import EmptyState from './EmptyState';
 import { SkeletonList } from './Skeleton';
 import { CityIllustration } from '../assets/cities';
 import { RATING_DIMENSIONS } from '../lib/ratings';
@@ -24,40 +24,45 @@ const list = schools as School[];
 /**
  * DS v4.1 SchoolDetail · Banner 化排版（B.1）+ mock fallback（A.75/A.100）整合
  *   - 全寬 CityIllustration 大版 + 底部漸層 overlay
- *   - 保留 translateError / Toast / SkeletonList / MOCK_MODE
+ *   - 保留 SkeletonList / MOCK_MODE
+ * Phase BC：讀取改用 fetchWithRetry，重試耗盡不顯示原始錯誤字串，
+ *   改用 loadError 旗標渲染既有 EmptyState 樣式（見 PAT-163）
  */
 export default function SchoolDetail() {
   const { id } = useParams<{ id: string }>();
   const school = list.find((s) => s.id === id);
-  const { push } = useToast();
 
   const [reviews, setReviews] = useState<SchoolReview[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
 
   const load = useCallback(async () => {
     if (!id) return;
     setLoading(true);
+    setLoadError(false);
     if (MOCK_MODE) {
       mockLog('school-detail', `using MOCK_REVIEWS for ${id}`);
       setReviews(MOCK_REVIEWS.filter((r) => r.school_id === id));
       setLoading(false);
       return;
     }
-    const { data, error } = await supabase
-      .from('school_reviews')
-      .select('*')
-      .eq('school_id', id)
-      .order('created_at', { ascending: false });
+    const { data, error } = await fetchWithRetry(
+      () => supabase
+        .from('school_reviews')
+        .select('*')
+        .eq('school_id', id)
+        .order('created_at', { ascending: false })
+        .retry(false),
+      { table: 'school_reviews', source: 'SchoolDetail.load' },
+    );
     if (error) {
-      const f = translateError(error);
-      push('error', `讀取評價失敗：${f.message}`);
-      console.error('[SchoolDetail] raw:', f.raw, 'code:', f.code);
+      setLoadError(true);
       setLoading(false);
       return;
     }
     setReviews(await attachProfiles((data ?? []) as SchoolReview[]));
     setLoading(false);
-  }, [id, push]);
+  }, [id]);
 
   useEffect(() => {
     load();
@@ -210,6 +215,8 @@ export default function SchoolDetail() {
         <h2 className="text-lg font-medium">學員評價</h2>
         {loading ? (
           <SkeletonList n={2} />
+        ) : loadError ? (
+          <EmptyState title="讀取失敗" description="請檢查網路連線後重新整理頁面。" />
         ) : (
           <ReviewList reviews={reviews} onDeleted={load} />
         )}

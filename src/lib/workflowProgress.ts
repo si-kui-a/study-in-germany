@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import { fetchWithRetry } from './fetchWithRetry';
 
 export type StepStatus = 'pending' | 'completed' | 'skipped';
 
@@ -83,11 +84,15 @@ export function getNextPendingStep(
 
 /** 雲端同步：讀取 */
 export async function fetchCloudProgress(userId: string): Promise<WorkflowProgress> {
-  const { data, error } = await supabase
-    .from('profiles')
-    .select('workflow_progress')
-    .eq('id', userId)
-    .single();
+  const { data, error } = await fetchWithRetry(
+    () => supabase
+      .from('profiles')
+      .select('workflow_progress')
+      .eq('id', userId)
+      .single()
+      .retry(false),
+    { table: 'profiles', source: 'fetchCloudProgress' },
+  );
   if (error) {
     // eslint-disable-next-line no-console
     console.error('[workflowProgress] fetchCloudProgress failed:', error);

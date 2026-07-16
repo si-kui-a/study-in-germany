@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from './supabase';
+import { fetchWithRetry } from './fetchWithRetry';
 
 export interface ContributionCounts {
   reviews: number;
@@ -29,18 +30,30 @@ export function useContributions(userId: string | null) {
 
     (async () => {
       const [reviewsRes, listingsRes, submissionsRes] = await Promise.all([
-        supabase
-          .from('school_reviews')
-          .select('id', { count: 'exact', head: true })
-          .eq('user_id', userId),
-        supabase
-          .from('listings')
-          .select('id', { count: 'exact', head: true })
-          .eq('user_id', userId),
-        supabase
-          .from('user_submissions')
-          .select('id', { count: 'exact', head: true })
-          .eq('user_id', userId),
+        fetchWithRetry(
+          () => supabase
+            .from('school_reviews')
+            .select('id', { count: 'exact', head: true })
+            .eq('user_id', userId)
+            .retry(false),
+          { table: 'school_reviews', source: 'useContributions' },
+        ),
+        fetchWithRetry(
+          () => supabase
+            .from('listings')
+            .select('id', { count: 'exact', head: true })
+            .eq('user_id', userId)
+            .retry(false),
+          { table: 'listings', source: 'useContributions' },
+        ),
+        fetchWithRetry(
+          () => supabase
+            .from('user_submissions')
+            .select('id', { count: 'exact', head: true })
+            .eq('user_id', userId)
+            .retry(false),
+          { table: 'user_submissions', source: 'useContributions' },
+        ),
       ]);
 
       const reviews = reviewsRes.count ?? 0;

@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { supabase } from './supabase';
+import { fetchWithRetry } from './fetchWithRetry';
 import { translateError } from './errorMessages';
 import { useToast } from './toast';
 
@@ -19,19 +20,27 @@ export function useFollow(targetUserId: string | null, currentUserId: string | n
       return;
     }
 
-    const { count } = await supabase
-      .from('user_follows')
-      .select('id', { count: 'exact', head: true })
-      .eq('following_id', targetUserId);
+    const { count } = await fetchWithRetry(
+      () => supabase
+        .from('user_follows')
+        .select('id', { count: 'exact', head: true })
+        .eq('following_id', targetUserId)
+        .retry(false),
+      { table: 'user_follows', source: 'useFollow.followerCount' },
+    );
     setFollowerCount(count ?? 0);
 
     if (currentUserId) {
-      const { data } = await supabase
-        .from('user_follows')
-        .select('id')
-        .eq('follower_id', currentUserId)
-        .eq('following_id', targetUserId)
-        .maybeSingle();
+      const { data } = await fetchWithRetry(
+        () => supabase
+          .from('user_follows')
+          .select('id')
+          .eq('follower_id', currentUserId)
+          .eq('following_id', targetUserId)
+          .maybeSingle()
+          .retry(false),
+        { table: 'user_follows', source: 'useFollow.isFollowing' },
+      );
       setIsFollowing(!!data);
     }
 
@@ -93,10 +102,14 @@ export function useFollowingList(userId: string | null) {
     }
 
     (async () => {
-      const { data } = await supabase
-        .from('user_follows')
-        .select('following_id')
-        .eq('follower_id', userId);
+      const { data } = await fetchWithRetry(
+        () => supabase
+          .from('user_follows')
+          .select('following_id')
+          .eq('follower_id', userId)
+          .retry(false),
+        { table: 'user_follows', source: 'useFollowingList' },
+      );
 
       setFollowingIds((data ?? []).map((d) => d.following_id));
       setLoading(false);

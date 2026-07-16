@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from './supabase';
+import { fetchWithRetry } from './fetchWithRetry';
 import type { Listing } from './types';
 
 export interface HotListing extends Listing {
@@ -13,6 +14,9 @@ export interface HotListing extends Listing {
  * listing_likes/listing_comments 皆為 public schema 表（非 auth.users FK），
  * 沿用 useHotSchools 的「整表撈回＋client 端聚合排序」模式，僅現有表 SELECT，
  * 不建新表/新欄位。
+ * Phase BC：3 個讀取皆改用 fetchWithRetry；首頁裝飾性輪播，重試耗盡後維持
+ * 既有的靜默失敗行為（hot 保持空陣列，HotBoardCarousel 直接不顯示區塊），
+ * 不新增可見的錯誤 UI（見 PAT-163）。
  */
 export function useHotListings() {
   const [hot, setHot] = useState<HotListing[]>([]);
@@ -21,9 +25,18 @@ export function useHotListings() {
   useEffect(() => {
     (async () => {
       const [listingsRes, likesRes, commentsRes] = await Promise.all([
-        supabase.from('listings').select('*').order('created_at', { ascending: false }),
-        supabase.from('listing_likes').select('listing_id'),
-        supabase.from('listing_comments').select('listing_id'),
+        fetchWithRetry(
+          () => supabase.from('listings').select('*').order('created_at', { ascending: false }).retry(false),
+          { table: 'listings', source: 'useHotListings' },
+        ),
+        fetchWithRetry(
+          () => supabase.from('listing_likes').select('listing_id').retry(false),
+          { table: 'listing_likes', source: 'useHotListings' },
+        ),
+        fetchWithRetry(
+          () => supabase.from('listing_comments').select('listing_id').retry(false),
+          { table: 'listing_comments', source: 'useHotListings' },
+        ),
       ]);
       if (listingsRes.error || !listingsRes.data) {
         setLoading(false);

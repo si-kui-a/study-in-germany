@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import { fetchWithRetry } from './fetchWithRetry';
 import type { ContributionCounts } from './useContributions';
 
 export type BadgeId =
@@ -108,10 +109,14 @@ export async function fetchBadgesMap(userIds: string[]): Promise<Map<string, Bad
   const uniqueIds = Array.from(new Set(userIds));
   if (uniqueIds.length === 0) return new Map();
 
-  const { data, error } = await supabase
-    .from('profiles')
-    .select('id, badges')
-    .in('id', uniqueIds);
+  const { data, error } = await fetchWithRetry(
+    () => supabase
+      .from('profiles')
+      .select('id, badges')
+      .in('id', uniqueIds)
+      .retry(false),
+    { table: 'profiles', source: 'fetchBadgesMap' },
+  );
 
   const map = new Map<string, BadgeId[]>();
   if (error || !data) return map;

@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import type { FormEvent } from 'react';
 import { Link } from 'react-router-dom';
 import { supabase } from '../lib/supabase';
+import { fetchWithRetry } from '../lib/fetchWithRetry';
 import { useAuth } from '../lib/useAuth';
 import { translateError } from '../lib/errorMessages';
 import { useToast } from '../lib/toast';
@@ -46,6 +47,7 @@ export default function MyProfile() {
 
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState(false);
   const [saving, setSaving] = useState(false);
 
   const [displayOption, setDisplayOption] = useState<DisplayNameOption>('google');
@@ -70,17 +72,19 @@ export default function MyProfile() {
     }
 
     (async () => {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('id', user.id)
-        .single();
+      setLoadError(false);
+      const { data, error } = await fetchWithRetry(
+        () => supabase
+          .from('profiles')
+          .select('*')
+          .eq('id', user.id)
+          .single()
+          .retry(false),
+        { table: 'profiles', source: 'MyProfile.load' },
+      );
 
       if (error) {
-        const f = translateError(error);
-        push('error', f.message);
-        // eslint-disable-next-line no-console
-        console.error('[MyProfile] fetch failed:', f.raw);
+        setLoadError(true);
         setLoading(false);
         return;
       }
@@ -91,7 +95,7 @@ export default function MyProfile() {
       setCustomName(p.display_name ?? '');
       setLoading(false);
     })();
-  }, [user, push]);
+  }, [user]);
 
   const handleAvatarChange = (file: File | null) => {
     if (file && file.size > MAX_AVATAR_BYTES) {
@@ -173,6 +177,14 @@ export default function MyProfile() {
     return (
       <div className="py-16 text-center text-content-secondary">
         請先登入以查看你的個人資料。
+      </div>
+    );
+  }
+
+  if (loadError) {
+    return (
+      <div className="py-16 text-center text-content-secondary">
+        讀取失敗，請檢查網路連線後重新整理頁面。
       </div>
     );
   }

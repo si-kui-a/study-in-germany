@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '../lib/supabase';
+import { fetchWithRetry } from '../lib/fetchWithRetry';
 import { useAuth } from '../lib/useAuth';
 import { useToast } from '../lib/toast';
 import {
@@ -27,11 +28,15 @@ export default function DeletionRestoreBanner() {
     if (!user) return;
 
     (async () => {
-      const { data } = await supabase
-        .from('profiles')
-        .select('deletion_requested_at')
-        .eq('id', user.id)
-        .single();
+      const { data } = await fetchWithRetry(
+        () => supabase
+          .from('profiles')
+          .select('deletion_requested_at')
+          .eq('id', user.id)
+          .single()
+          .retry(false),
+        { table: 'profiles', source: 'DeletionRestoreBanner' },
+      );
 
       const s = computeDeletionStatus(data?.deletion_requested_at ?? null);
 

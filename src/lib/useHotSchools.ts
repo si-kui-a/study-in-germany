@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { supabase } from './supabase';
+import { fetchWithRetry } from './fetchWithRetry';
 import schoolsData from '../data/schools.json';
 import type { School } from './types';
 
@@ -19,9 +20,10 @@ export function useHotSchools() {
 
   useEffect(() => {
     (async () => {
-      const { data, error } = await supabase
-        .from('school_reviews')
-        .select('school_id, stars');
+      const { data, error } = await fetchWithRetry(
+        () => supabase.from('school_reviews').select('school_id, stars').retry(false),
+        { table: 'school_reviews', source: 'useHotSchools' },
+      );
       if (error) {
         setLoading(false);
         return;

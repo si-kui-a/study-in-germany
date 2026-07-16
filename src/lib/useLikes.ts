@@ -1,5 +1,6 @@
 import { useEffect, useState, useCallback } from 'react';
 import { supabase } from './supabase';
+import { fetchWithRetry } from './fetchWithRetry';
 import { translateError } from './errorMessages';
 import { useToast } from './toast';
 
@@ -11,19 +12,27 @@ export function useLikes(listingId: string, currentUserId: string | null) {
   const [busy, setBusy] = useState(false);
 
   const refresh = useCallback(async () => {
-    const { count } = await supabase
-      .from('listing_likes')
-      .select('id', { count: 'exact', head: true })
-      .eq('listing_id', listingId);
+    const { count } = await fetchWithRetry(
+      () => supabase
+        .from('listing_likes')
+        .select('id', { count: 'exact', head: true })
+        .eq('listing_id', listingId)
+        .retry(false),
+      { table: 'listing_likes', source: 'useLikes.count' },
+    );
     setLikeCount(count ?? 0);
 
     if (currentUserId) {
-      const { data } = await supabase
-        .from('listing_likes')
-        .select('id')
-        .eq('listing_id', listingId)
-        .eq('user_id', currentUserId)
-        .maybeSingle();
+      const { data } = await fetchWithRetry(
+        () => supabase
+          .from('listing_likes')
+          .select('id')
+          .eq('listing_id', listingId)
+          .eq('user_id', currentUserId)
+          .maybeSingle()
+          .retry(false),
+        { table: 'listing_likes', source: 'useLikes.isLiked' },
+      );
       setIsLiked(!!data);
     }
     setLoading(false);
