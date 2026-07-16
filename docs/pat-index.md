@@ -156,6 +156,7 @@
 | PAT-155 | CORE_IMMUTABLE | 核心教訓：schema.sql 段落未經真 DB 驗證即視同未測試，Phase AV 建立 audit.sql + expected-schema.md 全量稽核機制取代憑印象比對 |
 | PAT-156 | CORE_IMMUTABLE | 全站更名分層規則：只改顯示層字串（導覽/標題/toast/隱私政策），路由/檔名/category鍵值/DB CHECK值域/程式碼註解一律不動 |
 | PAT-157 | CORE_IMMUTABLE | 導覽「資源」撞名事故：AW 更名正確但未檢查新名稱與既有 PAT-141 分組標籤衝突；全站更名須額外檢查新名稱是否製造新的視覺重複（與 AX 分支的 PAT-157 待合併後重新編號） |
+| PAT-158 | CORE_IMMUTABLE | schema.sql 校正唯一合法依據是 audit.sql 對正式 DB 的真實查詢結果，程式碼推論只能當線索不能當校正依據（起因：AV 用程式碼推論校正 user_id 外鍵，猜錯目標） |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance

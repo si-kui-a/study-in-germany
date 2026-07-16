@@ -2052,3 +2052,35 @@ AX 分支上同樣新增了一個 PAT-157（不同內容，關於導覽完成後
 架構模式）。兩分支各自獨立編號，合併順序由 Lily 決定，若兩者皆合併
 入 main，屆時需依實際合併順序重新查證編號並調整其中一方，避免碰撞
 ——此為既有慣例（見 Phase AT/AU 前置條件檢查時的類似處理）。
+
+## PAT-158 [CORE_IMMUTABLE]: schema.sql 校正的唯一合法依據是 audit.sql 對正式 DB 的真實查詢結果
+
+**核心教訓**（Phase AZ 起因於 Phase AV 的二次失誤）：Phase AV 校正
+`listing_likes` 時，`id BIGSERIAL` 欄位的保留決策依據是「讀
+`src/lib/useLikes.ts` 發現前端 `.select('id')` 依賴這個欄位」——這個
+推論本身**碰巧是對的**（本次 Phase AZ 的 audit.sql 直連正式 DB 確認
+線上確實有 `id` 欄位），但 Phase AV 校正 `user_id` 外鍵目標時，卻**沒有
+同樣的查證動作**，只是延續了 schema.sql 原文的 `REFERENCES auth.users
+(id)` 沒有改對——實際線上是 `REFERENCES public.profiles(id)`。這暴露了
+更根本的問題：**程式碼推論（讀前端怎麼用）與查證 DB 真實結構（讀
+audit.sql 對正式 DB 的查詢輸出）是兩件不同的事，前者永遠只能算「線索」
+或「假說」，絕不能當作「校正依據」本身**——即使某一次推論剛好猜對了
+（如本例的 `id` 欄位），也不代表推論方法本身是可靠的；這一次「湊巧猜對
+一半、猜錯另一半」的結果，恰好證明了單純推論的不可靠性。
+
+**規則**：任何對 `schema.sql` 的「校正」（區別於全新功能的 SQL 撰寫），
+唯一合法依據是 `audit.sql`（或等效的直連正式 DB 查詢）對真實 DB 結構
+的查詢輸出，逐字比對 `pg_get_constraintdef` 等系統目錄函式回傳的定義
+字串。程式碼審閱（前端怎麼查詢某欄位、TypeScript 型別怎麼定義）**只能
+用來輔助理解「為什麼線上會是這樣」或「這個欄位還有沒有人在用」，不能
+用來決定 schema.sql 校正後應該寫什麼**。若沒有 audit.sql 或等效的真實
+查詢結果佐證，schema.sql 的任何「校正」都只是又一次未經測試的猜測，
+與 PAT-155 揭露的原始問題（schema.sql 段落未經真 DB 驗證＝未經測試的
+程式碼）本質相同——只是這次連校正動作本身都可能是錯的。
+
+**本輪執行**：`listing_likes.user_id` 外鍵目標由 `auth.users(id)` 改為
+`public.profiles(id) ON DELETE CASCADE`，逐字依據指令書附上的 audit.sql
+真實輸出（`pg_get_constraintdef` 結果）；其餘欄位（`id`/`listing_id`/
+`created_at`/PK/policies）本次確認與線上一致，維持不動，未額外「順手」
+調整任何未被 audit.sql 指出有問題的部分——即使審閱時可能會冒出其他
+「順手改善」的念頭，也必須克制，因為那些改動同樣沒有 audit.sql 佐證。

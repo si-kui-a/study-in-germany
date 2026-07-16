@@ -318,12 +318,19 @@ ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS deletion_requested_at TIMES
 --   (3) policies 改名為線上版實際使用的 likes_public_read /
 --       likes_auth_insert / likes_auth_delete（取代原本帶
 --       listing_likes_ 前綴、且 delete 用 own_delete 命名的版本）
+-- 2026-07-15 二次校正（Phase AZ）：Phase AV 當時依 src/lib/useLikes.ts
+-- 的程式碼推論保留 id 欄位是正確的（本次 audit.sql 對正式 DB 直連稽核
+-- 確認線上確實有 id BIGSERIAL），但 user_id 外鍵目標校正錯誤——當時寫
+-- REFERENCES auth.users(id)，實際線上是 REFERENCES public.profiles(id)。
+-- 本次依 audit.sql 對正式 DB 的 pg_get_constraintdef 真實輸出逐字校正，
+-- 不依賴程式碼推論（PAT-158 教訓：程式碼推論可作為線索，不可作為校正
+-- 依據，必須有 audit.sql 對真實 DB 的查詢結果佐證）。
 -- ==========================================
 
 CREATE TABLE IF NOT EXISTS public.listing_likes (
   id BIGSERIAL,
   listing_id BIGINT NOT NULL REFERENCES public.listings(id) ON DELETE CASCADE,
-  user_id UUID NOT NULL REFERENCES auth.users(id) ON DELETE CASCADE,
+  user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   PRIMARY KEY (listing_id, user_id)
 );

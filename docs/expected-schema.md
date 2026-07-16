@@ -106,7 +106,7 @@
 | status | text | NOT NULL | 'pending' |
 | created_at | timestamptz | NOT NULL | now() |
 
-### listing_likes（本輪 Phase AV 校正）
+### listing_likes（Phase AV 首次校正，Phase AZ 二次校正 user_id 外鍵目標）
 | column | type | nullable | default |
 |---|---|---|---|
 | id | bigint | NULL（非 PK，保留供前端 `.select('id')` 使用） | (bigserial) |
@@ -160,9 +160,9 @@
 | reports | reports_reason_check | CHECK | reason IN (spam/inappropriate/misinformation/harassment/other) |
 | reports | reports_note_check | CHECK | note IS NULL OR char_length(note) <= 500 |
 | reports | reports_status_check | CHECK | status IN (pending/reviewed/dismissed) |
-| listing_likes | listing_likes_pkey | **PK（複合）** | **(listing_id, user_id)** ← 本輪校正重點 |
+| listing_likes | listing_likes_pkey | PK（複合） | (listing_id, user_id) |
 | listing_likes | listing_likes_listing_id_fkey | FK | listing_id → listings(id) ON DELETE CASCADE |
-| listing_likes | listing_likes_user_id_fkey | FK | user_id → auth.users(id) ON DELETE CASCADE |
+| listing_likes | listing_likes_user_id_fkey | **FK** | **user_id → profiles(id) ON DELETE CASCADE ← Phase AZ 二次校正重點（原誤記為 auth.users(id)）** |
 | listing_comments | listing_comments_pkey | PK | (id) |
 | listing_comments | listing_comments_listing_id_fkey | FK | listing_id → listings(id) ON DELETE CASCADE |
 | listing_comments | listing_comments_user_id_fkey | FK | user_id → auth.users(id) ON DELETE CASCADE |
