@@ -171,6 +171,7 @@
 | PAT-170 | CORE_IMMUTABLE | 15 分鐘編輯窗須寫入 UPDATE policy 的 USING 子句本身（前端隱藏按鈕僅體驗優化，非真防線）；用 SET LOCAL role+request.jwt.claim.sub 模擬指定使用者驗證 RLS 實際行為；推翻既有明確產品文案（如「評價不可編輯」）前須先向 Lily 確認 |
 | PAT-171 | CORE_IMMUTABLE | 費用/族群標籤零臆測：原文沒明確寫費用性質就標「未標示」，不依常識猜；CEFR 推導族群標籤屬「重組已驗證事實」非臆測；跨檔案搬移前必查目標檔案是否已有同名舊資料（DeutschAkademie 案例：schools.json 已有 3 筆舊 telc 資料，指令書措辭誤導性地假設不存在，緊急回退重做） |
 | PAT-172 | CORE_IMMUTABLE | 統計數字選 COUNT(*) 而非序號欄位極值：即使當下查證兩者結果相同（無缺口），只要序號欄位所在列存在「非既有流程路徑可能被移除」的可能性（如後台手動刪除），就該選不依賴此假設的 COUNT(*)，不因「現在沒問題」而選較脆弱的一方 |
+| PAT-173 | CORE_IMMUTABLE | 「純 React state = 不重複觸發」判斷不完整：需另查觸發來源（如 CustomEvent 上游元件）本身在 SPA 導覽下是否會重新掛載並重複發送信號；修正需獨立追蹤「本次已處理」旗標；navigate force:true 在本環境不保證真正整頁重新整理，測試需用 window.location.reload() |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance

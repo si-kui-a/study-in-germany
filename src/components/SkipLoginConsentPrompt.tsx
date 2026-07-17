@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useAuth } from '../lib/useAuth';
 import { hasSkippedOnboardingBefore } from '../lib/onboarding';
+import { useRegisteredUserCount } from '../lib/useRegisteredUserCount';
 import PrivacyNotice from './PrivacyNotice';
 
 const EVENT_NAME = 'onboarding-modal-closed';
@@ -25,6 +26,16 @@ export function notifyOnboardingModalClosed(): void {
  * 背景點擊）僅本次造訪不再重複彈出，不寫入任何永久旗標，下次整頁載入依
  * 條件重新觸發，直到使用者登入為止。
  *
+ * Phase BL 修正：Home.tsx 的 OnboardingModal 掛在 <Routes> 內，SPA 導覽
+ * 離開又切回「/」時會重新掛載、其 onboardingOpen state 重置為初始值，
+ * 使用者若再次關閉它會再次觸發 notifyOnboardingModalClosed()——若本元件
+ * 只靠 `open` 這顆 state 判斷，會被這第二次事件重新打開，違反「同一次
+ * 頁面載入期間關閉後不再重複出現」的需求。改用獨立的 `dismissedThisLoad`
+ * state 記錄「本次頁面載入內是否已手動關閉過」，關閉時一併設為 true，
+ * 事件處理常式檢查此旗標而非只看 `open`；此旗標同樣是純 React state，
+ * 不寫入任何 Storage，瀏覽器真正重新整理時隨整個 App 重新掛載而重置
+ * （見 PAT-173）。
+ *
  * GDPR 第 7(4) 條考量：checkbox 預設未勾選，未勾選時 Google 登入按鈕為
  * 真正的 disabled（原生 disabled 屬性，非僅視覺變灰，瀏覽器層級阻擋
  * click 事件），勾選後才可登入；彈窗本身可隨時關閉，不做成無法關閉的
@@ -33,29 +44,40 @@ export function notifyOnboardingModalClosed(): void {
 export default function SkipLoginConsentPrompt() {
   const { user, signInWithGoogle } = useAuth();
   const [open, setOpen] = useState(false);
+  const [dismissedThisLoad, setDismissedThisLoad] = useState(false);
   const [agreed, setAgreed] = useState(false);
+  // Phase BL：複用 Phase BK 建立的 useRegisteredUserCount，查詢完成前
+  // （loading 或 count 尚為 null）不插入該句，避免顯示 undefined/0 等
+  // 錯誤過渡值（見 PAT-173）
+  const { count, loading: countLoading } = useRegisteredUserCount();
 
   useEffect(() => {
     const handler = () => {
-      if (!user && hasSkippedOnboardingBefore()) {
+      if (!dismissedThisLoad && !user && hasSkippedOnboardingBefore()) {
         setOpen(true);
       }
     };
     window.addEventListener(EVENT_NAME, handler);
     return () => window.removeEventListener(EVENT_NAME, handler);
-  }, [user]);
+  }, [user, dismissedThisLoad]);
 
   const visible = open && !user;
+
+  const handleClose = () => {
+    setOpen(false);
+    setDismissedThisLoad(true);
+  };
 
   useEffect(() => {
     if (!visible) return;
     const handler = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        setOpen(false);
+        handleClose();
       }
     };
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [visible]);
 
   if (!visible) return null;
@@ -64,7 +86,7 @@ export default function SkipLoginConsentPrompt() {
     <div
       className="fixed inset-0 z-[100] flex items-end sm:items-center justify-center
                  bg-black/40 backdrop-blur-sm"
-      onClick={() => setOpen(false)}
+      onClick={handleClose}
     >
       <div
         role="dialog"
@@ -76,7 +98,7 @@ export default function SkipLoginConsentPrompt() {
       >
         <button
           type="button"
-          onClick={() => setOpen(false)}
+          onClick={handleClose}
           aria-label="關閉"
           className="absolute top-3 right-3 text-content-muted hover:text-content-primary
                      transition-colors p-1"
@@ -86,10 +108,16 @@ export default function SkipLoginConsentPrompt() {
 
         <h2
           id="skip-login-consent-prompt-title"
-          className="text-lg font-semibold text-content-primary mb-4"
+          className="text-lg font-semibold text-content-primary mb-1"
         >
           登入即可儲存你的進度、留言與追蹤
         </h2>
+
+        {!countLoading && count !== null && (
+          <p className="text-xs text-content-muted mb-4">
+            已有 {count} 人註冊，一起加入。
+          </p>
+        )}
 
         <div className="space-y-3">
           <PrivacyNotice checked={agreed} onChange={setAgreed} variant="login" />
