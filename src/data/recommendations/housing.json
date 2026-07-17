@@ -17,23 +17,6 @@
     "target": ["student", "shared", "room", "general"]
   },
   {
-    "id": "housing-kleinanzeigen",
-    "category": "housing",
-    "title": "Kleinanzeigen（原 eBay 分類廣告）",
-    "summary": "私人房東直聯的德國最大分類廣告平台",
-    "points": [
-      "FEE：免費",
-      "適合：通用",
-      "長租、短租皆有"
-    ],
-    "tags": ["合租", "套房", "通用"],
-    "url": "https://www.kleinanzeigen.de/",
-    "updated_at": "2026-07",
-    "fee_status": "free",
-    "term": ["long", "short"],
-    "target": ["general", "shared", "room"]
-  },
-  {
     "id": "housing-studenten-wohnung",
     "category": "housing",
     "title": "studenten-wohnung.de",
