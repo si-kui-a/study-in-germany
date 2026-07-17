@@ -1,4 +1,14 @@
+import { useRegisteredUserCount } from '../lib/useRegisteredUserCount';
+import { daysSinceLaunch } from '../lib/siteStats';
+
+/**
+ * Phase BK：新增站台統計圖卡（目前已註冊人數／開站天數），「規劃中」
+ * 訊息文字維持不動，避免使用者誤以為贊助功能已上線（見 PAT-172）。
+ */
 export default function Support() {
+  const { count, loading } = useRegisteredUserCount();
+  const days = daysSinceLaunch();
+
   return (
     <div className="max-w-2xl mx-auto py-12 space-y-6 text-center">
       <div className="text-4xl">🚧</div>
@@ -14,6 +24,25 @@ export default function Support() {
         並確認需要投入更多維護成本之前，暫不開放此功能。
         感謝你的關注與耐心。
       </p>
+
+      <div className="grid grid-cols-2 gap-3 pt-4">
+        <div className="card">
+          <div className="text-2xl font-semibold text-brand-burgundy">
+            {loading ? '…' : count ?? '—'}
+          </div>
+          <div className="text-xs text-content-muted mt-1">
+            目前已註冊人數
+          </div>
+        </div>
+        <div className="card">
+          <div className="text-2xl font-semibold text-brand-burgundy">
+            {days}
+          </div>
+          <div className="text-xs text-content-muted mt-1">
+            本站開站天數
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
