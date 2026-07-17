@@ -8,6 +8,7 @@ import { RecommendationCategoryIcon } from '../assets/icons/recommendation';
 import UserSubmissionsList from '../components/UserSubmissionsList';
 import ImmigrationGuide from '../components/ImmigrationGuide';
 import GermanLearningBoard from '../components/GermanLearningBoard';
+import CareerBoard from '../components/CareerBoard';
 import financeData from '../data/recommendations/finance.json';
 import transportData from '../data/recommendations/transport.json';
 import telecomData from '../data/recommendations/telecom.json';
@@ -18,6 +19,7 @@ import expenseData from '../data/recommendations/expense.json';
 import immigrationData from '../data/recommendations/immigration.json';
 import generalData from '../data/recommendations/general.json';
 import germanLearningData from '../data/recommendations/german_learning.json';
+import careerData from '../data/recommendations/career.json';
 
 const DATA_MAP: Record<string, Recommendation[]> = {
   finance: financeData as Recommendation[],
@@ -30,6 +32,7 @@ const DATA_MAP: Record<string, Recommendation[]> = {
   immigration: immigrationData as Recommendation[],
   general: generalData as Recommendation[],
   german_learning: germanLearningData as Recommendation[],
+  career: careerData as Recommendation[],
 };
 
 type FeeStatusFilter = 'all' | HousingFeeStatus;
@@ -56,6 +59,7 @@ export default function RecommendationCategory() {
   const items = slug ? DATA_MAP[slug] : null;
   const isHousing = slug === 'housing';
   const isGermanLearning = slug === 'german_learning';
+  const isCareer = slug === 'career';
 
   // Phase BD：找房分類篩選（fee_status/term 單選、target 可複選），沿用
   // Schools.tsx 的 <select> 互動模式；target 因需複選改用 chip 切換
@@ -134,9 +138,13 @@ export default function RecommendationCategory() {
       )}
 
       {/* Phase BE：德文學習為兩層（大分類→子板塊）結構，複雜度明顯高於其餘
-          單層分類，獨立抽成 GermanLearningBoard 元件，不塞進本頁通用渲染路徑 */}
+          單層分類，獨立抽成 GermanLearningBoard 元件，不塞進本頁通用渲染路徑
+          Phase BG：DACH 實習/求職同為兩層結構，篩選維度形狀與德文學習差異
+          大，獨立抽成 CareerBoard 元件而非共用（見 PAT-167 判斷理由） */}
       {isGermanLearning ? (
         <GermanLearningBoard items={items} />
+      ) : isCareer ? (
+        <CareerBoard items={items} />
       ) : (
       <>
       {/* Phase BD：找房分類篩選（PAT-55 既有 <select> 互動模式 + Board.tsx

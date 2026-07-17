@@ -22,7 +22,8 @@ export type RecommendationCategory =
   | 'expense'
   | 'immigration'
   | 'general'
-  | 'german_learning';
+  | 'german_learning'
+  | 'career';
 
 export interface RecommendationCategoryMeta {
   key: RecommendationCategory;
@@ -81,6 +82,11 @@ export const RECOMMENDATION_CATEGORIES: RecommendationCategoryMeta[] = [
     title: '德文學習',
     subtitle: '文法、詞彙、聽力、口說、檢定等 9 子板塊',
   },
+  {
+    key: 'career',
+    title: 'DACH 實習/求職',
+    subtitle: '德國、奧地利、瑞士的實習與求職資源',
+  },
 ];
 
 export interface Recommendation {
@@ -107,6 +113,16 @@ export interface Recommendation {
   level?: GermanLearningLevel[];   // level_label 展開後的離散值，供篩選用
   resource_status?: GermanLearningStatus;
   audience?: GermanLearningAudience[];
+
+  // Phase BG：DACH 實習/求職分類欄位（僅 category === 'career' 使用）。
+  // 欄位名稱刻意與 housing/german_learning 已用過的 fee_status/target/
+  // audience 區隔開來（career_fee/career_type/career_audience 等），避免
+  // 同名欄位在不同分類間型別衝突（見 PAT-164 的 schema 擴充模式）。
+  career_type?: CareerType[];       // 子板塊：實習/求職，同一資源可能橫跨兩者
+  career_fee?: CareerFee[];         // 費用，同一資源可能同時標註兩種（如求職者免費+企業付費）
+  career_mode?: CareerMode[];       // 工作模式：完全遠端/本地/混合
+  career_country?: CareerCountry[]; // 涵蓋國家
+  career_audience?: CareerAudience[]; // 適合族群，未特別標註者留空（代表不限特定族群）
 }
 
 /** 服務費/仲介費狀態 */
@@ -185,4 +201,50 @@ export const GERMAN_LEARNING_AUDIENCE_LABEL: Record<GermanLearningAudience, stri
   new_immigrant: '新移民',
   teacher: '教師',
   child: '兒童',
+};
+
+/**
+ * Phase BG：DACH 實習/求職分類欄位。子板塊僅 2 個（實習/求職），資料量
+ * 遠小於德文學習的 9 子板塊，故不採用「全部」預設分頁（見 PAT-166 的
+ * 那個決定是德文學習分類的專屬情境，本分類未收到相同指示，預設回歸
+ * Phase BD 找房頁的主動篩選風格，不做狀態徽章／不做全部聯集分頁）。
+ */
+export type CareerType = 'intern' | 'job';
+export const CAREER_TYPE_LABEL: Record<CareerType, string> = {
+  intern: '實習',
+  job: '求職',
+};
+export const CAREER_TYPE_ORDER: CareerType[] = ['intern', 'job'];
+
+export type CareerFee = 'free' | 'partial' | 'paid';
+export const CAREER_FEE_LABEL: Record<CareerFee, string> = {
+  free: '免費',
+  partial: '部分付費',
+  paid: '付費',
+};
+
+export type CareerMode = 'remote' | 'local' | 'hybrid';
+export const CAREER_MODE_LABEL: Record<CareerMode, string> = {
+  remote: '完全遠端',
+  local: '本地',
+  hybrid: '混合',
+};
+
+export type CareerCountry = 'germany' | 'austria' | 'switzerland' | 'other';
+export const CAREER_COUNTRY_LABEL: Record<CareerCountry, string> = {
+  germany: '德國',
+  austria: '奧地利',
+  switzerland: '瑞士',
+  other: '其他',
+};
+
+export type CareerAudience =
+  | 'student' | 'graduate' | 'technical' | 'liberal_arts' | 'chinese_speaking' | 'international_student';
+export const CAREER_AUDIENCE_LABEL: Record<CareerAudience, string> = {
+  student: '學生',
+  graduate: '應屆生',
+  technical: '技術類',
+  liberal_arts: '文組/行政',
+  chinese_speaking: '華語圈',
+  international_student: '留學生',
 };

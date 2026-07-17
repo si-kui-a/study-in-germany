@@ -165,6 +165,8 @@
 | PAT-164 | CORE_IMMUTABLE | user_submissions.status 4 值語意（approved≠終態，僅 rejected/archived 才從清單消失）；跨分類共用型別的分類專屬欄位優先選填擴充；篩選元件單選/複選依資料結構決定，非統一套用同一互動 |
 | PAT-165 | CORE_IMMUTABLE | 「大分類→子板塊」兩層導覽先例（德文學習 9 子板塊）：route 存大分類、query param 延伸 Board.tsx 的 useSearchParams 模式存子層、複雜度獨立封裝為子元件；非正常狀態依可靠度分兩級視覺提示 |
 | PAT-166 | CORE_IMMUTABLE | 狀態枚舉零使用不等於移除定義（通用詞彙 vs 單一特例的判斷）；設計方向由「預先篩選保護」轉為「完整顯示＋標籤自行判斷」，篩選與視覺標示重疊時不疊加兩層防禦 |
+| PAT-167 | CORE_IMMUTABLE | 兩個相似兩層導覽需求（德文學習 vs DACH 實習/求職）優先複製而非抽共用元件：只有 tab+URL 同步技術真正共通，篩選維度形狀差異大，案例數不足以判斷抽象邊界 |
+| PAT-168 | 方法論 | 批量高度命名相似網域（如「Job+字根+.at」模板化命名）逐一查無實據時，應整批判定為 AI 幻覺剔除，不與「真實存在但已停用」「網址誤植」個別情況混淆 |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance
