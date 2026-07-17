@@ -214,22 +214,6 @@
     "audience": ["exam_prep"]
   },
   {
-    "id": "gl-german-learning-online",
-    "category": "german_learning",
-    "title": "German-Learning-Online.de",
-    "summary": "文法學習網站（內容待人工確認）",
-    "points": ["等級：A1、B1", "適合：自學者", "狀態：需人工確認"],
-    "detail": "網站拒絕自動化存取，無法確認實際內容，建議以瀏覽器人工開啟確認後再使用。",
-    "tags": ["文法練習"],
-    "url": "http://www.german-learning-online.de",
-    "updated_at": "2026-07",
-    "board": ["grammar"],
-    "level_label": "A1、B1",
-    "level": ["A1", "B1"],
-    "resource_status": "unconfirmed",
-    "audience": ["self_learner"]
-  },
-  {
     "id": "gl-deutschlernerblog",
     "category": "german_learning",
     "title": "Deutschlernerblog.de",

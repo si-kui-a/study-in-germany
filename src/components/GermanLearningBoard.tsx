@@ -10,11 +10,22 @@ import {
 } from '../lib/recommendation';
 
 type LevelFilter = 'all' | GermanLearningLevel;
-type StatusFilter = 'all' | GermanLearningStatus;
+
+/**
+ * Phase BF：新增「全部」虛擬子板塊，值為 'all'——與 GermanLearningLevel
+ * 篩選沿用同一個 'all' 字面值慣例（該處也是「不篩選 = all」），保持全檔
+ * 一致的命名習慣，非另創新詞彙。'all' 只在 UI／URL 層存在，不寫入
+ * recommendation.ts 的 GermanLearningBoard 型別，因為它不是資料本身的
+ * 分類標籤，只是「不過濾 board 維度」的操作語意。
+ */
+type BoardTabKey = BoardKey | 'all';
+const BOARD_TAB_ORDER: BoardTabKey[] = ['all', ...GERMAN_LEARNING_BOARD_ORDER];
+const BOARD_TAB_LABEL: Record<BoardTabKey, string> = {
+  all: '全部',
+  ...GERMAN_LEARNING_BOARD_LABEL,
+};
 
 const AUDIENCE_OPTIONS = Object.keys(GERMAN_LEARNING_AUDIENCE_LABEL) as GermanLearningAudience[];
-const NON_ACTIVE_STATUS_OPTIONS = (Object.keys(GERMAN_LEARNING_STATUS_LABEL) as GermanLearningStatus[])
-  .filter((s) => s !== 'active');
 
 /** 非正常運作狀態的視覺分級：changed/stopped-but-usable 為輕度提醒，outdated/unconfirmed 為較強提醒 */
 const STATUS_BADGE_CLASS: Record<Exclude<GermanLearningStatus, 'active'>, string> = {
@@ -30,34 +41,40 @@ interface Props {
 
 /**
  * 德文學習大分類的「子板塊」導覽（Phase BE，見 PAT-165）。
- * 9 子板塊 tab + 三維篩選（等級/適合族群/狀態），抽成獨立元件而非塞進
+ * 9 子板塊 tab + 篩選（等級/適合族群），抽成獨立元件而非塞進
  * RecommendationCategory.tsx 的通用渲染路徑——後者服務其餘 9 個單層分類，
  * 這裡的兩層結構複雜度明顯更高，獨立元件可避免通用路徑被拖得難以維護。
  *
  * 子板塊選取透過 URL query param `sub` 記錄（沿用 Board.tsx 已建立的
  * useSearchParams 慣例，見 PAT-130），支援分享連結直接回到指定子板塊。
+ *
+ * Phase BF：移除「狀態」篩選下拉（原預設僅顯示正常運作，會預先過濾掉
+ * 使用者可能想看到的非正常項目）。狀態改為純標籤，僅以卡片上既有的
+ * 兩級視覺徽章呈現（見 STATUS_BADGE_CLASS），由使用者自行判斷，不再由
+ * 篩選機制預先篩掉。
+ *
+ * Phase BF：新增「全部」子板塊並設為預設（原預設是「綜合」）——與上述
+ * 「不預先篩掉使用者可能想看的內容」是同一個設計方向的延伸：讓使用者
+ * 一進頁面就看到全部資源，再自行用 tab／篩選縮小範圍，而非被指定看
+ * 一個武斷的起始子板塊。
  */
 export default function GermanLearningBoard({ items }: Props) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [board, setBoard] = useState<BoardKey>(() => {
+  const [board, setBoard] = useState<BoardTabKey>(() => {
     const s = searchParams.get('sub');
-    return (GERMAN_LEARNING_BOARD_ORDER as string[]).includes(s ?? '')
-      ? (s as BoardKey)
-      : GERMAN_LEARNING_BOARD_ORDER[0];
+    return (BOARD_TAB_ORDER as string[]).includes(s ?? '') ? (s as BoardTabKey) : 'all';
   });
-  // 預設僅顯示「正常運作」，比照指令書「使用者應能一鍵篩出僅正常運作資源」
-  const [statusFilter, setStatusFilter] = useState<StatusFilter>('active');
   const [levelFilter, setLevelFilter] = useState<LevelFilter>('all');
   const [audienceFilter, setAudienceFilter] = useState<GermanLearningAudience[]>([]);
 
   useEffect(() => {
     const s = searchParams.get('sub');
-    if (s && (GERMAN_LEARNING_BOARD_ORDER as string[]).includes(s)) {
-      setBoard(s as BoardKey);
+    if (s && (BOARD_TAB_ORDER as string[]).includes(s)) {
+      setBoard(s as BoardTabKey);
     }
   }, [searchParams]);
 
-  const handleBoardClick = (key: BoardKey) => {
+  const handleBoardClick = (key: BoardTabKey) => {
     setBoard(key);
     setSearchParams({ sub: key }, { replace: true });
   };
@@ -67,21 +84,22 @@ export default function GermanLearningBoard({ items }: Props) {
   };
 
   const visibleItems = useMemo(() => {
+    // 'all' 直接疊代 items 本身（每筆資源在陣列中只存在一次，不論 board
+    // 陣列包含幾個子板塊標籤），故聯集顯示天然不會重複，不需額外去重邏輯
     return items.filter((item) => {
-      if (!item.board?.includes(board)) return false;
+      if (board !== 'all' && !item.board?.includes(board)) return false;
       if (levelFilter !== 'all' && !item.level?.includes(levelFilter)) return false;
-      if (statusFilter !== 'all' && item.resource_status !== statusFilter) return false;
       if (audienceFilter.length > 0 && !audienceFilter.some((a) => item.audience?.includes(a))) return false;
       return true;
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [items, board, levelFilter, statusFilter, audienceFilter]);
+  }, [items, board, levelFilter, audienceFilter]);
 
   return (
     <div className="space-y-4">
-      {/* 9 子板塊 tab */}
+      {/* 「全部」＋ 9 子板塊 tab */}
       <div className="flex flex-wrap gap-2 border-b border-border-subtle pb-3">
-        {GERMAN_LEARNING_BOARD_ORDER.map((b) => (
+        {BOARD_TAB_ORDER.map((b) => (
           <button
             key={b}
             type="button"
@@ -92,7 +110,7 @@ export default function GermanLearningBoard({ items }: Props) {
                 : 'border-border-subtle text-content-secondary hover:border-border-strong'
             }`}
           >
-            {GERMAN_LEARNING_BOARD_LABEL[b]}
+            {BOARD_TAB_LABEL[b]}
           </button>
         ))}
       </div>
@@ -110,21 +128,6 @@ export default function GermanLearningBoard({ items }: Props) {
           <option value="all">等級：任意</option>
           {GERMAN_LEARNING_LEVEL_ORDER.map((l) => (
             <option key={l} value={l}>{l}</option>
-          ))}
-        </select>
-
-        <select
-          value={statusFilter}
-          onChange={(e) => setStatusFilter(e.target.value as StatusFilter)}
-          className="text-sm px-3 py-2 rounded-lg border border-border-subtle
-                     bg-surface-canvas text-content-primary
-                     focus:outline-none focus:border-brand-burgundy
-                     hover:border-brand-gold transition-colors"
-        >
-          <option value="active">狀態：僅正常運作</option>
-          <option value="all">狀態：全部</option>
-          {NON_ACTIVE_STATUS_OPTIONS.map((s) => (
-            <option key={s} value={s}>{GERMAN_LEARNING_STATUS_LABEL[s]}</option>
           ))}
         </select>
 
