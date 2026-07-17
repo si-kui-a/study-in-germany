@@ -668,5 +668,48 @@
     "career_mode": ["local"],
     "career_country": ["germany"],
     "career_audience": ["student"]
+  },
+  {
+    "id": "career-coursera",
+    "category": "career",
+    "title": "Coursera（德語相關課程）",
+    "summary": "大學與機構線上課程平台，可依職涯需求選修德語相關課程",
+    "points": ["費用：多數課程可免費旁聽，付費取得證書", "模式：完全遠端", "國家：全球（含德奧瑞）"],
+    "tags": ["線上課程", "職涯技能"],
+    "url": "https://www.coursera.org",
+    "updated_at": "2026-07",
+    "career_type": ["resource"],
+    "career_fee": ["free", "partial"],
+    "career_mode": ["remote"],
+    "career_country": ["germany", "austria", "switzerland", "other"]
+  },
+  {
+    "id": "career-edx",
+    "category": "career",
+    "title": "edX（德語相關課程）",
+    "summary": "大學與機構線上課程平台，可依職涯需求選修德語相關課程",
+    "points": ["費用：多數課程可免費旁聽，付費取得證書", "模式：完全遠端", "國家：全球（含德奧瑞）"],
+    "tags": ["線上課程", "職涯技能"],
+    "url": "https://www.edx.org",
+    "updated_at": "2026-07",
+    "career_type": ["resource"],
+    "career_fee": ["free", "partial"],
+    "career_mode": ["remote"],
+    "career_country": ["germany", "austria", "switzerland", "other"]
+  },
+  {
+    "id": "career-udemy",
+    "category": "career",
+    "title": "Udemy（德語主題課程）",
+    "summary": "付費講師課程平台，主題化教學（商務德語、職場會話等）",
+    "points": ["費用：依課程單次付費", "模式：完全遠端", "國家：全球（含德奧瑞）"],
+    "detail": "含商務德語、職場會話等職涯導向主題課程。",
+    "tags": ["線上課程", "付費", "職涯技能"],
+    "url": "https://www.udemy.com",
+    "updated_at": "2026-07",
+    "career_type": ["resource"],
+    "career_fee": ["paid"],
+    "career_mode": ["remote"],
+    "career_country": ["germany", "austria", "switzerland", "other"]
   }
 ]

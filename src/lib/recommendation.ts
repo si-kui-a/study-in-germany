@@ -230,12 +230,18 @@ export const GERMAN_LEARNING_FEE_LABEL: Record<GermanLearningFee, string> = {
  * 那個決定是德文學習分類的專屬情境，本分類未收到相同指示，預設回歸
  * Phase BD 找房頁的主動篩選風格，不做狀態徽章／不做全部聯集分頁）。
  */
-export type CareerType = 'intern' | 'job';
+/**
+ * Phase BM：新增第三個子板塊「資源」（resource）——Coursera/edX/Udemy
+ * 三筆原歸類於德文學習分類，經查證其實質為大學/機構線上課程平台
+ * （偏職涯/專業技能導向，非純語言學習資源），轉移至本分類，見 PAT-174。
+ */
+export type CareerType = 'intern' | 'job' | 'resource';
 export const CAREER_TYPE_LABEL: Record<CareerType, string> = {
   intern: '實習',
   job: '求職',
+  resource: '資源',
 };
-export const CAREER_TYPE_ORDER: CareerType[] = ['intern', 'job'];
+export const CAREER_TYPE_ORDER: CareerType[] = ['intern', 'job', 'resource'];
 
 export type CareerFee = 'free' | 'partial' | 'paid';
 export const CAREER_FEE_LABEL: Record<CareerFee, string> = {

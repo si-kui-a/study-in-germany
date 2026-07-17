@@ -85,24 +85,6 @@
     "target": ["shared", "student", "general"]
   },
   {
-    "id": "housing-easywg",
-    "category": "housing",
-    "title": "easywg.de",
-    "summary": "合租／短租房源平台，多地與 Mitwohnzentrale 業者合作",
-    "points": [
-      "FEE：免費／部分功能收費",
-      "適合：通用",
-      "短租"
-    ],
-    "detail": "原查證文檔曾標記本平台「已停用」，本次查證更正：2023 年後仍持續被引用，多地 Mitwohnzentrale 合作業者仍在使用，非停業狀態。",
-    "tags": ["合租", "短租"],
-    "url": "https://www.easywg.de/",
-    "updated_at": "2026-07",
-    "fee_status": "partial",
-    "term": ["short"],
-    "target": ["shared", "general"]
-  },
-  {
     "id": "housing-wohnungsboerse",
     "category": "housing",
     "title": "wohnungsboerse.net",
@@ -135,23 +117,6 @@
     "fee_status": "free",
     "term": ["short"],
     "target": ["shared", "general", "student"]
-  },
-  {
-    "id": "housing-wohnpool",
-    "category": "housing",
-    "title": "wohnpool.de",
-    "summary": "傳統 Mitwohnzentrale 性質的短租房源平台",
-    "points": [
-      "FEE：部分收費（傳統 Mitwohnzentrale 性質）",
-      "適合：通用",
-      "短租"
-    ],
-    "tags": ["套房", "短租"],
-    "url": "https://www.wohnpool.de/",
-    "updated_at": "2026-07",
-    "fee_status": "partial",
-    "term": ["short"],
-    "target": ["room", "general"]
   },
   {
     "id": "housing-immobilienscout24",
@@ -225,11 +190,12 @@
     "id": "housing-uhomes",
     "category": "housing",
     "title": "Uhomes",
-    "summary": "涵蓋 The Fizz／Yugo 等品牌房源的國際學生住宿平台",
+    "summary": "全球性國際學生住宿平台,涵蓋 iQ Student Accommodation／Scape／Vita Student 等品牌房源",
     "points": [
       "FEE：依房源而定，部分收費",
       "適合：國際學生",
-      "長租"
+      "長租",
+      "非德國專屬，全球 500+ 城市"
     ],
     "tags": ["套房", "合租", "學生"],
     "url": "https://www.uhomes.com/",
@@ -237,24 +203,6 @@
     "fee_status": "partial",
     "term": ["long"],
     "target": ["student", "room", "shared"]
-  },
-  {
-    "id": "housing-the-fizz",
-    "category": "housing",
-    "title": "The Fizz",
-    "summary": "國際學生公寓品牌，服務費內含租金（bill-inclusive）",
-    "points": [
-      "FEE：服務費內含租金，無額外仲介費",
-      "適合：國際學生",
-      "長租",
-      "多城：柏林／漢堡／慕尼黑／亞琛／法蘭克福"
-    ],
-    "tags": ["套房", "學生"],
-    "url": "https://www.thefizz.com/",
-    "updated_at": "2026-07",
-    "fee_status": "free",
-    "term": ["long"],
-    "target": ["student", "room"]
   },
   {
     "id": "housing-yugo",
@@ -275,41 +223,6 @@
     "target": ["student", "room"]
   },
   {
-    "id": "housing-daad-wohnheimfinder",
-    "category": "housing",
-    "title": "DAAD Wohnheimfinder",
-    "summary": "官方學生宿舍資料庫",
-    "points": [
-      "FEE：免費查詢",
-      "適合：學生",
-      "長租"
-    ],
-    "tags": ["宿舍", "學生", "官方"],
-    "url": "https://www.daad.de/",
-    "updated_at": "2026-07",
-    "fee_status": "free",
-    "term": ["long"],
-    "target": ["student"]
-  },
-  {
-    "id": "housing-studierendenwerk",
-    "category": "housing",
-    "title": "Studierendenwerk（各地）",
-    "summary": "各地學生服務機構管理的官方學生宿舍",
-    "points": [
-      "FEE：免費申請（需另付租金）",
-      "適合：學生",
-      "長租",
-      "非單一網址，依所在城市查詢"
-    ],
-    "tags": ["宿舍", "學生", "官方"],
-    "url": "https://www.studentenwerke.de/",
-    "updated_at": "2026-07",
-    "fee_status": "free",
-    "term": ["long"],
-    "target": ["student"]
-  },
-  {
     "id": "housing-dolc",
     "category": "housing",
     "title": "萍聚社區／德國熱線",
@@ -325,22 +238,5 @@
     "fee_status": "free",
     "term": ["long", "short"],
     "target": ["general", "shared", "student"]
-  },
-  {
-    "id": "housing-kaiyuan",
-    "category": "housing",
-    "title": "開元",
-    "summary": "華人社群論壇（南德為主），租房資訊活躍",
-    "points": [
-      "FEE：免費",
-      "適合：華人（南德為主）",
-      "長租、短租皆有"
-    ],
-    "tags": ["通用", "學生"],
-    "url": "https://www.kaiyuan.de/",
-    "updated_at": "2026-07",
-    "fee_status": "free",
-    "term": ["long", "short"],
-    "target": ["general", "student"]
   }
 ]
