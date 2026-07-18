@@ -18,6 +18,15 @@ export const CONFIDENCE_LABEL: Record<Confidence, string> = {
   gap: '官網未列出，需另洽詢',
 };
 
+/** Phase BQ：摘要層徽章精簡文字，供收合狀態的條列項使用，展開後詳細
+ *  區塊仍用上方完整版 CONFIDENCE_LABEL（見 BQ.d：精簡但不得只留圖示）*/
+export const CONFIDENCE_LABEL_SHORT: Record<Confidence, string> = {
+  official: '官方',
+  'alt-high': '替代·高信心',
+  'alt-medium': '替代·中信心',
+  gap: '官網未列',
+};
+
 export interface SourceLink {
   label: string;
   url: string;
@@ -32,6 +41,13 @@ export interface ConfidenceEntry {
   sources?: SourceLink[];
 }
 
+/** Phase BQ：財力摘要一行（收合狀態顯示），取該卡最具代表性的一筆
+ *  finance entry 精簡改寫，完整計算/落差說明保留在 finance[] 展開區 */
+export interface FinanceSummary {
+  text: string;
+  confidence: Confidence;
+}
+
 export interface VisaCard {
   id: string;
   number: string;
@@ -40,6 +56,12 @@ export interface VisaCard {
   sourceNote: string;
   /** 卡09：依來源文件註記「本次未更新」，不得因其他卡片已更新而誤植 */
   notUpdatedThisRound?: boolean;
+  /** Phase BQ：一句話結論，收合狀態開門見山顯示（比照 AU.a 三層格式 summary） */
+  conclusion: string;
+  /** Phase BQ：條列關鍵資訊 2-4 項（年齡/工作權限等，財力另由 financeSummary 呈現） */
+  summaryPoints: string[];
+  /** Phase BQ：財力精簡一行＋信心徽章，收合狀態顯示 */
+  financeSummary: FinanceSummary;
   eligibility: string;
   ageLimit: string;
   ageLimitNote?: ConfidenceEntry;
@@ -75,6 +97,13 @@ export const VISA_CARDS: VisaCard[] = [
     title: '工作簽證',
     officialUpdated: '2025-02-14',
     sourceNote: '🔗 1 來源',
+    conclusion: '適合：已取得德國企業僱用合約的專業人士',
+    summaryPoints: [
+      '年齡：官網未列硬性上限，45歲以上另有規定',
+      '工作權限：依合約工作',
+      '學歷：需 ANABIN/ZAB 認證',
+    ],
+    financeSummary: { text: '依合約薪資；45歲以上門檻金額未列', confidence: 'gap' },
     eligibility: '已取得德國企業僱用合約、具德國認可高等學歷或完整職業培訓之專業人士',
     ageLimit: '官網未列出硬性上限；45歲以上申請者另有規定',
     finance: [
@@ -108,6 +137,13 @@ export const VISA_CARDS: VisaCard[] = [
     title: '藍卡工作簽證（EU Blue Card）',
     officialUpdated: '2025-02-14',
     sourceNote: '🔗 1 來源',
+    conclusion: '適合：高階外籍人才、科技/工程/醫療等稀缺職業人才',
+    summaryPoints: [
+      '年齡：無限制',
+      '工作權限：依合約，需滿6個月以上',
+      '學歷：需 ANABIN/ZAB 認證，IT可憑經驗申請',
+    ],
+    financeSummary: { text: '€50,700/年（一般）／€45,934.20/年（稀缺職業）', confidence: 'official' },
     eligibility: '高階外籍人才、科技/工程/醫療等稀缺職業人才，具德國或經ANABIN/ZAB承認之外國大學學位',
     ageLimit: '無限制',
     finance: [
@@ -156,6 +192,13 @@ export const VISA_CARDS: VisaCard[] = [
     title: '結婚/同性伴侶登記簽證',
     officialUpdated: '2025-06-02',
     sourceNote: '🔗 1 來源＋財力替代驗證來源',
+    conclusion: '適合：尚未結婚，欲赴德與伴侶完婚或辦理同性伴侶登記',
+    summaryPoints: [
+      '年齡：官網未列出',
+      '工作權限：官網未列出',
+      '需德語A1證明＋德國境內居所證明',
+    ],
+    financeSummary: { text: '約€563/月起估算（依家戶需求）', confidence: 'alt-medium' },
     eligibility: '尚未結婚，欲赴德與德籍或已居留德國之未婚夫/妻完婚，或辦理同性伴侶登記者',
     ageLimit: '官網未列出',
     finance: [
@@ -194,6 +237,13 @@ export const VISA_CARDS: VisaCard[] = [
     title: '依親簽證（配偶/同性伴侶）',
     officialUpdated: '2025-06-02',
     sourceNote: '🔗 1 來源＋財力替代驗證來源',
+    conclusion: '適合：已完成結婚/伴侶登記，欲與配偶在德團聚',
+    summaryPoints: [
+      '年齡：官網未列出',
+      '工作權限：官網未列出（居留後可另申請）',
+      '需德語A1證明＋結婚證書正本驗證',
+    ],
+    financeSummary: { text: '約€2,068/月估算（配偶+2子女+租金範例）', confidence: 'alt-medium' },
     eligibility: '已完成結婚登記或同性伴侶登記，欲赴德與配偶/伴侶團聚者',
     ageLimit: '官網未列出',
     finance: [
@@ -231,6 +281,13 @@ export const VISA_CARDS: VisaCard[] = [
     title: '依親簽證（依附未成年德籍子女）',
     officialUpdated: '2024-12-17',
     sourceNote: '🔗 1 來源＋財力替代驗證來源',
+    conclusion: '適合：台灣籍父母欲依附未成年德籍子女赴德',
+    summaryPoints: [
+      '年齡：子女須未成年，申請人本身無限制',
+      '工作權限：官網未列出',
+      '需子女出生證明＋監護權證明',
+    ],
+    financeSummary: { text: '依家戶需求公式估算（同卡04邏輯）', confidence: 'alt-medium' },
     eligibility: '台灣籍父母欲依附其未成年德籍子女赴德居留',
     ageLimit: '依附對象（子女）須為未成年；申請人（父/母）本身無年齡限制',
     finance: [
@@ -266,6 +323,13 @@ export const VISA_CARDS: VisaCard[] = [
     title: '未成年子女依親父母',
     officialUpdated: '2024-12-17',
     sourceNote: '🔗 1 來源＋財力替代驗證來源',
+    conclusion: '適合：未滿18歲子女依附持監護權之父母赴德',
+    summaryPoints: [
+      '年齡：申請人須未滿18歲',
+      '工作權限：官網未列出',
+      '⚠️ 父母/監護人須親自陪同申請',
+    ],
+    financeSummary: { text: '依擔保人(父母)收入公式估算', confidence: 'alt-medium' },
     eligibility: '未滿18歲之未成年子女，依附持有監護權之父/母（或單獨監護人）赴德',
     ageLimit: '申請人須未滿18歲；官網明訂父母或監護人須親自陪同提出申請',
     finance: [
@@ -301,6 +365,13 @@ export const VISA_CARDS: VisaCard[] = [
     title: '實習/受訓簽證',
     officialUpdated: '2025-02-18',
     sourceNote: '🔗 1 來源',
+    conclusion: '適合：在學/畢業2年內實習生，或雙軌制職業培訓生',
+    summaryPoints: [
+      '年齡：官網未列出',
+      '工作權限：依實習/受訓合約，學程實習需 ZAV 許可',
+      '財力四擇一（合約薪資/存款證明/擔保書/獎學金）',
+    ],
+    financeSummary: { text: '四擇一彈性證明，銀行帳戶最低額未列', confidence: 'gap' },
     eligibility: '①實習：大學在學或畢業不超過2年，赴德企業進行專業相關實習；②受訓：赴德參加雙軌制職業培訓(Ausbildung)',
     ageLimit: '官網未列出',
     finance: [
@@ -332,6 +403,13 @@ export const VISA_CARDS: VisaCard[] = [
     title: '客座學者/研究人員簽證',
     officialUpdated: '2025-02-14',
     sourceNote: '🔗 1 來源',
+    conclusion: '適合：受德國學術機構邀請進行研究/授課/交流',
+    summaryPoints: [
+      '年齡：無限制',
+      '工作權限：官網未列出',
+      '審核最快，約1週',
+    ],
+    financeSummary: { text: '三擇一彈性證明，無固定月數字', confidence: 'gap' },
     eligibility: '受德國研究機構、大學或認證學術單位邀請，進行學術交流、授課或計畫研究者',
     ageLimit: '無限制',
     finance: [
@@ -364,6 +442,13 @@ export const VISA_CARDS: VisaCard[] = [
     officialUpdated: '2024-12-17',
     sourceNote: '🔗 1 來源（本卡未列入本次更新範圍）',
     notUpdatedThisRound: true,
+    conclusion: '適合：透過合格交換計畫赴德中學交流之台灣國高中生',
+    summaryPoints: [
+      '年齡：僅稱「未成年」，無具體歲數區間',
+      '工作權限：官網未列出',
+      '⚠️ 父母/監護人須親自陪同申請',
+    ],
+    financeSummary: { text: '四擇一彈性證明', confidence: 'gap' },
     eligibility: '台灣國高中生透過合格交換計畫，赴德中學進行文化與學術交流',
     ageLimit: '官網僅稱申請者須為「未成年」，未列出具體歲數區間（如常見的14–18歲屬計畫主辦單位或坊間慣例，非本官網原文）',
     finance: [
@@ -395,6 +480,13 @@ export const VISA_CARDS: VisaCard[] = [
     title: '語言進修簽證（不含申請學校）',
     officialUpdated: '2024-12-17',
     sourceNote: '🔗 1 來源',
+    conclusion: '適合：純赴德語言學校學習德文，無升學意圖',
+    summaryPoints: [
+      '年齡：官網未列出',
+      '工作權限：可打工，每週≤20小時',
+      '無法直接轉換為就學簽證',
+    ],
+    financeSummary: { text: '€1,091/月（Sperrkonto）', confidence: 'official' },
     eligibility: '純粹赴德語言學校(Sprachschule)學習德文，無升學意圖',
     ageLimit: '官網未列出',
     finance: [
@@ -426,6 +518,13 @@ export const VISA_CARDS: VisaCard[] = [
     title: '高等學院就讀簽證（已獲入學許可）',
     officialUpdated: '2025-02-14',
     sourceNote: '🔗 1 來源',
+    conclusion: '適合：已取得德國大學/科大正式入學許可',
+    summaryPoints: [
+      '年齡：無限制',
+      '工作權限：註冊後最多120全天/240半天',
+      '審核約2–3週',
+    ],
+    financeSummary: { text: '€992/月，年€11,904（Sperrkonto）', confidence: 'official' },
     eligibility: '已取得德國大學、科技大學或同等高等教育機構正式入學許可(Zulassungsbescheid)者',
     ageLimit: '無限制',
     finance: [
@@ -456,6 +555,13 @@ export const VISA_CARDS: VisaCard[] = [
     title: '打工度假簽證',
     officialUpdated: '2025-02-12',
     sourceNote: '🔗 1 來源',
+    conclusion: '適合：18–30歲台灣青年赴德度假並打工籌旅費',
+    summaryPoints: [
+      '年齡：18–30歲，每年名額500名',
+      '工作權限：同一雇主最長3個月',
+      '不得轉換為其他停留目的',
+    ],
+    financeSummary: { text: '€4,000 存款證明', confidence: 'official' },
     eligibility: '台灣青年赴德度假旅遊，並藉短期工作籌措旅費',
     ageLimit: '申請時須滿18歲且未滿31歲（即18–30歲）；每年名額500名',
     finance: [
@@ -487,6 +593,13 @@ export const VISA_CARDS: VisaCard[] = [
     title: '互惠生（Au-Pair）簽證',
     officialUpdated: '2023-09-22',
     sourceNote: '🔗 1 來源',
+    conclusion: '適合：赴德接待家庭協助家務/照顧孩童並學德語',
+    summaryPoints: [
+      '年齡：不得超過26歲',
+      '工作權限：僅限互惠工作本身',
+      '需德語A1以上證書',
+    ],
+    financeSummary: { text: '官網未列零用金數字', confidence: 'gap' },
     eligibility: '赴德接待家庭協助照顧孩童、分擔簡單家務，藉此體驗生活並學習德語',
     ageLimit: '申請時不得超過26歲（官網原文明訂上限，未列出最低年齡）',
     finance: [
@@ -519,6 +632,13 @@ export const VISA_CARDS: VisaCard[] = [
     title: '志願服務者簽證（BFD／FSJ／FÖJ／EFD）',
     officialUpdated: '2023-09-22',
     sourceNote: '🔗 1 來源＋財力替代驗證來源（官方bmbfsfj.bund.de、ich-will-fsj.de）',
+    conclusion: '適合：赴德參加 BFD/FSJ/FÖJ/EFD 志願服務',
+    summaryPoints: [
+      '年齡：BFD無上限（官方），其餘未列',
+      '工作權限：僅限指定機構志願服務',
+      '服務期6–24個月，可全職或兼職',
+    ],
+    financeSummary: { text: 'EFD€110/月；BFD上限€644/月；因方案而異', confidence: 'official' },
     eligibility: '赴德參加聯邦志願服務(BFD)、志願社會年(FSJ)、志願生態年(FÖJ)或歐盟志願服務(EFD)',
     ageLimit: '官網未列出統一數字，依各計畫類型另有規定',
     ageLimitNote: {

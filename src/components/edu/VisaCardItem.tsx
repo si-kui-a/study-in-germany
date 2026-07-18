@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { IconBookmark, IconBookmarkFilled } from '@tabler/icons-react';
 import type { Confidence, ConfidenceEntry, VisaCard } from '../../data/edu/visaCards';
-import { CONFIDENCE_LABEL } from '../../data/edu/visaCards';
+import { CONFIDENCE_LABEL, CONFIDENCE_LABEL_SHORT } from '../../data/edu/visaCards';
 
 /** 沿用 ImmigrationGuide.tsx GuideBlockView 的 **bold** 行內解析邏輯 */
 function renderInline(text: string) {
@@ -40,6 +40,19 @@ function ConfidenceBadge({ confidence }: { confidence: Confidence }) {
     >
       <span aria-hidden>{CONFIDENCE_ICON[confidence]}</span>
       {CONFIDENCE_LABEL[confidence]}
+    </span>
+  );
+}
+
+/** Phase BQ：摘要層精簡徽章，用短標籤但保留 Phase BP 建立的顏色/圖示視覺區隔（BQ.b/d） */
+function SummaryConfidenceBadge({ confidence }: { confidence: Confidence }) {
+  return (
+    <span
+      className={`inline-flex items-center gap-0.5 text-[10px] font-medium px-1 py-0.5
+                  rounded border shrink-0 whitespace-nowrap ${CONFIDENCE_STYLE[confidence]}`}
+    >
+      <span aria-hidden>{CONFIDENCE_ICON[confidence]}</span>
+      {CONFIDENCE_LABEL_SHORT[confidence]}
     </span>
   );
 }
@@ -142,8 +155,26 @@ export default function VisaCardItem({
         </button>
       </div>
 
+      {/* Phase BQ：摘要層——結論先行＋條列關鍵資訊＋財力精簡一行，
+          比照 AU.a 資源卡片 summary/points 三層格式（PAT-152），
+          收合狀態即可讀，展開才顯示完整說明（BQ.a/b） */}
+      <div className="mt-2 space-y-1.5">
+        <p className="text-sm text-content-primary leading-snug">{card.conclusion}</p>
+        <div className="flex items-start gap-1.5 flex-wrap">
+          <span className="text-xs text-content-secondary leading-snug">
+            財力：{card.financeSummary.text}
+          </span>
+          <SummaryConfidenceBadge confidence={card.financeSummary.confidence} />
+        </div>
+        <ul className="space-y-0.5 pl-4 list-disc text-xs text-content-secondary marker:text-content-muted">
+          {card.summaryPoints.map((p, i) => (
+            <li key={i} className="leading-snug">{p}</li>
+          ))}
+        </ul>
+      </div>
+
       {open && (
-        <div className="mt-3 space-y-3">
+        <div className="mt-3 space-y-3 pt-3 border-t border-border-subtle">
           <Field label="適用對象">
             <p className="text-sm text-content-primary leading-relaxed">{card.eligibility}</p>
           </Field>

@@ -177,6 +177,7 @@
 | PAT-176 | CORE_IMMUTABLE | 「同等級並列比較」內容（如 14 張簽證卡）不得強行套用既有「步驟化流程」型別/元件（WorkflowStep/WorkflowCard），須新建獨立型別；視覺語言可沿用同產品內最接近的既有展開/收合模式；Edu.tsx 的 TOPICS 陣列可放寬為結構化型別 {slug,title,subtitle}[] 讓輕量新模組與既有 WorkflowTopic 並存 |
 | PAT-177 | 方法論 | 長 session 中反覆重用同一 preview 分頁做互動測試，累積的點擊/HMR 殘留狀態可能偽裝成「頁面預設已展開」等假 bug（每次觀察對象不同、無法穩定重現）；對關鍵「載入預設狀態」驗證項目應開全新分頁（tabs_create）做最終定案查核 |
 | PAT-178 | 方法論 | Supabase MCP execute_sql 走特權連線，SET LOCAL role+request.jwt.claims 無法可靠模擬 anon/他人身份邊界；純等式型 RLS policy（auth.uid()=user_id）直接用 pg_policies 檢視定義即足夠，不需模擬跨身份請求；牽涉真實 Google OAuth 的端對端流程無法在沙盒瀏覽器完成，須以 DB 層讀寫往返+程式碼路徑檢視替代並誠實記錄限制 |
+| PAT-179 | CORE_IMMUTABLE | 套用「結論先行＋精簡列點」三層格式（PAT-152）精簡帶獨立信心分級徽章的內容（如簽證卡財力欄）時，只能精簡敘述文字，不得連同視覺信號系統一起精簡掉；須為徽章建立同色系同圖示、僅文字縮短的精簡版（CONFIDENCE_LABEL_SHORT），摘要層仍可用顏色/圖示辨識信心層級，完整說明留在展開區 |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance
