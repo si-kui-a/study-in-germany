@@ -2823,3 +2823,90 @@ housinganywhere.com/de/404，末者更帶有品牌專屬 utm_source 追蹤參數
 前提假設與實測結果不符（該站實際上已完全導向,非雙品牌並存),此類
 「指令書前提與可觀察現況不符」的情況同樣適用 PAT-174 的處理原則——
 以實測結果為準,並在報告中如實記錄此落差。
+
+## PAT-176 [CORE_IMMUTABLE]: 「同等級並列比較」內容不得強行套用既有「步驟化流程」型別/元件，須新建獨立型別與模組
+
+**背景**：Phase BP 新增「選擇簽證」14 張簽證比較卡，指令書明確警告
+「格式類型統一是視覺語言一致，不是套用步驟總覽圓點」。既有作戰手冊
+模組（`WorkflowTopic`/`WorkflowStep`/`WorkflowCard.tsx`/`WorkflowTimeline`）
+語意上是「STEP01-08 依序完成」，欄位設計（`priority`、`outcome`「完成後：」、
+`標記完成`/`跳過此步` 進度追蹤按鈕）全部綁定「步驟」概念；14 張簽證卡
+彼此無先後順序，欄位語意（適用對象/財力信心分級/常見錯誤）與步驟毫無
+關聯，若硬塞進 `WorkflowStep`，勢必出現「假造 step 編號」「priority 徽章
+語意錯置（必做/建議/補充套用在互斥選項上沒有意義）」等扭曲。
+
+**教訓**：判斷「能否沿用既有型別/元件」不能只看「同一產品區塊、視覺
+風格接近」，須先問**資料的語意結構是否相同**——本例「並列比較」與
+「循序步驟」是兩種本質不同的資訊架構，即使外觀（卡片+展開收合）相似，
+底層型別（有無順序性、有無進度狀態、欄位集合是否對應）不同就不該共用
+同一 interface。正確作法是新建獨立型別（本例 `VisaCard`），但**視覺
+語言可以且應該沿用**同產品內最接近的既有模式（本例沿用
+`ImmigrationGuide.tsx` 的 `button+chevron+useState` 手風琴展開模式，
+因其本身已與 step/priority/進度追蹤脫鉤，是更純粹的「內容展開」元件）。
+
+**模組列表整合作法**：既有 `Edu.tsx` 的 `TOPICS` 陣列型別為
+`WorkflowTopic[]`，但該頁實際渲染只用到 `{slug,title,subtitle}` 三欄。
+新模組不需要、也不應該偽造成 `WorkflowTopic` 形狀，而是將 `TOPICS`
+陣列型別放寬為 `{slug,title,subtitle}[]`（結構化型別，非強制 nominal
+type），讓真正的 `WorkflowTopic` 物件與新的輕量模組描述子物件並存於
+同一陣列——因為陣列字面量賦值給結構化型別不觸發「多餘屬性檢查」，
+`WorkflowTopic` 物件天然滿足這個較寬鬆的形狀。新模組並建立獨立路由
+（`/edu/visa-selector`，需在 `App.tsx` 中排在既有 `/edu/:slug` 動態路由
+**之前**才能被靜態路徑攔截）與獨立頁面元件，不進入 `EduTopic.tsx` 既有
+的 `WorkflowTimeline`+`WorkflowCard` 渲染管線。
+
+## PAT-177 [方法論]: 長 session 中反覆重用同一 preview 分頁做互動測試，殘留點擊狀態可能偽裝成「頁面預設已展開」的假 bug——關鍵驗證應開全新分頁
+
+**背景**：Phase BP 驗證 14 張簽證卡手風琴展開/收合行為時，在同一顆
+`seed` 分頁上連續執行數十次 `computer`/`javascript_tool` 點擊、
+`navigate`、`window.location.reload()` 後，多次觀察到「明明沒有點擊
+該卡片，重新整理/導覽後卻有一張卡片（每次隨機不同張）處於展開狀態」
+的現象，且展開內容本身完全正確——一度懷疑是 `useState(false)` 初始值
+被某種競態條件覆寫的真實程式錯誤。
+
+**教訓**：改用 `tabs_create` 開一顆全新、零互動歷史的分頁直接
+`navigate` 到同一 URL 後，`aria-expanded="true"` 的數量確認為 0——證實
+先前反覆重用同一分頁時，累積的點擊/HMR/歷史導覽殘留狀態偽裝成「預設
+展開」的假象（很可能是本環境 dev server 的 Fast Refresh 或分頁快取
+以非預期方式保留了元件實例狀態，而非 `window.location.reload()`/
+`navigate` 本身不可靠——PAT-173 對 `navigate force:true` 不保證真正整頁
+重新整理的結論依然成立，本次是額外發現「即使呼叫 reload()，在同一分頁
+長時間累積大量互動後仍可能不夠可靠」）。**方法論**：對「頁面載入時
+預設狀態」這類關鍵驗證項目，若懷疑結果被同一分頁的互動殘留污染，
+應開一顆全新分頁做最終定案查核，不要只依賴同分頁的 reload/navigate
+結果就下「找到 bug」的結論——尤其是「每次觀察到的異常對象都不一樣」
+這種不穩定、無法穩定重現同一結果的訊號，往往指向測試環境殘留而非
+程式邏輯錯誤。
+
+## PAT-178 [方法論]: Supabase MCP execute_sql 走特權連線，`SET LOCAL role`+`request.jwt.claims` 無法可靠模擬 anon/他人身份的 RLS 邊界；純等式型 RLS policy 以 `pg_policies` 定義檢視即足夠驗證
+
+**背景**：Phase BP 驗證新建 `visa_bookmarks` 表（私人收藏清單，僅本人
+可讀寫、無 public read）的 RLS 邊界時，嘗試用
+`SET LOCAL role authenticated; SET LOCAL request.jwt.claims = '{"sub":"..."}'`
+在同一個 `execute_sql` 連線內模擬「他人身份」與「anon 無 JWT」兩種情境，
+`reset role` 後預期應退回 anon/低權限，但實際上退回的是 MCP 工具本身
+使用的高權限連線角色，導致「reset role 後仍能讀到全部資料」的結果，
+若照字面解讀會誤判為 RLS 失效。
+
+**教訓**：`execute_sql` 是治理端專用的特權直連通道（本身就是設計來
+繞過 RLS 做管理查詢的），`SET LOCAL role`/`reset role` 在此連線內的
+語意與「一個真正走 PostgREST + JWT 的匿名/登入請求」不同，不能拿來
+可靠地模擬跨身份存取邊界。對於**純等式型** RLS policy（如本例
+`auth.uid() = user_id`，無時間窗、無複雜條件），直接用
+`pg_policies` 檢視 `qual`/`with_check` 定義本身（確認每個
+SELECT/INSERT/DELETE policy 都是 `auth.uid() = user_id`、且不存在
+`USING (true)` 的 public read policy）就是充分且更可靠的驗證方式，
+不需要（也不應該）勉強用這個連線模擬跨身份請求；PAT-170 的
+`SET LOCAL role+request.jwt.claim.sub` 手法仍適用於需要驗證**複雜
+條件邏輯**（如 15 分鐘編輯窗的時間計算）是否正確的情境，兩者不衝突，
+差別在於 policy 本身的複雜度是否值得用即時查詢驗證。
+
+**同一限制也解釋了為何本輪收藏持久化（登入→收藏→重新整理→排序保留）
+無法在此沙盒瀏覽器完成端對端驗證**：`useVisaBookmarks` 的登入流程
+呼叫真實 Google OAuth（`signInWithGoogle()`），會導向真正的
+`accounts.google.com` 登入頁，基於安全準則不得代填帳密完成第三方
+登入，因此以「DB 層寫入/讀取往返測試（直接 SQL insert 一筆真實
+`profiles.id` 的收藏列並確認可查詢、確認清除）＋程式碼路徑檢視
+（`refresh()` 綁定 `useEffect([user])`，每次掛載都會重新從 DB 抓取，
+非僅前端 state）」替代驗證，並於完成報告誠實記錄此限制，而非宣稱
+「已完整驗證」。

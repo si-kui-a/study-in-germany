@@ -6,10 +6,12 @@ import {
   IconAward,
   IconFileText,
   IconDoorExit,
+  IconListCheck,
   type Icon as TablerIcon,
 } from '@tabler/icons-react';
 
 const REGISTRY: Record<string, TablerIcon> = {
+  'visa-selector': IconListCheck,
   visa: IconId,
   arrival: IconHome,
   renewal: IconClockHour4,

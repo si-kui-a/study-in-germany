@@ -8,8 +8,21 @@ import { applicationWorkflow } from '../data/edu/application';
 import { scholarshipWorkflow } from '../data/edu/scholarship';
 import { policyWorkflow } from '../data/edu/policy';
 import { exitWorkflow } from '../data/edu/exit';
+import { VISA_SELECTOR_TITLE, VISA_SELECTOR_MODULE_SUBTITLE } from '../data/edu/visaCards';
 
-const TOPICS = [
+/**
+ * 「選擇簽證」為 14 張同等級並列比較卡，非步驟化流程，資料形狀與
+ * WorkflowTopic（step-based）本質不同，故不強行套用該型別，僅在此模組
+ * 列表沿用 {slug,title,subtitle} 三欄共同形狀（見 BP.a 決策）。
+ */
+const visaSelectorModule = {
+  slug: 'visa-selector',
+  title: VISA_SELECTOR_TITLE,
+  subtitle: VISA_SELECTOR_MODULE_SUBTITLE,
+};
+
+const TOPICS: { slug: string; title: string; subtitle: string }[] = [
+  visaSelectorModule,
   visaWorkflow,
   arrivalWorkflow,
   renewalWorkflow,

@@ -174,6 +174,9 @@
 | PAT-173 | CORE_IMMUTABLE | 「純 React state = 不重複觸發」判斷不完整：需另查觸發來源（如 CustomEvent 上游元件）本身在 SPA 導覽下是否會重新掛載並重複發送信號；修正需獨立追蹤「本次已處理」旗標；navigate force:true 在本環境不保證真正整頁重新整理，測試需用 window.location.reload() |
 | PAT-174 | CORE_IMMUTABLE | 指令書聲稱「已確認」的技術性 bug 若窮盡排查仍無法重現，須據實回報+向需求方核實具體情境，不得憑空捏造修復或悄悄略過不提；查證任務的產出是誠實反映實際狀態，不是「一定要交出一個修復」 |
 | PAT-175 | CORE_IMMUTABLE | 「找不到渲染層 bug」不等於「沒有問題」：使用者回報的症狀（如「重複」）描述的是體驗結果非問題層次，渲染層排查無果須回頭檢視資料正確性層面（同一集團旗下品牌被誤收錄為獨立競品）；判定併購關係須用 WebFetch 直接查證網域現況（是否 301 導向母站），不能只憑收購新聞稿推定 |
+| PAT-176 | CORE_IMMUTABLE | 「同等級並列比較」內容（如 14 張簽證卡）不得強行套用既有「步驟化流程」型別/元件（WorkflowStep/WorkflowCard），須新建獨立型別；視覺語言可沿用同產品內最接近的既有展開/收合模式；Edu.tsx 的 TOPICS 陣列可放寬為結構化型別 {slug,title,subtitle}[] 讓輕量新模組與既有 WorkflowTopic 並存 |
+| PAT-177 | 方法論 | 長 session 中反覆重用同一 preview 分頁做互動測試，累積的點擊/HMR 殘留狀態可能偽裝成「頁面預設已展開」等假 bug（每次觀察對象不同、無法穩定重現）；對關鍵「載入預設狀態」驗證項目應開全新分頁（tabs_create）做最終定案查核 |
+| PAT-178 | 方法論 | Supabase MCP execute_sql 走特權連線，SET LOCAL role+request.jwt.claims 無法可靠模擬 anon/他人身份邊界；純等式型 RLS policy（auth.uid()=user_id）直接用 pg_policies 檢視定義即足夠，不需模擬跨身份請求；牽涉真實 Google OAuth 的端對端流程無法在沙盒瀏覽器完成，須以 DB 層讀寫往返+程式碼路徑檢視替代並誠實記錄限制 |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance
