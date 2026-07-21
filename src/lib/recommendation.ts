@@ -80,7 +80,7 @@ export const RECOMMENDATION_CATEGORIES: RecommendationCategoryMeta[] = [
   {
     key: 'german_learning',
     title: '德文學習',
-    subtitle: '文法、詞彙、聽力、口說、檢定等 9 子板塊',
+    subtitle: '文法、詞彙、聽力、口說、語言交換、YT影片、檢定等 11 子板塊',
   },
   {
     key: 'career',
@@ -160,25 +160,33 @@ export const HOUSING_TARGET_LABEL: Record<HousingTarget, string> = {
  * Phase BE：德文學習資源分類欄位。
  * 「子板塊」＝來源表格的「類別」欄，同一資源可橫跨多個子板塊
  * （例：Deutschlernerblog.de 同時屬於文法/詞彙/閱讀/聽力/寫作/檢定）。
+ * Phase BY：9→11，新增 language_exchange（語言交換）／yt_video（YT影片），
+ * 沿用既有陣列欄位模式（單筆資源可橫跨多個子板塊），識別碼採英文
+ * snake_case 與既有慣例一致。
  */
 export type GermanLearningBoard =
   | 'grammar' | 'general' | 'vocabulary' | 'dictionary' | 'writing'
-  | 'reading' | 'listening' | 'speaking' | 'exam';
+  | 'reading' | 'listening' | 'speaking' | 'exam'
+  | 'language_exchange' | 'yt_video';
 export const GERMAN_LEARNING_BOARD_LABEL: Record<GermanLearningBoard, string> = {
   grammar: '文法',
   general: '綜合',
   vocabulary: '詞彙',
   dictionary: '字典',
-  writing: '寫作',
+  // Phase BY：來源文件改稱「寫作／打字練習」（納入 Monkeytype/Typelit 打字
+  // 練習工具），僅更新顯示文字，識別碼 'writing' 不變（顯示名與識別碼分層）。
+  writing: '寫作／打字練習',
   reading: '閱讀',
   listening: '聽力',
   speaking: '口說',
   exam: '檢定',
+  language_exchange: '語言交換',
+  yt_video: 'YT影片',
 };
-/** 子板塊顯示順序，對應來源文件「一、綜合入門」～「九、檢定考試」的章節順序 */
+/** 子板塊顯示順序，對應來源文件「一、資源清單」的章節順序（Phase BY 新增兩項置於口說之後、檢定之前） */
 export const GERMAN_LEARNING_BOARD_ORDER: GermanLearningBoard[] = [
   'general', 'grammar', 'dictionary', 'listening', 'reading',
-  'vocabulary', 'writing', 'speaking', 'exam',
+  'vocabulary', 'writing', 'speaking', 'language_exchange', 'yt_video', 'exam',
 ];
 
 export type GermanLearningLevel = 'A1' | 'A2' | 'B1' | 'B2' | 'C1' | 'C2';
