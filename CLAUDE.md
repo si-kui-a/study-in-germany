@@ -1,5 +1,5 @@
 # study-in-germany — Project Context
-# 安裝位置: C:\Projects\study-in-germany\CLAUDE.md
+# 安裝位置: C:\Projects\10-101_Study_in_Germany_留學德國社群網站\CLAUDE.md
 
 ## Stack
 Vite + React 18 + TypeScript + Tailwind v4 + Supabase + GitHub Pages
