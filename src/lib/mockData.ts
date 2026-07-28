@@ -1,4 +1,5 @@
-import type { Listing, SchoolReview, ListingType } from './types';
+import type { Listing, SchoolReview } from './types';
+import type { BoardType } from './board';
 
 /** 開發用假資料。生產 build 走 supabase 真實查詢，本檔不會被 import（tree-shake 於 MOCK_MODE=false 時移除使用點）。 */
 
@@ -54,7 +55,7 @@ export const MOCK_LISTINGS: Listing[] = [
   {
     id: 1,
     user_id: MOCK_USER_ID,
-    type: 'rental_offer' as ListingType,
+    type: 'rental_offer' as BoardType,
     region: 'Berlin-Neukölln',
     title: 'WG-Zimmer 出租，可短租 3 個月',
     description: '4 人 WG，房間 12 平米附家具。近 U8 Boddinstraße，走路 5 分鐘。押金 2 個月，可協商。',
@@ -68,7 +69,7 @@ export const MOCK_LISTINGS: Listing[] = [
   {
     id: 2,
     user_id: MOCK_USER_ID_2,
-    type: 'rental_seek' as ListingType,
+    type: 'rental_seek' as BoardType,
     region: 'München',
     title: '9 月起找單間套房，預算 €700 內',
     description: '女性台灣人在讀 Sprachcaffe。作息正常無寵物。希望簽 6 個月以上。',
@@ -82,7 +83,7 @@ export const MOCK_LISTINGS: Listing[] = [
   {
     id: 3,
     user_id: MOCK_USER_ID,
-    type: 'secondhand' as ListingType,
+    type: 'secondhand' as BoardType,
     region: 'Frankfurt',
     title: 'IKEA MALM 書桌 + 檯燈，€25 一起',
     description: '搬家出清。書桌白色 140x65 cm，狀況良好，僅使用 8 個月。檯燈可調光。',
