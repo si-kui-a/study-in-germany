@@ -7,9 +7,9 @@ Deploy: `npm run build` → `gh-pages` branch → auto-deploy
 
 ## Protected Files (NEVER TOUCH without explicit written authorization)
 - src/lib/supabase.ts
-- src/hooks/useAuth.ts
+- src/lib/useAuth.ts
 - src/lib/storage.ts
-- src/types/index.ts
+- src/lib/types.ts
 
 ## Completed Systems (do not re-implement)
 - Language school review (6-dimensional rating)

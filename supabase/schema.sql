@@ -466,3 +466,94 @@ ALTER TABLE public.user_submissions ADD CONSTRAINT user_submissions_target_categ
 UPDATE public.user_submissions
   SET target_category = NULL
   WHERE target_category IN ('visa', 'arrival', 'edu', 'taiwan');
+
+-- ==========================================
+-- 2026-07-28 校正（比照 Phase AV/AZ 方法論）：直連正式 Supabase
+-- (httksnqnxaeacmockphr) 對 pg_policies / pg_constraint / information_schema
+-- 逐條核對，補齊以下先前僅於 Dashboard 手動異動、從未回寫本檔的線上狀態：
+--   (1) school_reviews / listings 的 15 分鐘編輯窗（README「5-star card
+--       rating system (15-min edit window via RLS)」承諾的窗口）
+--   (2) card_ratings 表整個未曾寫入任何 SQL 檔案
+--   (3) visa_bookmarks 表整個未曾寫入任何 SQL 檔案
+--   (4) user_submissions.target_category 於 Phase AQ 之後線上又新增
+--       immigration / german_learning / career 三個分類，未回寫
+-- 以下皆依正式 DB 實際 pg_policies/欄位定義逐字還原，非程式碼推論。
+-- ==========================================
+
+-- (1) school_reviews：補 15 分鐘編輯窗 UPDATE policy（先前完全沒有此 policy）
+DROP POLICY IF EXISTS "reviews_own_update" ON public.school_reviews;
+CREATE POLICY "reviews_own_update" ON public.school_reviews
+  FOR UPDATE USING (
+    auth.uid() = user_id
+    AND created_at > (NOW() - INTERVAL '15 minutes')
+  );
+
+-- (1) listings：既有 own_update policy 補上同款 15 分鐘窗口
+DROP POLICY IF EXISTS "listings_own_update" ON public.listings;
+CREATE POLICY "listings_own_update" ON public.listings
+  FOR UPDATE USING (
+    auth.uid() = user_id
+    AND created_at > (NOW() - INTERVAL '15 minutes')
+  );
+
+-- (2) card_ratings：5-star 卡片評分系統，複合 PK (card_id, user_id) 防止
+-- 同一使用者對同一張卡重複評分
+CREATE TABLE IF NOT EXISTS public.card_ratings (
+  card_id TEXT NOT NULL,
+  category TEXT NOT NULL,
+  user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+  rating SMALLINT NOT NULL CHECK (rating >= 1 AND rating <= 5),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  PRIMARY KEY (card_id, user_id)
+);
+
+ALTER TABLE public.card_ratings ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "card_ratings_public_read" ON public.card_ratings;
+CREATE POLICY "card_ratings_public_read" ON public.card_ratings
+  FOR SELECT USING (true);
+
+DROP POLICY IF EXISTS "card_ratings_auth_upsert" ON public.card_ratings;
+CREATE POLICY "card_ratings_auth_upsert" ON public.card_ratings
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "card_ratings_auth_update" ON public.card_ratings;
+CREATE POLICY "card_ratings_auth_update" ON public.card_ratings
+  FOR UPDATE USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "card_ratings_auth_delete" ON public.card_ratings;
+CREATE POLICY "card_ratings_auth_delete" ON public.card_ratings
+  FOR DELETE USING (auth.uid() = user_id);
+
+-- (3) visa_bookmarks：使用者收藏簽證卡片，複合 PK (user_id, visa_id)。
+-- 正式 DB 現況是私人收藏（僅本人可讀），非公開讀，三條 policy 皆為 own_*
+CREATE TABLE IF NOT EXISTS public.visa_bookmarks (
+  user_id UUID NOT NULL REFERENCES public.profiles(id) ON DELETE CASCADE,
+  visa_id TEXT NOT NULL,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  PRIMARY KEY (user_id, visa_id)
+);
+
+ALTER TABLE public.visa_bookmarks ENABLE ROW LEVEL SECURITY;
+
+DROP POLICY IF EXISTS "visa_bookmarks_own_select" ON public.visa_bookmarks;
+CREATE POLICY "visa_bookmarks_own_select" ON public.visa_bookmarks
+  FOR SELECT USING (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "visa_bookmarks_own_insert" ON public.visa_bookmarks;
+CREATE POLICY "visa_bookmarks_own_insert" ON public.visa_bookmarks
+  FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+DROP POLICY IF EXISTS "visa_bookmarks_own_delete" ON public.visa_bookmarks;
+CREATE POLICY "visa_bookmarks_own_delete" ON public.visa_bookmarks
+  FOR DELETE USING (auth.uid() = user_id);
+
+-- (4) user_submissions.target_category：補線上已新增、schema.sql 未回寫的
+-- immigration / german_learning / career 三類（其餘 8 類與 Phase AQ 一致）
+ALTER TABLE public.user_submissions DROP CONSTRAINT IF EXISTS user_submissions_target_category_check;
+ALTER TABLE public.user_submissions ADD CONSTRAINT user_submissions_target_category_check
+  CHECK (target_category IS NULL OR target_category IN (
+    'finance', 'transport', 'telecom', 'housing', 'lookup', 'scholarship',
+    'expense', 'immigration', 'general', 'german_learning', 'career'
+  ));
