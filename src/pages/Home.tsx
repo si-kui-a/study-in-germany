@@ -85,7 +85,7 @@ const PORTAL_ITEMS = [
   },
   {
     to: '/pretrip-challenge', title: '行前生存挑戰',
-    description: '免費遊戲，完成後有付費電子書購買選項',
+    description: '行前互動小遊戲',
     Icon: IconDeviceGamepad2,
   },
 ];
