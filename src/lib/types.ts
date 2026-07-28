@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import type { BoardType } from './board';
 
 export interface Profile {
   id: string;
@@ -35,18 +36,10 @@ export interface SchoolReview {
   profile?: Profile | null;
 }
 
-export type ListingType = 'secondhand' | 'rental_offer' | 'rental_seek';
-
-export const LISTING_TYPE_LABEL: Record<ListingType, string> = {
-  secondhand: '二手交易',
-  rental_offer: '出租',
-  rental_seek: '求租',
-};
-
 export interface Listing {
   id: number;
   user_id: string;
-  type: ListingType;
+  type: BoardType;
   region: string;
   title: string;
   description: string;
