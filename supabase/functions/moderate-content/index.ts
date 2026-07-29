@@ -6,6 +6,13 @@
 // 設計原則:純參考標記,絕不自動核准/拒絕/刪除任何內容;Gemini 呼叫失敗一律
 // 只記 log、回傳非 200 狀態碼供除錯,不影響原本已完成的 INSERT(這是非同步
 // 後續處理,trigger 端是 fire-and-forget)。
+//
+// 部署注意(實測踩過的坑):trigger呼叫時不帶Supabase JWT/apikey,只帶
+// x-webhook-secret驗證身分,所以部署時必須加 --no-verify-jwt,否則
+// Supabase平台會在請求進到這支function的程式碼之前就先擋下並回401,
+// 此時這裡的console.error完全不會被觸發、log也是空的,只能從
+// net._http_response表(status_code=401)才看得出來:
+//   supabase functions deploy moderate-content --no-verify-jwt
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
