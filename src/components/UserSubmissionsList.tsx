@@ -54,9 +54,13 @@ export default function UserSubmissionsList({
 
       const { data, error } = await fetchWithRetry(
         () => {
+          // 明確列出欄位,不用select('*')——ai_flag/ai_flag_reason/ai_flagged_at/
+          // reviewer_note/reviewed_at對anon/authenticated已收回SELECT權限
+          // (見migration 0005),select('*')查到無權限欄位會直接回傳權限
+          // 錯誤而非靜默省略;這5個欄位本來這個元件也沒有用到
           let query = supabase
             .from('user_submissions')
-            .select('*')
+            .select('id, user_id, submission_type, target_id, target_url, target_category, title, content, status, created_at')
             .eq('submission_type', submissionType)
             .in('status', ['pending', 'approved'])
             .order('created_at', { ascending: false });
