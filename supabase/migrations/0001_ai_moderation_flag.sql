@@ -28,7 +28,7 @@ ALTER TABLE public.reports
 CREATE EXTENSION IF NOT EXISTS pg_net WITH SCHEMA extensions;
 
 -- ── Webhook觸發函式:用current_setting()動態讀密鑰,密鑰字面值不進本檔案 ────
--- <PROJECT_REF> 需替換成實際 Supabase 專案 ref(部署階段確認)。
+-- Project ref: httksnqnxaeacmockphr(lilichen-F's Project)。
 CREATE OR REPLACE FUNCTION public.notify_ai_moderation()
 RETURNS TRIGGER
 LANGUAGE plpgsql
@@ -47,7 +47,7 @@ BEGIN
   END IF;
 
   PERFORM extensions.net.http_post(
-    url     := 'https://<PROJECT_REF>.supabase.co/functions/v1/moderate-content',
+    url     := 'https://httksnqnxaeacmockphr.supabase.co/functions/v1/moderate-content',
     body    := jsonb_build_object(
                  'table', TG_TABLE_NAME,
                  'id', NEW.id,
