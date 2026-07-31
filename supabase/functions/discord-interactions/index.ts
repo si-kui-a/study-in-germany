@@ -12,9 +12,10 @@
 //     target_type="listing"    -> reject時把expires_at設成現在(重用既有可視性
 //                                  機制,listings沒有status欄位,不新增schema)
 //                                  approve時不動listing,只把report標記已處理
-//     target_type="review"     -> 沒有按鈕會觸發這裡(school_reviews沒有任何
-//                                  隱藏機制,下架維持人工在Dashboard做,見設計
-//                                  文件說明),防禦性地直接回錯誤訊息
+//     target_type="review"     -> reject時把hidden_at設成現在(軟性下架,
+//                                  RLS對他人隱藏、本人仍看得到,見migration
+//                                  0007);滿1個月由pg_cron(purge_hidden_reviews)
+//                                  自動清除,不是立即真的刪除
 //   動作完成後一律把該筆report自己的status改成"reviewed"
 //
 // 部署:supabase functions deploy discord-interactions --no-verify-jwt
@@ -80,10 +81,20 @@ async function applyAction(supabase: any, action: "approve" | "reject", table: s
       } else {
         resultText = "✅ 已核准，被檢舉的刊登維持上架";
       }
+    } else if (report.target_type === "review") {
+      // 軟性下架(2026-07-31,migration 0007)：設hidden_at,RLS層級對其他人
+      // 隱藏,本人仍看得到。滿1個月由pg_cron(purge_hidden_reviews)自動清除,
+      // 不是真的刪除，核准前都可以回Dashboard手動清掉hidden_at復原。
+      if (action === "reject") {
+        const { error } = await supabase.from("school_reviews")
+          .update({ hidden_at: new Date().toISOString() }).eq("id", report.target_id);
+        if (error) throw error;
+        resultText = "❌ 已駁回，被檢舉的評價已下架（1個月後自動清除，期間可於Dashboard復原）";
+      } else {
+        resultText = "✅ 已核准，被檢舉的評價維持顯示";
+      }
     } else {
-      // target_type === "review"：school_reviews沒有任何隱藏機制,按鈕設計上
-      // 就不該出現在這種通知裡(見moderate-content),這裡是防禦性攔截
-      return "⚠️ 評價類檢舉不支援自動處理，請至 Supabase Dashboard 手動處理";
+      throw new Error(`未知的target_type: ${report.target_type}`);
     }
 
     const { error: reportUpdateErr } = await supabase.from("reports").update({ status: "reviewed" }).eq("id", id);

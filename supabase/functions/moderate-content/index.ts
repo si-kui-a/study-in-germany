@@ -4,15 +4,20 @@
 // ai_flag/ai_flag_reason/ai_flagged_at → 發 Discord 通知(非「看似正常」才附
 // 核准/駁回按鈕)。
 //
-// 設計原則:純參考標記,絕不自動核准/拒絕/刪除任何內容;Gemini 呼叫失敗一律
-// 只記 log、回傳非 200 狀態碼供除錯,不影響原本已完成的 INSERT(這是非同步
-// 後續處理,trigger 端是 fire-and-forget)。Discord 通知失敗同理,不影響
-// ai_flag 已經寫回成功這件事。
+// 設計原則:純參考標記,絕不自動核准/拒絕/刪除任何內容。Discord 通知失敗不影響
+// ai_flag 已經寫回成功這件事,只記log(這是非同步後續處理,trigger端是
+// fire-and-forget)。
 //
-// 降低AI依賴(2026-07-31):
-// - reports 表的 reason 是檢舉人自選的固定分類,比AI從短文字猜測更可靠,
-//   直接映射不呼叫Gemini
-// - user_submissions 先跑關鍵字規則,命中明確廣告特徵才跳過Gemini
+// 零AI依賴(2026-07-31):實際投稿量極低(每月頂多個位數),且無論分類結果為何都
+// 會發Discord通知給管理員親自看過,AI能省下的只是「明顯正常內容不用按核准」這點
+// 力氣,不值得為此維護一個外部API依賴(曾因GEMINI_API_KEY失效整條分類失敗)。
+// 完全移除AI呼叫:
+// - reports 表的 reason 是檢舉人自選的固定分類,直接映射
+// - user_submissions 先跑關鍵字規則(廣告),沒命中一律直接標「需人工複核」
+//
+// 分類修正(2026-07-31):new_school/new_recommendation 這兩類投稿本來就該附
+// 學校網站/地圖連結,純URL不能當廣告特徵(誤判案例:洪堡學院投稿附Google Maps
+// 連結),只對這兩類跳過URL規則,聯絡方式/攬客用詞規則仍全類型套用
 //
 // 部署注意(實測踩過的坑):trigger呼叫時不帶Supabase JWT/apikey,只帶
 // x-webhook-secret驗證身分,所以部署時必須加 --no-verify-jwt,否則
@@ -23,11 +28,9 @@
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
-const ALLOWED_FLAGS = ["疑似廣告", "虛假資訊", "需人工複核", "看似正常"] as const;
 const ALLOWED_TABLES = ["user_submissions", "reports"] as const;
 
 const WEBHOOK_SECRET = Deno.env.get("WEBHOOK_SECRET") ?? "";
-const GEMINI_API_KEY = Deno.env.get("GEMINI_API_KEY") ?? "";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
 const DISCORD_BOT_TOKEN = Deno.env.get("DISCORD_BOT_TOKEN") ?? "";
@@ -49,47 +52,25 @@ const REASON_TO_FLAG: Record<string, string> = {
 };
 
 // ── user_submissions 關鍵字前濾(命中才跳過Gemini,沒命中維持原本AI分類路徑) ──
-const AD_PATTERNS: RegExp[] = [
+// URL類規則:new_school/new_recommendation本來就會附學校網站/地圖連結,是建議
+// 內容的正常組成部分,不能當廣告特徵,只對其餘類型(school_edit/general_feedback)套用
+const URL_PATTERNS: RegExp[] = [
   /https?:\/\//i,
   /www\.[a-z0-9-]+\.(com|net|tw|shop|xyz)/i,
+];
+// 聯絡方式/攬客用詞:不管哪種投稿類型,出現這些都是明確廣告特徵,一律套用
+const CONTACT_AD_PATTERNS: RegExp[] = [
   /line\s*id[:：]?\s*[\w.]+/i,
   /加(我)?\s*line/i,
   /\b09\d{2}[-\s]?\d{3}[-\s]?\d{3}\b/, // 台灣手機號碼格式
   /優惠碼|折扣碼|限時搶購|免費諮詢|私訊詳談|line@|一對一指導|加賴/,
 ];
 
-function matchesAdPattern(content: string): boolean {
-  return AD_PATTERNS.some((re) => re.test(content));
-}
-
-async function classifyWithGemini(content: string): Promise<{ flag: string; reason: string }> {
-  const prompt =
-    "以下是一個留學德國社群網站上的使用者投稿或檢舉內容。請判斷屬於下列四類中的哪一類," +
-    "只能回傳這四個詞其中之一,不可自創其他分類:「疑似廣告」「虛假資訊」「需人工複核」「看似正常」。\n" +
-    "同時給一句話(20字以內)的判斷理由。\n" +
-    "只回傳JSON,格式:{\"flag\": \"...\", \"reason\": \"...\"}\n\n" +
-    "內容:\n" + content;
-
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent`;
-  const resp = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json", "x-goog-api-key": GEMINI_API_KEY },
-    body: JSON.stringify({
-      contents: [{ role: "user", parts: [{ text: prompt }] }],
-      generationConfig: { temperature: 0.2, responseMimeType: "application/json" },
-    }),
-  });
-
-  if (!resp.ok) {
-    throw new Error(`gemini HTTP ${resp.status}: ${await resp.text()}`);
-  }
-  const data = await resp.json();
-  const text = data?.candidates?.[0]?.content?.parts?.[0]?.text ?? "";
-  const parsed = JSON.parse(text);
-  if (!ALLOWED_FLAGS.includes(parsed.flag)) {
-    throw new Error(`gemini回傳不合法的flag: ${parsed.flag}`);
-  }
-  return { flag: parsed.flag, reason: String(parsed.reason ?? "").slice(0, 100) };
+function matchesAdPattern(content: string, submissionType: string): boolean {
+  const patterns = ["new_school", "new_recommendation"].includes(submissionType)
+    ? CONTACT_AD_PATTERNS
+    : [...URL_PATTERNS, ...CONTACT_AD_PATTERNS];
+  return patterns.some((re) => re.test(content));
 }
 
 // deno-lint-ignore no-explicit-any
@@ -215,23 +196,24 @@ Deno.serve(async (req) => {
       contentPreview = await fetchTargetPreview(supabase, reportRow.target_type, reportRow.target_id);
     }
   } else {
-    // user_submissions:先跑關鍵字規則,命中就不呼叫AI
-    if (payload.content.trim() && matchesAdPattern(payload.content)) {
+    // user_submissions:先跑關鍵字規則,命中就不呼叫AI(new_school/new_recommendation
+    // 排除純URL規則,因為那兩類本來就該附學校網站/地圖連結,不是廣告特徵)
+    const { data: submissionRow } = await supabase
+      .from("user_submissions")
+      .select("submission_type")
+      .eq("id", payload.id)
+      .single();
+    const submissionType = submissionRow?.submission_type ?? "";
+
+    if (payload.content.trim() && matchesAdPattern(payload.content, submissionType)) {
       flag = "疑似廣告";
-      reason = "命中廣告關鍵字規則(網址/聯絡方式/常見廣告用詞),未呼叫AI";
+      reason = submissionType === "new_school" || submissionType === "new_recommendation"
+        ? "命中廣告關鍵字規則(聯絡方式/常見廣告用詞),未呼叫AI"
+        : "命中廣告關鍵字規則(網址/聯絡方式/常見廣告用詞),未呼叫AI";
     } else {
-      try {
-        if (payload.content.trim()) {
-          const result = await classifyWithGemini(payload.content);
-          flag = result.flag;
-          reason = result.reason;
-        } else {
-          reason = "內容為空,無法分類";
-        }
-      } catch (e) {
-        console.error(`gemini分類失敗 table=${payload.table} id=${payload.id}:`, e);
-        reason = "Gemini分類失敗,請人工複核";
-      }
+      // 沒命中關鍵字規則:量少(每月頂多個位數),不值得為此維護AI呼叫,
+      // 直接標需人工複核讓管理員看過(反正這個flag無論如何都會發Discord通知)
+      reason = payload.content.trim() ? "未命中規則,請人工複核" : "內容為空,請人工複核";
     }
   }
 
