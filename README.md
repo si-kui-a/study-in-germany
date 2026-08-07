@@ -86,6 +86,7 @@ VITE_MOCK_MODE=1
 - Content health：每週檢查資料格式與複查期限；過期時自動建立或更新 GitHub Issue，不會自動改寫制度內容。
 - Dependabot：weekly，npm + github-actions 兩生態系，忽略 major bump（見 PAT-43）。
 - 匿名投稿／檢舉：瀏覽器阻擋重複與短時間連續送出；正式防線由資料庫 trigger 以 Vault 密鑰 HMAC 產生短期用途的假名指紋，限制每小時寫入量且不保存原始 IP。輪替密鑰會同時清除既有限流識別的延續性。
+- 官方來源自動維護採「監測與候選更新」模式，禁止直接發布；第一階段主題、權威網域及人工審核邊界見 [官方來源自動監測適用範圍](docs/source-monitoring-scope.md)。
 
 ## 授權
 

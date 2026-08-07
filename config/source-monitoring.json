@@ -1,0 +1,74 @@
+{
+  "version": 1,
+  "mode": "review_required",
+  "direct_publish": false,
+  "scope": {
+    "included_topics": [
+      "visa_residence",
+      "admission_requirements",
+      "proof_of_funds_and_official_fees",
+      "health_insurance",
+      "scholarship_deadlines",
+      "official_links"
+    ],
+    "deferred_topics": [
+      "housing_products",
+      "telecom_products",
+      "bank_products",
+      "language_school_prices",
+      "subjective_recommendations"
+    ],
+    "excluded_content": [
+      "personal_legal_advice",
+      "tax_advice",
+      "medical_advice",
+      "visa_success_prediction",
+      "private_or_login_required_content"
+    ]
+  },
+  "automation_levels": {
+    "L0": { "action": "ignore_and_log", "description": "排版與導覽雜訊" },
+    "L1": { "action": "propose_pull_request", "description": "永久轉址與官方聯絡網址" },
+    "L2": { "action": "extract_candidate_for_review", "description": "日期、金額與百分比" },
+    "L3": { "action": "create_diff_report", "description": "文件、流程與資格條件" },
+    "L4": { "action": "stop_and_require_research", "description": "法律效果與個案適用性" }
+  },
+  "publishing_guards": {
+    "human_approval_required": true,
+    "ci_required": true,
+    "source_context_required": true,
+    "effective_date_required_when_applicable": true,
+    "update_verified_date_only_after_review": true
+  },
+  "discord_review": {
+    "enabled": true,
+    "required_label": "automated-content-update",
+    "required_base_branch": "main",
+    "allowed_actions": ["approve", "reject"],
+    "approve_merge_method": "rebase",
+    "lock_to_reviewed_commit": true,
+    "require_named_reviewer": true,
+    "remove_buttons_after_action": true,
+    "deployment_requires_main_ci": true
+  },
+  "fetch_policy": {
+    "respect_robots_txt": true,
+    "bypass_login_or_captcha": false,
+    "request_interval_ms": 1500,
+    "timeout_ms": 12000,
+    "consecutive_failures_before_issue": 3,
+    "snapshot_retention_count": 5
+  },
+  "authorities": [
+    { "domain": "auswaertiges-amt.de", "tier": "primary", "topics": ["visa_residence"] },
+    { "domain": "taipei.diplo.de", "tier": "primary", "topics": ["visa_residence"] },
+    { "domain": "make-it-in-germany.com", "tier": "primary", "topics": ["visa_residence", "admission_requirements"] },
+    { "domain": "daad.de", "tier": "primary", "topics": ["admission_requirements", "scholarship_deadlines"] },
+    { "domain": "www2.daad.de", "tier": "primary", "topics": ["scholarship_deadlines"] },
+    { "domain": "uni-assist.de", "tier": "primary", "topics": ["admission_requirements", "proof_of_funds_and_official_fees"] },
+    { "domain": "bundesgesundheitsministerium.de", "tier": "primary", "topics": ["health_insurance"] },
+    { "domain": "gesetze-im-internet.de", "tier": "primary", "topics": ["visa_residence", "health_insurance"] },
+    { "domain": "service.berlin.de", "tier": "regional_primary", "topics": ["visa_residence", "official_links"] },
+    { "domain": "stadt.muenchen.de", "tier": "regional_primary", "topics": ["visa_residence", "official_links"] }
+  ]
+}
