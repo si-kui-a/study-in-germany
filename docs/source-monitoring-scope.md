@@ -44,6 +44,8 @@
 
 部署前還需設定 `GITHUB_CONTENT_TOKEN`（只授予此倉庫 Contents/Pull requests 讀寫）、`GITHUB_CONTENT_REPOSITORY`、至少一種 Discord 審核者白名單，然後重新部署 `discord-interactions --no-verify-jwt`。不得把個人廣泛權限 GitHub Token 複製到 Edge Function。
 
+候選 PR 套用 `automated-content-update` 標籤並通過 CI 後，`content-review-discord.yml` 會呼叫 `content-review-notify`。通知端會重新向 GitHub 核對 PR 與 commit，並檢查 PR 內含來源、舊值、新值、原文上下文、適用對象、生效日期及風險等級，才把核准／駁回按鈕送入 Discord。GitHub Actions 與通知端以獨立的 `CONTENT_REVIEW_WEBHOOK_SECRET` 驗證，不共用社群投稿 webhook 密鑰。
+
 ## 新增來源
 
 每個新來源必須先在設定檔登錄網域、權威等級與可監測主題。新增主題時也必須同步定義風險等級、允許動作、異常門檻與人工審核責任；否則 CI 會拒絕設定。
