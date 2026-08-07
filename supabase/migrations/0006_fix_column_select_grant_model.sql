@@ -11,12 +11,10 @@
 -- 明確GRANT SELECT——而不是「先全開再撤銷部分」。
 
 REVOKE SELECT ON public.user_submissions FROM anon, authenticated;
-
 GRANT SELECT (
   id, user_id, submission_type, target_id, title, content, status,
   created_at, target_url, target_category
 ) ON public.user_submissions TO anon, authenticated;
-
 -- 明確排除(不授予SELECT)的欄位,原因見0005:
 -- reviewed_at, reviewer_note(既有的內部審核欄位)
--- ai_flag, ai_flag_reason, ai_flagged_at(本次新增的AI預篩標記)
+-- ai_flag, ai_flag_reason, ai_flagged_at(本次新增的AI預篩標記);

@@ -17,16 +17,13 @@ ALTER TABLE public.user_submissions
     CHECK (ai_flag IS NULL OR ai_flag IN ('疑似廣告', '虛假資訊', '需人工複核', '看似正常')),
   ADD COLUMN IF NOT EXISTS ai_flag_reason TEXT,
   ADD COLUMN IF NOT EXISTS ai_flagged_at TIMESTAMPTZ;
-
 ALTER TABLE public.reports
   ADD COLUMN IF NOT EXISTS ai_flag TEXT
     CHECK (ai_flag IS NULL OR ai_flag IN ('疑似廣告', '虛假資訊', '需人工複核', '看似正常')),
   ADD COLUMN IF NOT EXISTS ai_flag_reason TEXT,
   ADD COLUMN IF NOT EXISTS ai_flagged_at TIMESTAMPTZ;
-
 -- ── pg_net 擴充功能(供下方trigger function呼叫外部HTTP用)──────────────────
 CREATE EXTENSION IF NOT EXISTS pg_net WITH SCHEMA extensions;
-
 -- ── Webhook觸發函式:用current_setting()動態讀密鑰,密鑰字面值不進本檔案 ────
 -- Project ref: httksnqnxaeacmockphr(lilichen-F's Project)。
 CREATE OR REPLACE FUNCTION public.notify_ai_moderation()
@@ -62,11 +59,9 @@ BEGIN
   RETURN NEW;
 END;
 $$;
-
 CREATE TRIGGER ai_moderation_on_submission
 AFTER INSERT ON public.user_submissions
 FOR EACH ROW EXECUTE FUNCTION public.notify_ai_moderation();
-
 CREATE TRIGGER ai_moderation_on_report
 AFTER INSERT ON public.reports
 FOR EACH ROW EXECUTE FUNCTION public.notify_ai_moderation();
