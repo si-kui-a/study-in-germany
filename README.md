@@ -85,7 +85,7 @@ VITE_MOCK_MODE=1
 - GitHub Actions：PR 與 main push 執行完整 `npm run check`；main 通過後 `build` → `deploy`（GitHub Pages）→ `verify`（含 CDN 重試的 smoke test）。
 - Content health：每週檢查資料格式與複查期限；過期時自動建立或更新 GitHub Issue，不會自動改寫制度內容。
 - Dependabot：weekly，npm + github-actions 兩生態系，忽略 major bump（見 PAT-43）。
-- 匿名投稿／檢舉：瀏覽器阻擋重複與短時間連續送出；正式防線由 `0008_community_rate_limit.sql` 的資料庫 trigger 以不可逆雜湊指紋限制每小時寫入量，不保存原始 IP。
+- 匿名投稿／檢舉：瀏覽器阻擋重複與短時間連續送出；正式防線由資料庫 trigger 以 Vault 密鑰 HMAC 產生短期用途的假名指紋，限制每小時寫入量且不保存原始 IP。輪替密鑰會同時清除既有限流識別的延續性。
 
 ## 授權
 

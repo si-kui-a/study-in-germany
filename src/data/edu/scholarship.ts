@@ -25,7 +25,7 @@ export const scholarshipWorkflow: WorkflowTopic = {
           '看到「明年秋季」以為還遠 → 準備不足',
         ],
         official_sources: [
-          { name: 'DAAD 獎學金資料庫', url: 'https://www2.daad.de/deutschland/stipendium/en/' },
+          { name: 'DAAD 獎學金資料庫', url: 'https://www2.daad.de/deutschland/stipendium/datenbank/en/21148-scholarship-database/' },
           { name: '教育部學海計畫', url: 'https://www.edu.tw/' },
         ],
       },

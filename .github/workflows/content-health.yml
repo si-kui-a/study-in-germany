@@ -25,8 +25,12 @@ jobs:
         id: freshness
         continue-on-error: true
         run: node scripts/check-content-freshness.mjs --strict 2>&1 | tee content-health.txt
+      - name: Check external links
+        id: links
+        continue-on-error: true
+        run: node scripts/check-external-links.mjs --strict 2>&1 | tee -a content-health.txt
       - name: Create or update maintenance issue
-        if: steps.freshness.outcome == 'failure'
+        if: steps.freshness.outcome == 'failure' || steps.links.outcome == 'failure'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -39,5 +43,5 @@ jobs:
             gh issue create --title "$TITLE" --body "排程檢查發現以下內容需要人工核對官方來源：\n\n\`\`\`\n${BODY}\n\`\`\`"
           fi
       - name: Fail after issue is recorded
-        if: steps.freshness.outcome == 'failure'
+        if: steps.freshness.outcome == 'failure' || steps.links.outcome == 'failure'
         run: exit 1

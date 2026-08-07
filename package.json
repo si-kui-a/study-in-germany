@@ -12,6 +12,7 @@
     "test": "vitest run",
     "check:data": "node scripts/check-content-data.mjs",
     "check:content": "node scripts/check-content-freshness.mjs",
+    "check:links": "node scripts/check-external-links.mjs",
     "check:audit": "node scripts/audit-production.mjs",
     "check": "npm run typecheck && npm run lint && npm run test && npm run check:data && npm run check:audit && npm run build"
   },

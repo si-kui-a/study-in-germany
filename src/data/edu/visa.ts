@@ -30,7 +30,7 @@ export const visaWorkflow: WorkflowTopic = {
         official_sources: [
           {
             name: '德國聯邦外交部簽證資訊',
-            url: 'https://www.auswaertiges-amt.de/de/visa-service',
+            url: 'https://www.auswaertiges-amt.de/en/visa-service',
           },
           {
             name: '德國在台協會',
@@ -218,7 +218,7 @@ export const visaWorkflow: WorkflowTopic = {
         official_sources: [
           {
             name: '德國在台協會 · 簽證預約',
-            url: 'https://taipei.diplo.de/tw-zh/service/visum-einreise',
+            url: 'https://taipei.diplo.de/',
           },
         ],
       },
@@ -267,7 +267,7 @@ export const visaWorkflow: WorkflowTopic = {
         official_sources: [
           {
             name: '在台協會簽證文件清單',
-            url: 'https://taipei.diplo.de/tw-zh/service/visum-einreise',
+            url: 'https://taipei.diplo.de/',
           },
         ],
       },
@@ -314,7 +314,7 @@ export const visaWorkflow: WorkflowTopic = {
           '對「留德計畫」講太過理想化(如「一定要留德」)',
         ],
         official_sources: [
-          { name: '德國在台協會 · 位置', url: 'https://taipei.diplo.de/tw-zh/vertretungen' },
+          { name: '德國在台協會', url: 'https://taipei.diplo.de/' },
         ],
       },
       references: [

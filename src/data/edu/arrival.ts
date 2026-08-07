@@ -213,7 +213,7 @@ export const arrivalWorkflow: WorkflowTopic = {
         ],
         official_sources: [
           { name: 'Berlin Bürgeramt', url: 'https://service.berlin.de/dienstleistung/120686/' },
-          { name: 'München Bürgerbüro', url: 'https://muenchen.de/de/rathaus/verwaltung/kreisverwaltungsreferat/buergerbuero' },
+          { name: 'München Bürgerbüro', url: 'https://stadt.muenchen.de/service/info/wohnsitzanmeldung/1063475/n0/' },
         ],
       },
       references: [

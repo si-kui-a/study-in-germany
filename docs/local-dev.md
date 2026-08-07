@@ -68,6 +68,7 @@ main ← phase-<name>（單分支 ff）
 - `docs/expected-schema.md`：audit 結果的人類可讀參考。
 
 `0008_community_rate_limit.sql` 必須先在測試／預備環境驗證，再套用正式環境；它會為匿名投稿與檢舉增加伺服器端頻率及重複內容限制。
+後續的 `20260807103000_harden_community_actor_fingerprint.sql` 會在 Vault 自動建立隨機 HMAC 密鑰；輪替此密鑰等同重置既有 24 小時限流指紋。每週內容健康工作也會檢查已知失效的外部連結；網路逾時與網站暫時阻擋只列為待確認，避免誤判。
 
 ### OAuth `Unable to exchange external code`
 Supabase 端的 Google Client Secret 不正確或已失效。修法：Google Cloud Console
