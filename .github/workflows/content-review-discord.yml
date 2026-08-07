@@ -1,0 +1,48 @@
+name: Notify Discord content review
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  notify:
+    if: github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.event == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Find qualifying pull request
+        id: candidate
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const head_sha = context.payload.workflow_run.head_sha;
+            const { data } = await github.rest.repos.listPullRequestsAssociatedWithCommit({ owner, repo, commit_sha: head_sha });
+            const pr = data.find((item) => item.state === 'open' && item.base.ref === 'main' && item.labels.some((label) => label.name === 'automated-content-update'));
+            if (!pr) {
+              core.notice('No qualifying automated content update PR for this CI run.');
+              core.setOutput('found', 'false');
+              return;
+            }
+            core.setOutput('found', 'true');
+            core.setOutput('number', String(pr.number));
+            core.setOutput('head_sha', head_sha);
+
+      - name: Send reviewed candidate to Discord
+        if: steps.candidate.outputs.found == 'true'
+        env:
+          ENDPOINT: ${{ secrets.SUPABASE_URL }}/functions/v1/content-review-notify
+          REVIEW_SECRET: ${{ secrets.CONTENT_REVIEW_WEBHOOK_SECRET }}
+          REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ steps.candidate.outputs.number }}
+          HEAD_SHA: ${{ steps.candidate.outputs.head_sha }}
+        run: |
+          test -n "$REVIEW_SECRET" || (echo "CONTENT_REVIEW_WEBHOOK_SECRET is missing" && exit 1)
+          curl --fail-with-body --silent --show-error "$ENDPOINT" \
+            -H "Content-Type: application/json" \
+            -H "x-content-review-secret: $REVIEW_SECRET" \
+            --data "{\"repository\":\"$REPOSITORY\",\"pr_number\":$PR_NUMBER,\"head_sha\":\"$HEAD_SHA\"}"
