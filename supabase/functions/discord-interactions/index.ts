@@ -21,9 +21,8 @@
 // 部署:supabase functions deploy discord-interactions --no-verify-jwt
 // (Discord呼叫不帶Supabase JWT,原理同moderate-content)
 //
-// 安全性注意:按鈕點擊本身沒有額外的「誰能點」限制,安全邊界是Discord頻道的
-// 存取控制本身——這個頻道/DM只給管理員看得到,才能當作「只有管理員能核准」的
-// 保證,這點在部署文件裡有明確提醒。
+// 內容發布按鈕另以指定頻道及 Discord 使用者／角色白名單驗證；核准只會合併
+// 帶 automated-content-update 標籤、base=main 且仍停在受審 commit 的 PR。
 
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 import nacl from "https://esm.sh/tweetnacl@1.0.3";
@@ -31,6 +30,59 @@ import nacl from "https://esm.sh/tweetnacl@1.0.3";
 const DISCORD_PUBLIC_KEY = Deno.env.get("DISCORD_PUBLIC_KEY") ?? "";
 const SUPABASE_URL = Deno.env.get("SUPABASE_URL") ?? "";
 const SERVICE_ROLE_KEY = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ?? "";
+const DISCORD_CHANNEL_ID = Deno.env.get("DISCORD_CHANNEL_ID") ?? "";
+const CONTENT_REVIEWER_USER_IDS = new Set((Deno.env.get("DISCORD_CONTENT_REVIEWER_USER_IDS") ?? "").split(",").map((v) => v.trim()).filter(Boolean));
+const CONTENT_REVIEWER_ROLE_IDS = new Set((Deno.env.get("DISCORD_CONTENT_REVIEWER_ROLE_IDS") ?? "").split(",").map((v) => v.trim()).filter(Boolean));
+const GITHUB_CONTENT_TOKEN = Deno.env.get("GITHUB_CONTENT_TOKEN") ?? "";
+const GITHUB_CONTENT_REPOSITORY = Deno.env.get("GITHUB_CONTENT_REPOSITORY") ?? "si-kui-a/study-in-germany";
+
+// deno-lint-ignore no-explicit-any
+function isContentReviewer(interaction: any): boolean {
+  if (!DISCORD_CHANNEL_ID || interaction.channel_id !== DISCORD_CHANNEL_ID) return false;
+  const userId = interaction.member?.user?.id ?? interaction.user?.id ?? "";
+  const roles: string[] = interaction.member?.roles ?? [];
+  if (!CONTENT_REVIEWER_USER_IDS.size && !CONTENT_REVIEWER_ROLE_IDS.size) return false;
+  return CONTENT_REVIEWER_USER_IDS.has(userId) || roles.some((role) => CONTENT_REVIEWER_ROLE_IDS.has(role));
+}
+
+async function githubRequest(path: string, init: RequestInit = {}) {
+  if (!GITHUB_CONTENT_TOKEN) throw new Error("GITHUB_CONTENT_TOKEN 尚未設定");
+  const response = await fetch(`https://api.github.com/repos/${GITHUB_CONTENT_REPOSITORY}${path}`, {
+    ...init,
+    headers: {
+      "Accept": "application/vnd.github+json",
+      "Authorization": `Bearer ${GITHUB_CONTENT_TOKEN}`,
+      "X-GitHub-Api-Version": "2022-11-28",
+      "Content-Type": "application/json",
+      ...(init.headers ?? {}),
+    },
+  });
+  const data = response.status === 204 ? null : await response.json();
+  if (!response.ok) throw new Error(`GitHub HTTP ${response.status}: ${data?.message ?? "unknown error"}`);
+  return data;
+}
+
+async function applyContentPrAction(action: "approve" | "reject", prNumber: number, reviewedSha: string, reviewer: string): Promise<string> {
+  const pr = await githubRequest(`/pulls/${prNumber}`);
+  const labels = (pr.labels ?? []).map((label: { name?: string }) => label.name);
+  if (pr.state !== "open" || pr.base?.ref !== "main" || !labels.includes("automated-content-update")) {
+    throw new Error("PR 已關閉、目標不是 main，或缺少自動內容更新標籤");
+  }
+  if (!pr.head?.sha?.startsWith(reviewedSha) || reviewedSha.length < 12) throw new Error("PR 已有新 commit，必須重新送審");
+
+  if (action === "reject") {
+    await githubRequest(`/issues/${prNumber}/comments`, { method: "POST", body: JSON.stringify({ body: `Discord 審核者 ${reviewer} 已駁回此候選更新。` }) });
+    await githubRequest(`/pulls/${prNumber}`, { method: "PATCH", body: JSON.stringify({ state: "closed" }) });
+    return `❌ ${reviewer} 已駁回並關閉內容更新 PR #${prNumber}`;
+  }
+
+  const result = await githubRequest(`/pulls/${prNumber}/merge`, {
+    method: "PUT",
+    body: JSON.stringify({ sha: pr.head.sha, merge_method: "rebase", commit_title: `Content update #${prNumber} approved by ${reviewer}` }),
+  });
+  if (!result?.merged) throw new Error(result?.message ?? "GitHub 未合併 PR；請確認必要 CI 已通過");
+  return `✅ ${reviewer} 已核准 PR #${prNumber}；GitHub 已合併，完整 main CI 通過後會自動部署`;
+}
 
 function hexToUint8Array(hex: string): Uint8Array {
   const bytes = new Uint8Array(hex.length / 2);
@@ -127,6 +179,21 @@ Deno.serve(async (req) => {
   // type 3 = MESSAGE_COMPONENT(按鈕點擊)
   if (interaction.type === 3) {
     const customId: string = interaction.data?.custom_id ?? "";
+    if (customId.startsWith("content:")) {
+      const [, action, numberText, reviewedSha] = customId.split(":");
+      const prNumber = Number(numberText);
+      if (!["approve", "reject"].includes(action) || !Number.isSafeInteger(prNumber) || !reviewedSha) {
+        return new Response(JSON.stringify({ type: 4, data: { content: "⚠️ 內容審核按鈕格式錯誤", flags: 64 } }), { headers: { "Content-Type": "application/json" } });
+      }
+      if (!isContentReviewer(interaction)) {
+        return new Response(JSON.stringify({ type: 4, data: { content: "⛔ 你不在內容發布審核白名單，或不是在指定頻道操作", flags: 64 } }), { headers: { "Content-Type": "application/json" } });
+      }
+      const reviewer = interaction.member?.user?.username ?? interaction.user?.username ?? "unknown";
+      let resultText: string;
+      try { resultText = await applyContentPrAction(action as "approve" | "reject", prNumber, reviewedSha, reviewer); }
+      catch (e) { resultText = `⚠️ 內容發布失敗，未變更正式網站（${String(e)}）`; }
+      return new Response(JSON.stringify({ type: 7, data: { content: resultText, embeds: interaction.message?.embeds ?? [], components: [] } }), { headers: { "Content-Type": "application/json" } });
+    }
     const [action, table, id] = customId.split(":");
     if (!["approve", "reject"].includes(action) || !table || !id) {
       return new Response(JSON.stringify({
