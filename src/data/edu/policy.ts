@@ -90,7 +90,7 @@ export const policyWorkflow: WorkflowTopic = {
           '以為 telc 沒 DSH 官方 · 其實多數學程接受',
         ],
         official_sources: [
-          { name: 'DAAD 語言證書比較', url: 'https://www.daad.de/en/study-and-research-in-germany/plan-your-studies/language-requirements/' },
+          { name: 'DAAD 語言證書比較', url: 'https://www.daad.de/en/studying-in-germany/living-in-germany/german-language/' },
         ],
       },
       references: [
@@ -116,7 +116,7 @@ export const policyWorkflow: WorkflowTopic = {
           '忽略學期費也是一筆錢',
         ],
         official_sources: [
-          { name: 'DAAD 學費資訊', url: 'https://www.daad.de/en/study-and-research-in-germany/plan-your-studies/tuition-fees/' },
+          { name: 'DAAD 入學條件概覽', url: 'https://www.daad.de/en/studying-in-germany/requirements/overview/' },
         ],
       },
       references: [

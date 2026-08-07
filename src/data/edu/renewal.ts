@@ -167,7 +167,7 @@ export const renewalWorkflow: WorkflowTopic = {
           '薪資報得太低(未達 Bluecard 門檻)',
         ],
         official_sources: [
-          { name: 'Make it in Germany · Bluecard', url: 'https://www.make-it-in-germany.com/en/visa-residence/eu-blue-card' },
+          { name: 'Make it in Germany · Bluecard', url: 'https://www.make-it-in-germany.com/en/visa-residence/types/eu-blue-card' },
         ],
       },
       references: [
