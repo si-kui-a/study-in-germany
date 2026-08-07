@@ -3,6 +3,8 @@ import type { FormEvent } from 'react';
 import { supabase } from '../lib/supabase';
 import { translateError } from '../lib/errorMessages';
 import { useToast } from '../lib/toast';
+import { useAuth } from '../lib/useAuth';
+import { communityActionBlockReason, recordCommunityAction } from '../lib/antiAbuse';
 
 type TargetType = 'listing' | 'review' | 'submission';
 
@@ -21,6 +23,7 @@ const REASON_LABELS: Record<string, string> = {
 
 export default function ReportButton({ targetType, targetId }: Props) {
   const { push } = useToast();
+  const { user } = useAuth();
   const [open, setOpen] = useState(false);
   const [reason, setReason] = useState('spam');
   const [note, setNote] = useState('');
@@ -29,11 +32,18 @@ export default function ReportButton({ targetType, targetId }: Props) {
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
+    const signature = `${targetType}|${targetId}|${reason}`;
+    const blocked = communityActionBlockReason('report', signature);
+    if (blocked) {
+      push('error', blocked);
+      return;
+    }
     setSubmitting(true);
 
     const { error } = await supabase.from('reports').insert({
       target_type: targetType,
       target_id: targetId,
+      reporter_id: user?.id ?? null,
       reason,
       note: note.trim() || null,
     });
@@ -49,6 +59,7 @@ export default function ReportButton({ targetType, targetId }: Props) {
     }
 
     setSubmitted(true);
+    recordCommunityAction('report', signature);
     push('success', '已收到檢舉，我們會盡快處理');
     setTimeout(() => setOpen(false), 1500);
   };

@@ -19,13 +19,20 @@
 | `/faq` | 常見問答（5 題快速常問） |
 | `/edu` | 作戰手冊 Hub（7 大主題） |
 | `/edu/:slug` | 各主題 Workflow（`visa` `arrival` `renewal` `application` `scholarship` `policy` `exit`） |
+| `/edu/visa-selector` | 簽證選擇器 |
+| `/edu/visa-matcher` | 簽證條件配對 |
+| `/recommendation` | 留德資源入口 |
+| `/recommendation/:slug` | 分類資源清單 |
+| `/pretrip-challenge` | 行前準備挑戰 |
+| `/support` | 支持本站 |
+| `/my-profile` | 個人資料與投稿紀錄 |
 | `/privacy` | 隱私政策 |
 
 ### 核心功能
 
 - **6 維評分系統** — 教學品質 / 學習環境 / 教材 / 行政效率 / 交通便利性 / 性價比，使用者填其中任意幾維，overall 於 client 自動計算（`src/lib/ratings.ts`）
 - **Edu Workflow** — 7 主題、共 53 個 step，Priority Badge + Accordion 展開（文件 / 流程 / 常見錯誤 / 官方資源）
-- **生活佈告欄 4 類** — 二手交易 / 出租 / 求租 / 討論區（討論區目前於 UI 端以 title 前綴標記，DB 層仍為既有 3 類 CHECK constraint，見 `Meta_Dev_Knowledge.md` PAT-48）
+- **生活佈告欄 4 類** — 二手交易 / 出租 / 求租 / 討論區；討論區另含多個資料庫層級子分類。
 - **全站搜尋** — Cmd/Ctrl+K，client-side substring 掃描 schools + faq + announcements + 7 個 Edu 主題
 - **深淺主題** — Morandi 對稱色票，system 偏好 + localStorage 覆寫
 - **繁體中文（台灣）** — 全站台灣用語，德文專有名詞僅首次出現附中文說明
@@ -39,6 +46,8 @@ npm install
 npm run dev        # http://localhost:5173/
 npm run build      # production build（tsc -b + vite build）
 npm run typecheck  # tsc -b（noEmit）
+npm run test       # 核心規則單元測試
+npm run check      # typecheck + lint + test + 資料驗證 + audit + build
 ```
 
 環境變數（複製 `.env.example` 為 `.env.local`）：
@@ -73,8 +82,10 @@ VITE_MOCK_MODE=1
 
 ## CI / CD
 
-- GitHub Actions：`build` → `deploy`（GitHub Pages）→ `verify`（smoke test）
-- Dependabot：monthly，npm + github-actions 兩生態系，忽略 major bump（見 PAT-43）
+- GitHub Actions：PR 與 main push 執行完整 `npm run check`；main 通過後 `build` → `deploy`（GitHub Pages）→ `verify`（含 CDN 重試的 smoke test）。
+- Content health：每週檢查資料格式與複查期限；過期時自動建立或更新 GitHub Issue，不會自動改寫制度內容。
+- Dependabot：weekly，npm + github-actions 兩生態系，忽略 major bump（見 PAT-43）。
+- 匿名投稿／檢舉：瀏覽器阻擋重複與短時間連續送出；正式防線由 `0008_community_rate_limit.sql` 的資料庫 trigger 以不可逆雜湊指紋限制每小時寫入量，不保存原始 IP。
 
 ## 授權
 

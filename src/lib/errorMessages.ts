@@ -19,6 +19,8 @@ const CODE_MAP: Record<string, string> = {
 };
 
 const MESSAGE_PATTERNS: [RegExp, string][] = [
+  [/community_rate_limit_exceeded/i, '送出次數過多，請稍後再試'],
+  [/community_duplicate_submission/i, '相同內容已經送出，請勿重複提交'],
   [/row-level security/i, '資料庫拒絕此操作（可能未登入或身分不符）'],
   [/duplicate key/i,      '資料重複'],
   [/user_submissions_title_check/i, '標題長度需 2-100 字'],

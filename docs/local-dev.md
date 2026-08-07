@@ -31,6 +31,8 @@ npm run dev
 ```powershell
 npm run typecheck   # tsc -b（noEmit 已於 tsconfig 設定）
 npm run build       # tsc -b + vite build
+npm run test        # 核心規則單元測試
+npm run check       # 提交前的完整品質檢查
 npm run preview     # 檢視 dist/
 ```
 
@@ -56,7 +58,16 @@ main ← phase-<name>（單分支 ff）
 未登入時嘗試寫入。或 RLS policy 條件不符。
 
 ### `column stars_teaching does not exist` / `column "stars" does not exist`
-DB schema 尚未遷移至 v4。依序執行 `supabase/migrate_v2_to_v4.sql` → `supabase/schema.sql`。
+舊版 v2 DB 尚未完成一次性基準遷移。只有舊專案需先執行 `supabase/migrate_v2_to_v4.sql`；此後所有正式變更一律依序套用 `supabase/migrations/`，不要重複執行整份 `schema.sql`。
+
+## 資料庫檔案責任
+
+- `supabase/migrations/`：正式資料庫變更的唯一來源，依檔名順序執行。
+- `supabase/schema.sql`：新環境的基準快照，不作為日常增量更新指令。
+- `supabase/audit.sql`：唯讀核對，不修改正式資料。
+- `docs/expected-schema.md`：audit 結果的人類可讀參考。
+
+`0008_community_rate_limit.sql` 必須先在測試／預備環境驗證，再套用正式環境；它會為匿名投稿與檢舉增加伺服器端頻率及重複內容限制。
 
 ### OAuth `Unable to exchange external code`
 Supabase 端的 Google Client Secret 不正確或已失效。修法：Google Cloud Console
