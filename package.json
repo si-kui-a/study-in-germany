@@ -8,7 +8,12 @@
     "build": "tsc -b && vite build",
     "lint": "oxlint",
     "preview": "vite preview",
-    "typecheck": "tsc -b"
+    "typecheck": "tsc -b",
+    "test": "vitest run",
+    "check:data": "node scripts/check-content-data.mjs",
+    "check:content": "node scripts/check-content-freshness.mjs",
+    "check:audit": "node scripts/audit-production.mjs",
+    "check": "npm run typecheck && npm run lint && npm run test && npm run check:data && npm run check:audit && npm run build"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.110.2",
@@ -16,7 +21,7 @@
     "@tailwindcss/vite": "^4.3.2",
     "react": "^19.2.7",
     "react-dom": "^19.2.7",
-    "react-router-dom": "^7.18.1",
+    "react-router-dom": "7.18.2",
     "tailwindcss": "^4.3.2"
   },
   "devDependencies": {
@@ -27,6 +32,10 @@
     "oxlint": "^1.71.0",
     "supabase": "^2.110.0",
     "typescript": "~6.0.2",
-    "vite": "^8.1.4"
+    "vite": "^8.1.4",
+    "vitest": "^3.2.4"
+  },
+  "overrides": {
+    "postcss": ">=8.5.23"
   }
 }

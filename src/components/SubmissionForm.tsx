@@ -5,6 +5,7 @@ import { useAuth } from '../lib/useAuth';
 import { translateError } from '../lib/errorMessages';
 import { useToast } from '../lib/toast';
 import { RECOMMENDATION_CATEGORIES } from '../lib/recommendation';
+import { communityActionBlockReason, recordCommunityAction } from '../lib/antiAbuse';
 
 interface Props {
   submissionType: 'school_edit' | 'new_school' | 'new_recommendation' | 'general_feedback';
@@ -35,6 +36,13 @@ export default function SubmissionForm({
     e.preventDefault();
     if (!canSubmit) return;
 
+    const signature = `${submissionType}|${targetId ?? ''}|${title.trim().toLowerCase()}|${content.trim().toLowerCase()}`;
+    const blocked = communityActionBlockReason('submission', signature);
+    if (blocked) {
+      push('error', blocked);
+      return;
+    }
+
     setSubmitting(true);
 
     const { error } = await supabase.from('user_submissions').insert({
@@ -58,6 +66,7 @@ export default function SubmissionForm({
     }
 
     push('success', '提交完成 · 我們會盡快審核');
+    recordCommunityAction('submission', signature);
     setTitle('');
     setContent('');
     setUrl('');

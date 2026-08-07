@@ -1,0 +1,43 @@
+name: Content health
+
+on:
+  schedule:
+    - cron: '17 2 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  freshness:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - run: npm ci
+      - name: Validate content structure
+        run: npm run check:data
+      - name: Check review deadlines
+        id: freshness
+        continue-on-error: true
+        run: node scripts/check-content-freshness.mjs --strict 2>&1 | tee content-health.txt
+      - name: Create or update maintenance issue
+        if: steps.freshness.outcome == 'failure'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TITLE='內容資料已到複查期限'
+          EXISTING=$(gh issue list --state open --search "$TITLE in:title" --json number --jq '.[0].number // empty')
+          BODY=$(cat content-health.txt)
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --body "本週檢查仍有待複查項目：\n\n\`\`\`\n${BODY}\n\`\`\`"
+          else
+            gh issue create --title "$TITLE" --body "排程檢查發現以下內容需要人工核對官方來源：\n\n\`\`\`\n${BODY}\n\`\`\`"
+          fi
+      - name: Fail after issue is recorded
+        if: steps.freshness.outcome == 'failure'
+        run: exit 1
