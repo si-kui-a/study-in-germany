@@ -113,7 +113,7 @@ jobs:
           done
 
           echo "=== 檢查 title ==="
-          grep -c "留德資訊" /tmp/index.html && echo "✅ title 正確" || (echo "❌ title 遺失" && exit 1)
+          grep -q '<title>留德華' /tmp/index.html && echo "✅ title 正確" || (echo "❌ title 遺失或不符" && exit 1)
 
           echo ""
           echo "🎉 部署驗證通過"
