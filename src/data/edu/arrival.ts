@@ -139,8 +139,10 @@ export const arrivalWorkflow: WorkflowTopic = {
           {
             text: '電費(Strom)——你要自己辦，全國適用：',
             items: [
-              '入住前用比價網比較費率、選供應商，或直接用房東指定的供應商——全國皆可選：E.ON、RWE、EnBW、Vattenfall(四大集團)；其餘依居住地而定',
-              '沒有主動選，會自動被歸入當地基本供電(Grundversorgung)，費率通常較貴',
+              '入住前用比價網比較費率、選供應商，或直接用房東指定的供應商',
+              '全國皆可選：E.ON、RWE、EnBW、Vattenfall(四大集團)；其餘依居住地而定',
+              '沒有主動選，會自動被歸入當地基本供電(Grundversorgung)',
+              '基本供電費率通常較貴',
               '交屋當天記錄電表讀數，跟房東雙方留存(拍照即可)',
               '換供應商現在最快 1 個工作天內可完成，不用擔心來不及',
             ],
@@ -148,7 +150,9 @@ export const arrivalWorkflow: WorkflowTopic = {
           {
             text: '水費(Wasser)／垃圾費(Müllgebühr)——不用辦：',
             items: [
-              '依《營運成本條例》(BetrKV) §2 第2款(水費)、第8款(垃圾清運費)，這兩項費用依法由房東統一簽約、併入房租的雜項費用(Nebenkosten)收取，房客不用另外登記',
+              '房東依法統一簽約，併入房租的雜項費用(Nebenkosten)收取',
+              '房客不用另外登記',
+              '法源：《營運成本條例》(BetrKV) §2 第2款(水費)、第8款(垃圾清運費)',
             ],
           },
         ],
