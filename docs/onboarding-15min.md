@@ -90,9 +90,11 @@ npm run dev
 | 加 FAQ | `src/data/faq.json`（注意：`FAQ.tsx` 是元件、`Faq.tsx` 是頁面，兩者皆存在） |
 | 加錯誤翻譯 | `src/lib/errorMessages.ts` 的 `CODE_MAP` 或 `MESSAGE_PATTERNS` |
 | 加一個新 PAT | `Meta_Dev_Knowledge.md` 加 `## PAT-XX [LEVEL]:` 段落 + `docs/pat-index.md` 索引表加一行 |
+| 新增/改寫任何使用者看得到的文案 | 先查 `docs/content-style-guide.md`（口吻/結構/用詞/翻譯慣例整理版），權威版本在 `Meta_Dev_Knowledge.md` PAT-16/37/38/39/40/152/162/165/183 |
 
 ## 出問題找誰
 - Build 錯誤 → 先看 typecheck 訊息，本專案 `verbatimModuleSyntax: true`，type-only import 需 `import type`
 - 設計 / 架構決策 → PAT 索引 `docs/pat-index.md` → 詳細於 `Meta_Dev_Knowledge.md`
+- 文案口吻/用詞怎麼寫 → `docs/content-style-guide.md`
 - DB 遷移 → `supabase/schema.sql`（現行 v4 schema，`migrate_v2_to_v4.sql` 僅供舊 v2 DB 一次性遷移）
 - OAuth / 環境設定疑難排解 → `docs/local-dev.md`
