@@ -76,7 +76,8 @@ export const exitWorkflow: WorkflowTopic = {
         documents: ['最終電表讀數(Zählerstand)', '未來地址(可為台灣地址)'],
         procedure: [
           '搬遷特別終止權：離境前 6 週書面通知供應商',
-          '基本供電(Grundversorgung) 2 週內可終止',
+          '基本供電(Grundversorgung)',
+          '2 週內可終止',
           '離境當天記錄電表讀數',
           '提供未來地址供結算帳單寄送',
           '收供應商終止確認函',

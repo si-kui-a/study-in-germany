@@ -139,9 +139,14 @@ export const arrivalWorkflow: WorkflowTopic = {
           {
             text: '電費(Strom)——你要自己辦，全國適用：',
             items: [
-              '入住前用比價網比較費率、選供應商，或直接用房東指定的供應商',
-              '全國皆可選 E.ON、RWE、EnBW、Vattenfall(四大集團)，其餘依居住地而定',
-              '沒有主動選，會自動被歸入當地基本供電(Grundversorgung)，費率通常較貴',
+              '入住前用比價網比較費率、選供應商',
+              '或直接用房東指定的供應商',
+              '全國皆可選 E.ON、RWE',
+              'EnBW、Vattenfall(四大集團)',
+              '其餘依居住地而定',
+              '沒有主動選會被歸入',
+              '基本供電(Grundversorgung)',
+              '費率通常較貴',
               '交屋當天記錄電表讀數，跟房東雙方留存(拍照即可)',
               '換供應商現在最快 1 個工作天內可完成',
             ],
@@ -149,16 +154,19 @@ export const arrivalWorkflow: WorkflowTopic = {
           {
             text: '水費(Wasser)／垃圾費(Müllgebühr)——不用辦：',
             items: [
-              '房東依法統一簽約，併入房租的雜項費用(Nebenkosten)收取',
+              '房東依法統一簽約',
+              '併入房租的雜項費用(Nebenkosten)收取',
               '房客不用另外登記',
-              '法源：《營運成本條例》(BetrKV) §2 第2款(水費)、第8款(垃圾清運費)',
+              '法源：《營運成本條例》(BetrKV) §2',
+              '第2款(水費)、第8款(垃圾清運費)',
             ],
           },
         ],
         common_mistakes: [
           '入住後太晚選電力供應商，被自動歸入基本供電',
           '交屋當天沒記錄電表讀數，日後帳單有爭議',
-          '以為水費/垃圾費也要自己辦，其實依法已包含在房租裡',
+          '以為水費/垃圾費也要自己辦',
+          '其實依法已包含在房租裡',
         ],
         official_sources: [
           { name: 'Bundesnetzagentur · 基本供電說明', url: 'https://www.bundesnetzagentur.de/DE/Vportal/Energie/Vertragsarten/Grundversorgung/start.html' },
@@ -196,7 +204,8 @@ export const arrivalWorkflow: WorkflowTopic = {
           {
             text: '不可辦戶籍的類型：',
             items: [
-              'Airbnb 或短租平台（即使住幾個月，房東不會開文件）',
+              'Airbnb 或短租平台',
+              '即使住幾個月，房東不會開文件',
               '短期轉租中，主承租人不在，沒人開文件',
               '合租內非法轉租（主承租人向房東隱瞞）',
               '有些青年旅館',
@@ -207,7 +216,8 @@ export const arrivalWorkflow: WorkflowTopic = {
             items: [
               '「你會幫我開房東確認書嗎？」',
               '「多久內可以開好？」（通常 1-2 週）',
-              '若是合租，「主承租人是誰？他同意我當次承租人嗎？」',
+              '若是合租，「主承租人是誰？',
+              '他同意我當次承租人嗎？」',
             ],
           },
           {
@@ -222,7 +232,8 @@ export const arrivalWorkflow: WorkflowTopic = {
           },
         ],
         common_mistakes: [
-          '短期 Airbnb 住了兩個月 · 才發現無法辦戶籍',
+          '短期 Airbnb 住了兩個月',
+          '才發現無法辦戶籍',
           '簽了合租才發現主承租人不願共擔責任',
           '以為所有租約都能辦戶籍 · 沒事先問',
         ],
@@ -249,17 +260,25 @@ export const arrivalWorkflow: WorkflowTopic = {
           '戶籍登記表單(現場填寫 · 或先線上下載)',
         ],
         procedure: [
-          '線上預約 Bürgeramt 辦理時段(大城市需 2-4 週前預約)',
-          '若唯一可預約時段超過 14 天期限，保留預約確認信/截圖，多數轄區審查時會從寬認定',
+          '線上預約 Bürgeramt 辦理時段',
+          '(大城市需 2-4 週前預約)',
+          '若唯一可預約時段超過 14 天期限',
+          '保留預約確認信/截圖',
+          '多數轄區審查時會從寬認定',
           '準時到場 · 帶齊文件',
           '簽名並繳表格',
           '收戶籍證明 · 妥善保存',
         ],
         common_mistakes: [
-          '柏林 · 慕尼黑辦理時段難搶 · 落地前一週就要開始盯',
+          '柏林 · 慕尼黑辦理時段難搶',
+          '落地前一週就要開始盯',
           '資料填錯地址(未來所有事都會出錯)',
           '戶籍證明遺失 · 重辦需錢和時間',
-          '誤以為逾期一定重罰：§54 BMG 最高罰 1,000 歐元，但輕微逾期(有預約證明)通常僅罰 10-30 歐元或不罰，完全不辦或拿不出證明才會重罰',
+          '誤以為逾期一定重罰',
+          '§54 BMG 最高罰 1,000 歐元',
+          '輕微逾期(有預約證明)',
+          '通常僅罰 10-30 歐元或不罰',
+          '完全不辦或拿不出證明才會重罰',
         ],
         official_sources: [
           { name: 'Berlin Bürgeramt', url: 'https://service.berlin.de/dienstleistung/120686/' },
