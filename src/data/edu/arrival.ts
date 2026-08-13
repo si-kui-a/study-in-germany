@@ -132,7 +132,7 @@ export const arrivalWorkflow: WorkflowTopic = {
       title_zh: '電費登記(含水費／垃圾費說明)',
       title_de: 'Strom anmelden',
       meta: { timing: '簽約後、入住前越早辦越好', priority: 'required' },
-      outcome: ['避免自動被歸入較貴的基本供電(Grundversorgung)', '交屋當天電表讀數有留存記錄'],
+      outcome: ['避免自動被歸入較貴的基本供電(Grundversorgung)', '交屋當天電表讀數有留存記錄', '搞清楚水費/垃圾費是包在房租裡還是要自己另外辦'],
       detail: {
         documents: ['姓名、新地址、入住日期', '交屋時的電表讀數(Zählerstand)', 'IBAN(供每月扣款)'],
         procedure: [
@@ -146,28 +146,42 @@ export const arrivalWorkflow: WorkflowTopic = {
             ],
           },
           {
-            text: '水費(Wasser)／垃圾費(Müllgebühr)——多數情況下你不用另外辦：',
+            text: '水費(Wasser)——多數情況下你不用另外辦，但仍列出自辦流程備用：',
             items: [
-              '租 Wohnung 或 WG 房間時，水費與垃圾清運費通常已包含在每月房租的 Nebenkosten(暖租)裡，由房東統一跟自來水廠／清潔隊簽約並在年度帳單中分攤給房客',
-              '簽約時可順便確認合約條款——多數情況免另外辦，只有少數獨棟房屋出租、或合約明確載明由房客自行負責水表的情況才需要自己登記，遇到這種條款再另外處理',
+              '租 Wohnung 或 WG 房間時，水費通常已包含在每月房租的 Nebenkosten(暖租)裡，由房東統一跟當地自來水廠(Wasserversorger)簽約並在年度帳單中分攤給房客——簽約時可順便確認合約條款，多數情況不用你另外處理',
+              '例外：你是屋主(Eigentümer)、或合約明確載明由你自行負責水表時，才需要自己跟當地 Wasserversorger／Stadtwerke 登記——多數業者可線上／郵寄／臨櫃辦理，需準備地址、入住日期、水表號(Zählernummer)、水表讀數(Zählerstand)',
+              '不確定自己屬於哪種情況：直接問房東「水費是不是含在 Nebenkosten 裡」，這是最快分辨方式',
+            ],
+          },
+          {
+            text: '垃圾清運費(Müllgebühr)——這件事本來就幾乎不是房客自己辦的：',
+            items: [
+              '租 Wohnung 或 WG 房間時，垃圾桶(Mülltonne)的申請與清運費用一律由房東／管理公司統一向當地清潔隊(Abfallwirtschaftsbetrieb)登記，費用同樣併入 Nebenkosten 分攤給房客',
+              '即使你想自己處理也通常辦不到——多數地區的清潔隊規定垃圾桶登記／異動需要屋主或產權人簽署同意，房客本人無法單獨申請或變更，遇到垃圾桶不夠用等問題，正確做法是回頭找房東反映，不是自己去登記',
+              '例外只有你本人是屋主的情況：這時才需要自己向所在地的 Abfallwirtschaftsbetrieb 登記，各地表單與流程不同，直接搜尋「你所在城市 + Mülltonne anmelden」找到當地清潔隊官網辦理',
             ],
           },
         ],
         common_mistakes: [
           '入住後太晚才處理電力供應商，被自動歸入基本供電，帳單比預期貴',
           '交屋當天沒記錄電表讀數，日後帳單有爭議說不清',
-          '誤以為水費／垃圾費也要自己登記，白花時間找不到該去哪辦——先查租約條款，多數情況本來就包含在房租裡',
+          '誤以為水費／垃圾費也要自己登記，白花時間找不到該去哪辦——先查租約條款或直接問房東，多數情況本來就包含在房租裡',
+          '垃圾桶數量不夠或清運出狀況時，房客自己聯絡清潔隊卻被告知需要屋主簽署才受理——這種狀況本來就該找房東處理，不是流程走錯',
         ],
         official_sources: [
           { name: 'Bundesnetzagentur · 基本供電(Grundversorgung)說明', url: 'https://www.bundesnetzagentur.de/DE/Vportal/Energie/Vertragsarten/Grundversorgung/start.html' },
           { name: 'Bundesnetzagentur · 供應商更換(Lieferantenwechsel)說明', url: 'https://www.bundesnetzagentur.de/DE/Vportal/Energie/KuendigungLieferantenwechsel/Lieferantenwechsel/start.html' },
           { name: 'Verivox 電力比價', url: 'https://www.verivox.de/strom/' },
+          { name: 'umziehen.de · 水費登記說明(自辦流程需要準備的資料)', url: 'https://umziehen.de/an-ab-ummelden/wasser-anmelden-nach-dem-umzug-12230' },
+          { name: 'AWM 慕尼黑清潔隊 · 垃圾桶登記(屋主/管理公司限定)範例', url: 'https://www.awm-muenchen.de/entsorgen/formulare/fuer-privathaushalte-und-hausverwaltungen/tonnen-an-und-ummelden-privat-und-hausverwaltung' },
         ],
       },
       references: [
         'Bundesnetzagentur · 基本供電(Grundversorgung)說明 官方資訊',
         'Bundesnetzagentur · 供應商更換(Lieferantenwechsel)說明 官方資訊',
         'Verivox 電力比價 官方資訊',
+        'umziehen.de · 水費登記說明 官方資訊',
+        'AWM 慕尼黑清潔隊 · 垃圾桶登記範例 官方資訊',
       ],
       updated_at: '2026-08-13',
     },
