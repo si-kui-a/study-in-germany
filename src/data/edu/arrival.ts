@@ -140,11 +140,8 @@ export const arrivalWorkflow: WorkflowTopic = {
             text: '電費(Strom)——你要自己辦，全國適用：',
             items: [
               '入住前用比價網比較費率、選供應商，或直接用房東指定的供應商',
-              '全國皆可選：E.ON、RWE、EnBW、Vattenfall',
-              '(四大集團)；其餘依居住地而定',
-              '沒有主動選，會自動被歸入',
-              '當地基本供電(Grundversorgung)',
-              '基本供電費率通常較貴',
+              '全國皆可選 E.ON、RWE、EnBW、Vattenfall(四大集團)，其餘依居住地而定',
+              '沒有主動選，會自動被歸入當地基本供電(Grundversorgung)，費率通常較貴',
               '交屋當天記錄電表讀數，跟房東雙方留存(拍照即可)',
               '換供應商現在最快 1 個工作天內可完成',
             ],
@@ -152,11 +149,9 @@ export const arrivalWorkflow: WorkflowTopic = {
           {
             text: '水費(Wasser)／垃圾費(Müllgebühr)——不用辦：',
             items: [
-              '房東依法統一簽約',
-              '併入房租的雜項費用(Nebenkosten)收取',
+              '房東依法統一簽約，併入房租的雜項費用(Nebenkosten)收取',
               '房客不用另外登記',
-              '法源：《營運成本條例》(BetrKV) §2',
-              '第2款(水費)、第8款(垃圾清運費)',
+              '法源：《營運成本條例》(BetrKV) §2 第2款(水費)、第8款(垃圾清運費)',
             ],
           },
         ],
@@ -255,8 +250,7 @@ export const arrivalWorkflow: WorkflowTopic = {
         ],
         procedure: [
           '線上預約 Bürgeramt 辦理時段(大城市需 2-4 週前預約)',
-          '若唯一可預約時段超過 14 天期限：保留預約確認信/截圖',
-          '多數轄區審查時會從寬認定(已證明嘗試預約)',
+          '若唯一可預約時段超過 14 天期限，保留預約確認信/截圖，多數轄區審查時會從寬認定',
           '準時到場 · 帶齊文件',
           '簽名並繳表格',
           '收戶籍證明 · 妥善保存',
@@ -265,9 +259,7 @@ export const arrivalWorkflow: WorkflowTopic = {
           '柏林 · 慕尼黑辦理時段難搶 · 落地前一週就要開始盯',
           '資料填錯地址(未來所有事都會出錯)',
           '戶籍證明遺失 · 重辦需錢和時間',
-          '誤以為逾期一定重罰：§54 BMG 最高罰 1,000 歐元',
-          '實務上輕微逾期(有預約證明)常僅罰 10-30 歐元或不罰',
-          '完全不辦或拿不出嘗試證明才會被重罰',
+          '誤以為逾期一定重罰：§54 BMG 最高罰 1,000 歐元，但輕微逾期(有預約證明)通常僅罰 10-30 歐元或不罰，完全不辦或拿不出證明才會重罰',
         ],
         official_sources: [
           { name: 'Berlin Bürgeramt', url: 'https://service.berlin.de/dienstleistung/120686/' },
