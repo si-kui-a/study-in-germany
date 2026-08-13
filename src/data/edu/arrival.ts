@@ -131,7 +131,7 @@ export const arrivalWorkflow: WorkflowTopic = {
       step: 3,
       title_zh: '電費登記(含水費／垃圾費說明)',
       title_de: 'Strom anmelden',
-      meta: { timing: '入住前越早辦越好', priority: 'required' },
+      meta: { timing: '入住前', priority: 'required' },
       outcome: ['避免自動被歸入較貴的基本供電', '確認水費/垃圾費不用另外辦'],
       detail: {
         documents: ['新地址、入住日期', '交屋時的電表讀數(Zählerstand)', 'IBAN'],
@@ -193,7 +193,7 @@ export const arrivalWorkflow: WorkflowTopic = {
           {
             text: '可辦戶籍的類型：',
             items: [
-              '有正式租約且房東願提供房東確認書',
+              '有正式租約且房東願提供確認書',
               '合租主承租人願為你當「次承租人」開此文件',
               '學生宿舍（自動可辦）',
             ],
@@ -216,13 +216,13 @@ export const arrivalWorkflow: WorkflowTopic = {
             ],
           },
           {
-            text: '為什麼重要：',
+            text: '沒辦戶籍會怎樣：',
             items: [
-              '沒辦戶籍 → 開不了銀行帳戶',
-              '沒辦戶籍 → 辦不了保險，尤其公保',
-              '沒辦戶籍 → 拿不到稅號',
-              '沒辦戶籍 → 無法辦圖書館證、學生福利',
-              '沒辦戶籍 → 無法申請居留許可',
+              '開不了銀行帳戶',
+              '辦不了保險，尤其公保',
+              '拿不到稅號',
+              '無法辦圖書館證、學生福利',
+              '無法申請居留許可',
             ],
           },
         ],
@@ -255,7 +255,8 @@ export const arrivalWorkflow: WorkflowTopic = {
         ],
         procedure: [
           '線上預約 Bürgeramt 辦理時段(大城市需 2-4 週前預約)',
-          '若唯一可預約的時段已經超過 14 天期限：保留線上預約確認信/截圖(證明已在期限內嘗試預約)，多數轄區審查時會從寬認定',
+          '若唯一可預約時段超過 14 天期限：保留預約確認信/截圖',
+          '多數轄區審查時會從寬認定(已證明嘗試預約)',
           '準時到場 · 帶齊文件',
           '簽名並繳表格',
           '收戶籍證明 · 妥善保存',
@@ -264,7 +265,9 @@ export const arrivalWorkflow: WorkflowTopic = {
           '柏林 · 慕尼黑辦理時段難搶 · 落地前一週就要開始盯',
           '資料填錯地址(未來所有事都會出錯)',
           '戶籍證明遺失 · 重辦需錢和時間',
-          '誤以為逾期一定重罰：依 §54 BMG 最高可罰 1,000 歐元，但實務上輕微逾期(且能證明已嘗試預約)常僅罰 10-30 歐元或從寬不罰；真正風險是完全不辦、拿不出任何嘗試證明',
+          '誤以為逾期一定重罰：§54 BMG 最高罰 1,000 歐元',
+          '實務上輕微逾期(有預約證明)常僅罰 10-30 歐元或不罰',
+          '完全不辦或拿不出嘗試證明才會被重罰',
         ],
         official_sources: [
           { name: 'Berlin Bürgeramt', url: 'https://service.berlin.de/dienstleistung/120686/' },
