@@ -143,6 +143,7 @@ export const arrivalWorkflow: WorkflowTopic = {
               '2. 沒有主動選，會自動被歸入當地基本供電(Grundversorgung)，費率通常較貴',
               '3. 交屋當天記錄電表讀數，跟房東雙方留存(拍照即可)',
               '4. 換供應商現在最快 1 個工作天內可完成，不用擔心來不及',
+              '全國皆可選的供應商：E.ON、RWE、EnBW、Vattenfall(四大集團，全德不分地區皆可簽約)；其餘約1,500家地區/綠電供應商依居住地而定，實際可選名單以比價網查詢結果為準',
             ],
           },
           {
@@ -160,12 +161,14 @@ export const arrivalWorkflow: WorkflowTopic = {
         official_sources: [
           { name: 'Bundesnetzagentur · 基本供電說明', url: 'https://www.bundesnetzagentur.de/DE/Vportal/Energie/Vertragsarten/Grundversorgung/start.html' },
           { name: 'Bundesnetzagentur · 供應商更換說明', url: 'https://www.bundesnetzagentur.de/DE/Vportal/Energie/KuendigungLieferantenwechsel/Lieferantenwechsel/start.html' },
+          { name: 'bpb(聯邦政治教育中心) · 「四大集團」能源供應商說明', url: 'https://www.bpb.de/themen/wirtschaft/energiepolitik/152780/die-grossen-vier/' },
           { name: '§ 2 BetrKV · 水費/垃圾清運費屬房東可轉嫁之營運成本', url: 'https://www.gesetze-im-internet.de/betrkv/__2.html' },
         ],
       },
       references: [
         'Bundesnetzagentur · 基本供電說明 官方資訊',
         'Bundesnetzagentur · 供應商更換說明 官方資訊',
+        'bpb(聯邦政治教育中心) · 「四大集團」能源供應商說明 官方資訊',
         '§ 2 BetrKV · 水費/垃圾清運費屬房東可轉嫁之營運成本 官方資訊',
       ],
       updated_at: '2026-08-13',
