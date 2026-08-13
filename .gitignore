@@ -22,4 +22,7 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-.claude/
+.claude/*
+!.claude/settings.json
+!.claude/hooks/
+.claude/settings.local.json
