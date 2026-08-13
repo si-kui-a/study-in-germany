@@ -85,7 +85,7 @@ export const VISA_SELECTOR_SUBTITLE =
 export const VISA_SELECTOR_MODULE_SUBTITLE = '14 種簽證比較 · 你適合哪一種';
 
 export const VISA_SELECTOR_UPDATE_LOG =
-  '更新紀錄：2026-07-18 新增卡03/04/05/06 Bürgergeld公式替代驗證、卡14 BFD官方零用金上限與FSJ地區示例。卡09依用戶指示未更新。';
+  '更新紀錄：2026-07-18 新增卡03/04/05/06 Bürgergeld公式替代驗證、卡14 BFD官方零用金上限與FSJ地區示例。卡09暫緩更新。';
 
 export const VISA_SELECTOR_DISCLAIMER =
   '本文件所有金額／年齡數字，凡標示「推估」者僅供方向參考，正式申請前務必自行前往官網或現場確認最新公告。官網未載明具體數字之欄位，一律標示「官網未列出，需另洽詢」；標示「替代驗證」者為第三方來源估算，非官方門檻，信心分數與風險已個別註記。';

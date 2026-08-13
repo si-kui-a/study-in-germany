@@ -13,9 +13,10 @@
     "check:data": "node scripts/check-content-data.mjs",
     "check:scope": "node scripts/check-monitoring-scope.mjs",
     "check:content": "node scripts/check-content-freshness.mjs",
+    "check:style": "node scripts/check-content-style.mjs",
     "check:links": "node scripts/check-external-links.mjs",
     "check:audit": "node scripts/audit-production.mjs",
-    "check": "npm run typecheck && npm run lint && npm run test && npm run check:data && npm run check:scope && npm run check:audit && npm run build"
+    "check": "npm run typecheck && npm run lint && npm run test && npm run check:data && npm run check:scope && npm run check:style && npm run check:audit && npm run build"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.110.2",
