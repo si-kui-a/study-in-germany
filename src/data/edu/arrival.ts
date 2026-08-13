@@ -139,7 +139,7 @@ export const arrivalWorkflow: WorkflowTopic = {
           {
             text: '電費(Strom)——你要自己辦，全國適用：',
             items: [
-              '1. 入住前用比價網(Verivox、Check24 等)選供應商，或直接用房東指定的供應商',
+              '1. 入住前用比價網比較費率、選供應商，或直接用房東指定的供應商',
               '2. 沒有主動選，會自動被歸入當地基本供電(Grundversorgung)，費率通常較貴',
               '3. 交屋當天記錄電表讀數，跟房東雙方留存(拍照即可)',
               '4. 換供應商現在最快 1 個工作天內可完成，不用擔心來不及',
@@ -160,14 +160,12 @@ export const arrivalWorkflow: WorkflowTopic = {
         official_sources: [
           { name: 'Bundesnetzagentur · 基本供電說明', url: 'https://www.bundesnetzagentur.de/DE/Vportal/Energie/Vertragsarten/Grundversorgung/start.html' },
           { name: 'Bundesnetzagentur · 供應商更換說明', url: 'https://www.bundesnetzagentur.de/DE/Vportal/Energie/KuendigungLieferantenwechsel/Lieferantenwechsel/start.html' },
-          { name: 'Verivox 電力比價', url: 'https://www.verivox.de/strom/' },
           { name: '§ 2 BetrKV · 水費/垃圾清運費屬房東可轉嫁之營運成本', url: 'https://www.gesetze-im-internet.de/betrkv/__2.html' },
         ],
       },
       references: [
         'Bundesnetzagentur · 基本供電說明 官方資訊',
         'Bundesnetzagentur · 供應商更換說明 官方資訊',
-        'Verivox 電力比價 官方資訊',
         '§ 2 BetrKV · 水費/垃圾清運費屬房東可轉嫁之營運成本 官方資訊',
       ],
       updated_at: '2026-08-13',
