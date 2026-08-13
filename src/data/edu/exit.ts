@@ -3,7 +3,7 @@ import type { WorkflowTopic } from './workflow';
 export const exitWorkflow: WorkflowTopic = {
   slug: 'exit',
   title: '離開指南',
-  subtitle: 'Abmeldung · 稅務 · 帳戶 · 保險',
+  subtitle: 'Abmeldung · 電費 · 稅務 · 帳戶 · 保險',
   description:
     '離開德國前必做清單。跳過任何一項可能導致帳單追討 · 稅務未結 · 或返德再申請時受阻。此清單按時間順序排列。',
   steps: [
@@ -68,6 +68,35 @@ export const exitWorkflow: WorkflowTopic = {
     },
     {
       step: 3,
+      title_zh: '解除電費合約',
+      title_de: 'Stromvertrag kündigen',
+      meta: { timing: '離境前 6 週', priority: 'required' },
+      outcome: ['停止扣款 · 避免離境後仍收帳單'],
+      detail: {
+        documents: ['最終電表讀數(Zählerstand)', '未來地址(可為台灣地址)'],
+        procedure: [
+          '搬遷特別終止權：離境前 6 週書面通知供應商',
+          '基本供電(Grundversorgung) 2 週內可終止',
+          '離境當天記錄電表讀數',
+          '提供未來地址供結算帳單寄送',
+          '收供應商終止確認函',
+        ],
+        common_mistakes: [
+          '忘記記錄離境電表讀數 · 結算有爭議',
+          '沒提前 6 週通知 · 被要求付到合約到期',
+          '搬走後才想起要通知 · 持續被扣款',
+        ],
+        official_sources: [
+          { name: 'Bundesnetzagentur · 供電合約終止說明', url: 'https://www.bundesnetzagentur.de/DE/Vportal/Energie/KuendigungLieferantenwechsel/Kuendigung/start.html' },
+        ],
+      },
+      references: [
+        'Bundesnetzagentur · 供電合約終止說明 官方資訊',
+      ],
+      updated_at: '2026-08-14',
+    },
+    {
+      step: 4,
       title_zh: '解除電視稅',
       title_de: 'Rundfunkbeitrag 註銷',
       meta: { timing: '同 Abmeldung 時', priority: 'required' },
@@ -93,7 +122,7 @@ export const exitWorkflow: WorkflowTopic = {
       updated_at: '2026-07-11',
     },
     {
-      step: 4,
+      step: 5,
       title_zh: '解除保險',
       title_de: 'Krankenversicherung 註銷',
       meta: { timing: '離境前 1 個月', priority: 'required' },
@@ -121,7 +150,7 @@ export const exitWorkflow: WorkflowTopic = {
       updated_at: '2026-07-11',
     },
     {
-      step: 5,
+      step: 6,
       title_zh: '關閉帳戶',
       title_de: 'Bankkonto 關閉',
       meta: { timing: '離境前 2-3 週', priority: 'required' },
@@ -151,7 +180,7 @@ export const exitWorkflow: WorkflowTopic = {
       updated_at: '2026-07-11',
     },
     {
-      step: 6,
+      step: 7,
       title_zh: '取回限制提領帳戶餘款',
       title_de: 'Sperrkonto 提領',
       meta: { timing: '離境前 1-2 週', priority: 'required' },
@@ -181,7 +210,7 @@ export const exitWorkflow: WorkflowTopic = {
       updated_at: '2026-07-11',
     },
     {
-      step: 7,
+      step: 8,
       title_zh: '稅務結算',
       title_de: 'Einkommensteuer 結算',
       meta: { timing: '離境前後皆可(最多 4 年內)', priority: 'recommended' },
@@ -224,7 +253,7 @@ export const exitWorkflow: WorkflowTopic = {
       updated_at: '2026-07-11',
     },
     {
-      step: 8,
+      step: 9,
       title_zh: '解除電信 · SIM 卡',
       title_de: 'Handyvertrag 註銷',
       meta: { timing: '離境前', priority: 'required' },
@@ -262,7 +291,7 @@ export const exitWorkflow: WorkflowTopic = {
       updated_at: '2026-07-11',
     },
     {
-      step: 9,
+      step: 10,
       title_zh: '整理教育文件',
       meta: { timing: '離境前 · 未來重要', priority: 'recommended' },
       outcome: ['未來申請學位認證/工作認證備用'],
