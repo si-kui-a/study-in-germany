@@ -3,7 +3,7 @@ import type { WorkflowTopic } from './workflow';
 export const arrivalWorkflow: WorkflowTopic = {
   slug: 'arrival',
   title: '落地指南',
-  subtitle: '住宿 · 戶籍 · 帳戶 · 保險 · 電視稅',
+  subtitle: '住宿 · 水電 · 戶籍 · 帳戶 · 保險 · 電視稅',
   description:
     '落地前 30 天最忙的行政事項。順序有優先級 · 前幾項必須兩週內完成 · 否則影響後續所有事。',
   steps: [
@@ -129,6 +129,50 @@ export const arrivalWorkflow: WorkflowTopic = {
     },
     {
       step: 3,
+      title_zh: '電費登記(含水費／垃圾費說明)',
+      title_de: 'Strom anmelden',
+      meta: { timing: '簽約後、入住前越早辦越好', priority: 'required' },
+      outcome: ['避免自動被歸入較貴的基本供電(Grundversorgung)', '交屋當天電表讀數有留存記錄'],
+      detail: {
+        documents: ['姓名、新地址、入住日期', '交屋時的電表讀數(Zählerstand)', 'IBAN(供每月扣款)'],
+        procedure: [
+          {
+            text: '電費(Strom)——你要自己辦：',
+            items: [
+              '用比價網(如 Verivox、Check24)挑選電力供應商，或直接沿用房東指定/當地的基本供電商(Grundversorger)',
+              '越早完成登記越好——沒有在入住前主動選定供應商，會自動被歸入當地 Grundversorger 的基本供電，費率通常較一般合約貴',
+              '交屋當天跟房東一起記錄電表讀數(Zählerstand)，雙方留存(拍照/簽字皆可)，避免日後帳單認知落差',
+              '2025 年 6 月起換供應商已可在1個工作天內完成，換約本身不再是耗時的事，真正該注意的是「有沒有主動辦」而不是「來不來得及」',
+            ],
+          },
+          {
+            text: '水費(Wasser)／垃圾費(Müllgebühr)——多數情況下你不用另外辦：',
+            items: [
+              '租 Wohnung 或 WG 房間時，水費與垃圾清運費通常已包含在每月房租的 Nebenkosten(暖租)裡，由房東統一跟自來水廠／清潔隊簽約並在年度帳單中分攤給房客',
+              '簽約時可順便確認合約條款——多數情況免另外辦，只有少數獨棟房屋出租、或合約明確載明由房客自行負責水表的情況才需要自己登記，遇到這種條款再另外處理',
+            ],
+          },
+        ],
+        common_mistakes: [
+          '入住後太晚才處理電力供應商，被自動歸入基本供電，帳單比預期貴',
+          '交屋當天沒記錄電表讀數，日後帳單有爭議說不清',
+          '誤以為水費／垃圾費也要自己登記，白花時間找不到該去哪辦——先查租約條款，多數情況本來就包含在房租裡',
+        ],
+        official_sources: [
+          { name: 'Bundesnetzagentur · 基本供電(Grundversorgung)說明', url: 'https://www.bundesnetzagentur.de/DE/Vportal/Energie/Vertragsarten/Grundversorgung/start.html' },
+          { name: 'Bundesnetzagentur · 供應商更換(Lieferantenwechsel)說明', url: 'https://www.bundesnetzagentur.de/DE/Vportal/Energie/KuendigungLieferantenwechsel/Lieferantenwechsel/start.html' },
+          { name: 'Verivox 電力比價', url: 'https://www.verivox.de/strom/' },
+        ],
+      },
+      references: [
+        'Bundesnetzagentur · 基本供電(Grundversorgung)說明 官方資訊',
+        'Bundesnetzagentur · 供應商更換(Lieferantenwechsel)說明 官方資訊',
+        'Verivox 電力比價 官方資訊',
+      ],
+      updated_at: '2026-08-13',
+    },
+    {
+      step: 4,
       title_zh: '確認能否辦戶籍',
       title_de: 'Meldefähigkeit',
       meta: { timing: '簽約前必問', priority: 'required' },
@@ -188,7 +232,7 @@ export const arrivalWorkflow: WorkflowTopic = {
       updated_at: '2026-07-11',
     },
     {
-      step: 4,
+      step: 5,
       title_zh: '戶籍登記',
       title_de: 'Anmeldung',
       meta: { location: 'Bürgeramt', timing: '落地後 14 天內', docs_count: 4, priority: 'required' },
@@ -229,7 +273,7 @@ export const arrivalWorkflow: WorkflowTopic = {
       updated_at: '2026-08-13',
     },
     {
-      step: 5,
+      step: 6,
       title_zh: '個人銀行帳戶',
       title_de: 'Girokonto',
       meta: { timing: '有戶籍證明後', priority: 'required' },
@@ -257,7 +301,7 @@ export const arrivalWorkflow: WorkflowTopic = {
       updated_at: '2026-07-11',
     },
     {
-      step: 6,
+      step: 7,
       title_zh: '健康保險',
       title_de: 'Krankenversicherung',
       meta: { timing: '有戶籍證明後', priority: 'required' },
@@ -285,7 +329,7 @@ export const arrivalWorkflow: WorkflowTopic = {
       updated_at: '2026-07-11',
     },
     {
-      step: 7,
+      step: 8,
       title_zh: '取得稅號',
       title_de: 'Steueridentifikationsnummer',
       meta: { timing: '戶籍登記後自動寄送', priority: 'required' },
@@ -310,7 +354,7 @@ export const arrivalWorkflow: WorkflowTopic = {
       updated_at: '2026-07-11',
     },
     {
-      step: 8,
+      step: 9,
       title_zh: 'SIM 卡',
       title_de: 'Mobilfunk',
       meta: { timing: '有帳戶後', priority: 'recommended' },
@@ -336,7 +380,7 @@ export const arrivalWorkflow: WorkflowTopic = {
       updated_at: '2026-07-11',
     },
     {
-      step: 9,
+      step: 10,
       title_zh: '電視稅登記',
       title_de: 'Rundfunkbeitrag',
       meta: { timing: '住定 2 週內會自動收到通知', priority: 'required' },
