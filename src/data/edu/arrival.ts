@@ -148,7 +148,7 @@ export const arrivalWorkflow: WorkflowTopic = {
           {
             text: '水費(Wasser)／垃圾費(Müllgebühr)——不用辦：',
             items: [
-              '依《營運成本條例》(BetrKV) §2 第2款(水費)、第8款(垃圾清運費)，這兩項費用依法由房東統一簽約、併入房租的 Nebenkosten 收取，房客不用另外登記',
+              '依《營運成本條例》(BetrKV) §2 第2款(水費)、第8款(垃圾清運費)，這兩項費用依法由房東統一簽約、併入房租的雜項費用(Nebenkosten)收取，房客不用另外登記',
             ],
           },
         ],
