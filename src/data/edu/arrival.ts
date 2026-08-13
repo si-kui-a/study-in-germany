@@ -131,7 +131,7 @@ export const arrivalWorkflow: WorkflowTopic = {
       step: 3,
       title_zh: '電費登記(含水費／垃圾費說明)',
       title_de: 'Strom anmelden',
-      meta: { timing: '入住前越早辦越好', priority: 'required' },
+      meta: { timing: '入住前', priority: 'required' },
       outcome: ['避免自動被歸入較貴的基本供電', '確認水費/垃圾費不用另外辦'],
       detail: {
         documents: ['新地址、入住日期', '交屋時的電表讀數(Zählerstand)', 'IBAN'],
@@ -267,7 +267,7 @@ export const arrivalWorkflow: WorkflowTopic = {
           '戶籍證明遺失 · 重辦需錢和時間',
           '誤以為逾期一定重罰：§54 BMG 最高罰 1,000 歐元',
           '實務上輕微逾期(有預約證明)常僅罰 10-30 歐元或不罰',
-          '真正風險是完全不辦、拿不出任何嘗試證明',
+          '完全不辦或拿不出嘗試證明才會被重罰',
         ],
         official_sources: [
           { name: 'Berlin Bürgeramt', url: 'https://service.berlin.de/dienstleistung/120686/' },
