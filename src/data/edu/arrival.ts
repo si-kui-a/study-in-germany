@@ -202,6 +202,7 @@ export const arrivalWorkflow: WorkflowTopic = {
         ],
         procedure: [
           '線上預約 Bürgeramt 辦理時段(大城市需 2-4 週前預約)',
+          '若唯一可預約的時段已經超過 14 天期限：保留線上預約確認信/截圖(證明已在期限內嘗試預約)，多數轄區審查時會從寬認定',
           '準時到場 · 帶齊文件',
           '簽名並繳表格',
           '收戶籍證明 · 妥善保存',
@@ -210,17 +211,22 @@ export const arrivalWorkflow: WorkflowTopic = {
           '柏林 · 慕尼黑辦理時段難搶 · 落地前一週就要開始盯',
           '資料填錯地址(未來所有事都會出錯)',
           '戶籍證明遺失 · 重辦需錢和時間',
+          '誤以為逾期一定重罰：依 §54 BMG 最高可罰 1,000 歐元，但實務上輕微逾期(且能證明已嘗試預約)常僅罰 10-30 歐元或從寬不罰；真正風險是完全不辦、拿不出任何嘗試證明',
         ],
         official_sources: [
           { name: 'Berlin Bürgeramt', url: 'https://service.berlin.de/dienstleistung/120686/' },
           { name: 'München Bürgerbüro', url: 'https://stadt.muenchen.de/service/info/wohnsitzanmeldung/1063475/n0/' },
+          { name: '§ 17 BMG 戶籍登記期限(兩週)', url: 'https://www.gesetze-im-internet.de/bmg/__17.html' },
+          { name: '§ 54 BMG 逾期罰則上限', url: 'https://www.gesetze-im-internet.de/bmg/__54.html' },
         ],
       },
       references: [
         'Berlin Bürgeramt 官方資訊',
         'München Bürgerbüro 官方資訊',
+        '§ 17 BMG 戶籍登記期限(兩週) 官方資訊',
+        '§ 54 BMG 逾期罰則上限 官方資訊',
       ],
-      updated_at: '2026-07-11',
+      updated_at: '2026-08-13',
     },
     {
       step: 5,
