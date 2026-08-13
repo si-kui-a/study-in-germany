@@ -3,7 +3,7 @@ import type { WorkflowTopic } from './workflow';
 export const arrivalWorkflow: WorkflowTopic = {
   slug: 'arrival',
   title: '落地指南',
-  subtitle: '住宿 · 戶籍 · 帳戶 · 保險 · 電視稅',
+  subtitle: '住宿 · 水電 · 戶籍 · 帳戶 · 保險 · 電視稅',
   description:
     '落地前 30 天最忙的行政事項。順序有優先級 · 前幾項必須兩週內完成 · 否則影響後續所有事。',
   steps: [
@@ -129,6 +129,51 @@ export const arrivalWorkflow: WorkflowTopic = {
     },
     {
       step: 3,
+      title_zh: '電費登記(含水費／垃圾費說明)',
+      title_de: 'Strom anmelden',
+      meta: { timing: '入住前越早辦越好', priority: 'required' },
+      outcome: ['避免自動被歸入較貴的基本供電', '確認水費/垃圾費不用另外辦'],
+      detail: {
+        documents: ['新地址、入住日期', '交屋時的電表讀數(Zählerstand)', 'IBAN'],
+        procedure: [
+          {
+            text: '電費(Strom)——你要自己辦，全國適用：',
+            items: [
+              '入住前用比價網比較費率、選供應商，或直接用房東指定的供應商——全國皆可選：E.ON、RWE、EnBW、Vattenfall(四大集團)；其餘依居住地而定',
+              '沒有主動選，會自動被歸入當地基本供電(Grundversorgung)，費率通常較貴',
+              '交屋當天記錄電表讀數，跟房東雙方留存(拍照即可)',
+              '換供應商現在最快 1 個工作天內可完成，不用擔心來不及',
+            ],
+          },
+          {
+            text: '水費(Wasser)／垃圾費(Müllgebühr)——不用辦：',
+            items: [
+              '依《營運成本條例》(BetrKV) §2 第2款(水費)、第8款(垃圾清運費)，這兩項費用依法由房東統一簽約、併入房租的雜項費用(Nebenkosten)收取，房客不用另外登記',
+            ],
+          },
+        ],
+        common_mistakes: [
+          '入住後太晚選電力供應商，被自動歸入基本供電',
+          '交屋當天沒記錄電表讀數，日後帳單有爭議',
+          '以為水費/垃圾費也要自己辦，其實依法已包含在房租裡',
+        ],
+        official_sources: [
+          { name: 'Bundesnetzagentur · 基本供電說明', url: 'https://www.bundesnetzagentur.de/DE/Vportal/Energie/Vertragsarten/Grundversorgung/start.html' },
+          { name: 'Bundesnetzagentur · 供應商更換說明', url: 'https://www.bundesnetzagentur.de/DE/Vportal/Energie/KuendigungLieferantenwechsel/Lieferantenwechsel/start.html' },
+          { name: 'bpb(聯邦政治教育中心) · 「四大集團」能源供應商說明', url: 'https://www.bpb.de/themen/wirtschaft/energiepolitik/152780/die-grossen-vier/' },
+          { name: '§ 2 BetrKV · 水費/垃圾清運費屬房東可轉嫁之營運成本', url: 'https://www.gesetze-im-internet.de/betrkv/__2.html' },
+        ],
+      },
+      references: [
+        'Bundesnetzagentur · 基本供電說明 官方資訊',
+        'Bundesnetzagentur · 供應商更換說明 官方資訊',
+        'bpb(聯邦政治教育中心) · 「四大集團」能源供應商說明 官方資訊',
+        '§ 2 BetrKV · 水費/垃圾清運費屬房東可轉嫁之營運成本 官方資訊',
+      ],
+      updated_at: '2026-08-13',
+    },
+    {
+      step: 4,
       title_zh: '確認能否辦戶籍',
       title_de: 'Meldefähigkeit',
       meta: { timing: '簽約前必問', priority: 'required' },
@@ -188,7 +233,7 @@ export const arrivalWorkflow: WorkflowTopic = {
       updated_at: '2026-07-11',
     },
     {
-      step: 4,
+      step: 5,
       title_zh: '戶籍登記',
       title_de: 'Anmeldung',
       meta: { location: 'Bürgeramt', timing: '落地後 14 天內', docs_count: 4, priority: 'required' },
@@ -229,7 +274,7 @@ export const arrivalWorkflow: WorkflowTopic = {
       updated_at: '2026-08-13',
     },
     {
-      step: 5,
+      step: 6,
       title_zh: '個人銀行帳戶',
       title_de: 'Girokonto',
       meta: { timing: '有戶籍證明後', priority: 'required' },
@@ -257,7 +302,7 @@ export const arrivalWorkflow: WorkflowTopic = {
       updated_at: '2026-07-11',
     },
     {
-      step: 6,
+      step: 7,
       title_zh: '健康保險',
       title_de: 'Krankenversicherung',
       meta: { timing: '有戶籍證明後', priority: 'required' },
@@ -285,7 +330,7 @@ export const arrivalWorkflow: WorkflowTopic = {
       updated_at: '2026-07-11',
     },
     {
-      step: 7,
+      step: 8,
       title_zh: '取得稅號',
       title_de: 'Steueridentifikationsnummer',
       meta: { timing: '戶籍登記後自動寄送', priority: 'required' },
@@ -310,7 +355,7 @@ export const arrivalWorkflow: WorkflowTopic = {
       updated_at: '2026-07-11',
     },
     {
-      step: 8,
+      step: 9,
       title_zh: 'SIM 卡',
       title_de: 'Mobilfunk',
       meta: { timing: '有帳戶後', priority: 'recommended' },
@@ -336,7 +381,7 @@ export const arrivalWorkflow: WorkflowTopic = {
       updated_at: '2026-07-11',
     },
     {
-      step: 9,
+      step: 10,
       title_zh: '電視稅登記',
       title_de: 'Rundfunkbeitrag',
       meta: { timing: '住定 2 週內會自動收到通知', priority: 'required' },
