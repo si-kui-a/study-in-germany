@@ -11,6 +11,7 @@
 import { readFile, readdir } from 'node:fs/promises';
 import { join, relative, extname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const EXCLUDE_DIRS = new Set(['node_modules', '.git', 'dist', 'release', '.claude']);
@@ -113,8 +114,43 @@ async function checkStaleKeywords() {
   console.log(`  共${hits}處候選——逐一確認是否已被同檔案或其他檔案的較新內容取代`);
 }
 
+function checkUnmergedBranches() {
+  console.log('\n== 5. 未merge分支健檢（2026-08-30新增，2026-08-30全repo分支殘留'
+    + '清理後訂定；純唯讀，只列名單不做任何刪除/合併判斷——要不要處理'
+    + '每次都要真人/AI實際讀內容才能決定，見同批新增的「全面收斂稽核」'
+    + '章節）==');
+  const defaultBranch = 'main';
+  const opts = { cwd: root, encoding: 'utf8', timeout: 30000 };
+  try {
+    execFileSync('git', ['fetch', '--all', '--prune'], opts);
+  } catch { /* 網路不可用時仍嘗試用本機快取的refs繼續 */ }
+  let names;
+  try {
+    const out = execFileSync('git', ['branch', '-r', '--no-merged', `origin/${defaultBranch}`], opts);
+    names = out.split('\n').map((l) => l.trim()).filter((l) => l && !l.includes('->'));
+  } catch (e) {
+    console.log(`  （檢查失敗，可能不在git repo或git不可用：${e.message}）`);
+    return;
+  }
+  if (!names.length) {
+    console.log('  （無未merge分支）');
+    return;
+  }
+  for (const name of names) {
+    const short = name.replace(/^origin\//, '');
+    let count = '?';
+    try {
+      count = execFileSync('git', ['rev-list', '--count', `origin/${defaultBranch}..${name}`], opts).trim();
+    } catch { /* 忽略單一分支查詢失敗，繼續處理其他分支 */ }
+    console.log(`  ${short}：領先${count}個commit，未merge`);
+  }
+  console.log(`  共${names.length}個——是否要救回內容或直接刪除，逐一核對實際`
+    + `commit內容才能判斷，不能只憑分支名稱/存在天數猜測`);
+}
+
 const realNums = await checkPatContinuity();
 await checkPatCrossReferences(realNums);
 await checkSourceSizeOutliers();
 await checkStaleKeywords();
+checkUnmergedBranches();
 console.log('\n完成。以上都只是候選，不是結論——逐項人工/AI確認後才動手修。');
