@@ -34,3 +34,14 @@ Deploy: `npm run build` → `gh-pages` branch → auto-deploy
 
 ## Current SDD
 Read: docs/SDD.md (if exists) before starting any Phase
+
+## 開發知識庫查證順序（2026-08-30訂定，移植自wordpress-builder-playbook
+repo的同類規則）
+不確定的做法先查`Meta_Dev_Knowledge.md`有沒有現成PAT條目，內部真的
+沒有才查外部；查證後證實真實可用有益處的做法，直接補一則新PAT條目，
+不用另外問要不要記錄。**機械複查**：`npm run check:knowledge`——PAT
+編號連續性/跨檔案PAT引用完整性/過時關鍵字候選/原始碼檔案篇幅離群值，
+幾秒鐘跑完。只找候選不判斷對錯，人工/AI逐一確認後才動手改。故意不進
+`npm run check`硬gate，比照`check:content`/`check:links`用手動觸發
+（PAT編號缺口通常是合併/重整PAT的正常結果，不像內容過期複查期限那樣
+急迫，不適合自動開GitHub issue）。
