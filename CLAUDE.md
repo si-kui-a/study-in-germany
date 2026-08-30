@@ -45,3 +45,13 @@ repo的同類規則）
 `npm run check`硬gate，比照`check:content`/`check:links`用手動觸發
 （PAT編號缺口通常是合併/重整PAT的正常結果，不像內容過期複查期限那樣
 急迫，不適合自動開GitHub issue）。
+
+**★2026-08-30訂為閥值自動觸發★收工時先跑這行判斷要不要做健檢，不用
+自己記或等使用者提醒**：
+```bash
+git rev-list --count $(head -c 7 scripts/.last-audit-marker)..HEAD
+```
+（**這個檔案不存在**時上面這行會直接報錯——代表從沒跑過健檢，視同
+數字已達閥值，直接跑健檢腳本並用結果建立這個檔案，不用回頭修這行
+指令）**這個數字≥8就自動跑**`npm run check:knowledge`，跑完後用當下
+HEAD的short SHA+日期覆寫`scripts/.last-audit-marker`。
