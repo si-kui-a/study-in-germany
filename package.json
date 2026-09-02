@@ -20,7 +20,7 @@
     "check": "npm run typecheck && npm run lint && npm run test && npm run check:data && npm run check:scope && npm run check:style && npm run check:audit && npm run build"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.110.2",
+    "@supabase/supabase-js": "^2.112.4",
     "@tabler/icons-react": "^3.44.0",
     "@tailwindcss/vite": "^4.3.2",
     "react": "^19.2.7",
