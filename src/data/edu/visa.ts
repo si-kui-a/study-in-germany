@@ -96,7 +96,6 @@ export const visaWorkflow: WorkflowTopic = {
               'Fintiba',
               'Expatrio',
               'Coracle',
-              'Deutsche Bank Sperrkonto',
             ],
           },
           {
@@ -120,16 +119,14 @@ export const visaWorkflow: WorkflowTopic = {
           { name: 'Fintiba', url: 'https://www.fintiba.com/' },
           { name: 'Expatrio', url: 'https://www.expatrio.com/' },
           { name: 'Coracle', url: 'https://www.coracle.de/' },
-          { name: 'Deutsche Bank Sperrkonto', url: 'https://www.deutsche-bank.de/pk/konten-und-karten/konten/sperrkonto.html' },
         ],
       },
       references: [
         'Fintiba 官方資訊',
         'Expatrio 官方資訊',
         'Coracle 官方資訊',
-        'Deutsche Bank Sperrkonto 官方資訊',
       ],
-      updated_at: '2026-07-11',
+      updated_at: '2026-09-11',
     },
     {
       step: 4,

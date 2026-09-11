@@ -58,13 +58,13 @@ export const exitWorkflow: WorkflowTopic = {
           'Abmeldebescheinigung 遺失 · 未來查核困難',
         ],
         official_sources: [
-          { name: 'Berlin Abmeldung', url: 'https://service.berlin.de/dienstleistung/120336/' },
+          { name: 'Berlin Abmeldung', url: 'https://service.berlin.de/dienstleistung/120335/' },
         ],
       },
       references: [
         'Berlin Abmeldung 官方資訊',
       ],
-      updated_at: '2026-07-11',
+      updated_at: '2026-09-11',
     },
     {
       step: 3,

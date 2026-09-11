@@ -188,6 +188,9 @@
 | PAT-187 | CORE_IMMUTABLE | 首頁 Portal 卡片一律導向站內路由（`<Link>`），不得任何一張直接帶 `target="_blank"` 外連；真正外部連結收在對應站內子頁面內部（比照 RecommendationCategory.tsx 版型，即使只有 1 筆資料也依此版型建立，不掛進資源 11 分類體系的 RECOMMENDATION_CATEGORIES/DATA_MAP/target_category 約束）；收到架構級修正指令時應以新架構整體取代舊實作，不保留舊分流邏輯造成不必要複雜度殘留 |
 | PAT-188 | 方法論 | Edu workflow step 逐步教學文案精簡化標準：procedure/common_mistakes 每個 item 只裝一個獨立念頭、不用「，」「——」硬塞兩個不相關念頭；單行硬上限24字（程式化計算，不用眼睛估；優先切在自然語意斷點，避免切出無頭殘句；只管新增/改寫內容，不溯及既往，2026-08-14「修正三」）；只留功能性語氣，情緒性/安慰性用詞一律拿掉（範例詞非完整清單，修辭渲染/勸誘語氣即使沒命中範例詞也算違規，需人工比對同檔案平行欄位語氣）；具體公司名/商業平台須先查證是否真「全國通用」，優先引官方監管機構/法規本身；規則時效性宣稱若查證時已完整生效，改陳述現況不沿用過渡期措辭 |
 | PAT-189 | 方法論 | 全站數據/數值呈現格式標準（不限 Edu workflow，只約束新增/改寫內容）：日期用 ISO `YYYY-MM-DD`；數字區間阿拉伯數字＋`-`不加空格（`1-2`）；數字＋中文單位間留一個半形空格（`14 天`、`3 個月`）；純數字組合不加空格（`100%`）；金額千分位逗號＋半形空格＋幣別（`1,000 歐元`）；法規條號`§`後留空格（`§ 54 BMG`） |
+| PAT-190 | KNOWN_ISSUE→RESOLVED | 找房 fee_status 篩選選項改依 housing.json 實際值動態產生（比照 GermanLearningBoard.tsx feeOptions/PAT-185），修掉「未知」永遠 0 筆的死選項 |
+| PAT-191 | CORE_IMMUTABLE | 社群防濫用去重簽章須含使用者實際輸入內容（note/content），不能只含分類欄位——ReportButton.tsx 補齊比照 SubmissionForm.tsx 既有做法 |
+| PAT-192 | KNOWN_ISSUE→RESOLVED | check:links 抓到的 404 先查是打錯字還是服務真的沒了：Berlin Abmeldung 改對數字（120336→120335）；Deutsche Bank Sperrkonto 服務已停辦，整筆移除不塞未驗證替代方案 |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance

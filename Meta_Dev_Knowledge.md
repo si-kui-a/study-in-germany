@@ -75,6 +75,8 @@ VITE_* 環境變數。anon key 進 bundle 為預期（RLS 才是權限層）。
 - PAT-11 [KNOWN_ISSUE]: `deletePhoto` 為 best-effort，失敗不阻斷 row 刪除 → 孤兒照片會累積 → 記於 DEBT。
 - PAT-12 [KNOWN_ISSUE]: tsconfig `verbatimModuleSyntax: true`——所有 type-only import（ReactNode/FormEvent 等）必須 `import type`，否則編譯失敗。外來 spec 程式碼須先過此檢查。
 - PAT-13 [CORE_IMMUTABLE]: Tailwind v4 `@apply` 不能引用自訂 component class（v3 可）——共用基底改用群組選擇器 `.btn, .btn-primary, ... { @apply ... }`。
+- PAT-14 [CORE_IMMUTABLE]: Mock Mode 隔離（`src/lib/mockMode.ts`）。`MOCK_MODE` 只在 `.env.local` 設 `VITE_MOCK_MODE=1` 時為 true，正式 build 因無此變數自動為 false；`AuthGate`/`DevBadge`/`MockBanner`/`SchoolDetail`/`Board.tsx` 皆讀同一個 flag，不得各自重寫判斷式。
+- PAT-15 [CORE_IMMUTABLE]: `__APP_VERSION__` build-time 注入。`vite.config.ts` 的 `define` 於建置時把它塞成 `<日期>-<GITHUB_SHA前7碼或local>` 字串常量，`vite-env.d.ts` 宣告型別，`DevBadge`/`Footer` 讀取顯示版本；本機建置無 `GITHUB_SHA` 時退回 `local`。
 
 ## PAT-16 [CORE_IMMUTABLE]: 錯誤翻譯層集中於 errorMessages.ts
 所有 Supabase 錯誤透過 translateError() 過濾，避免生 raw 錯誤直接展示給使用者。
@@ -3339,3 +3341,76 @@ step）——完整掃過兩檔案後發現另有 44 行超過 24 字，全是 2
 
 （本教訓已同步整理進 `docs/content-style-guide.md`「八、數據/數值
 呈現規範」，本 PAT 條目為權威版本，兩處異動需同步）
+
+## PAT-190 [KNOWN_ISSUE→RESOLVED]: 費用篩選選項須依實際資料動態產生，靜態列舉會留死選項
+
+**發生了什麼**：`RecommendationCategory.tsx` 找房分類的 `FEE_STATUS_OPTIONS`
+是寫死的完整 enum 陣列（含 `unknown`），但 `housing.json` 目前 10 筆
+資料的 `fee_status` 只用到 free/partial/paid，選單裡「FEE：未知」永遠
+是 0 筆結果的死選項。
+
+**根本原因**：`GermanLearningBoard.tsx` 的費用篩選在 Phase CA（見
+PAT-185）已經改成依 `items` 實際出現的值動態算選項，理由就是「避免
+未標示在零資料使用時仍留著一個空選項」——但 housing 分類的費用篩選是
+獨立實作，沒有跟著套用同一套做法，兩個邏輯上該一致的「費用篩選」
+實作各自長歪，2026-09-11 全倉庫稽核才發現這個落差。
+
+**修正方式**：`RecommendationCategory.tsx` 新增 `feeStatusOptions`
+useMemo，比照 `GermanLearningBoard.tsx` 的 `feeOptions` 寫法，從
+`items` 實際出現的 `fee_status` 值算選項，取代原本的靜態
+`FEE_STATUS_OPTIONS.filter(f => f !== 'all')`。
+
+**規則**：站內若有超過一處「依資料值產生篩選選項」的實作，新增/修改
+其中一處時要主動查有沒有姊妹實作也該一起改，不能只改被明確要求的
+那一處——這類「同一概念兩處各自實作」正是 find_mirror_drift.py 想抓
+但目前抓不到的模式（沒有註解明講「這裡跟那裡要保持一致」），值得
+未來新增類似篩選邏輯時主動加註解互相指向。
+
+## PAT-191 [CORE_IMMUTABLE]: 社群防濫用去重簽章必須含使用者實際輸入內容，不能只含分類欄位
+
+**發生了什麼**：`ReportButton.tsx` 的檢舉去重簽章是
+`` `${targetType}|${targetId}|${reason}` ``，不含使用者填寫的 `note`
+自由文字欄位。攔截訊息寫「相同內容已經送出，請勿重複提交」，但兩筆
+對同一 target、同一 reason、完全不同 note 內容的檢舉會被誤判成
+「相同內容」擋下 24 小時——note 才是檢舉的實際內容，reason 只是
+分類代碼。
+
+**根本原因**：`SubmissionForm.tsx` 使用同一套 `antiAbuse.ts` 機制時，
+簽章本來就正確含 `title`/`content`（使用者實際輸入），`ReportButton.tsx`
+是後來獨立實作、沒有比照這個既有先例，簽章只湊了分類性欄位，漏了
+自由文字內容。
+
+**修正方式**：簽章改為
+`` `${targetType}|${targetId}|${reason}|${note.trim()}` ``。
+
+**規則**：任何「防重複提交」機制的簽章，必須包含使用者實際輸入的
+自由文字內容（不只是分類/ID 這類結構化欄位）；新增使用同一個
+`communityActionBlockReason`/`recordCommunityAction` 機制的呼叫點時，
+先看 `SubmissionForm.tsx` 既有簽章組成方式當範本，不要重新發明。
+
+## PAT-192 [KNOWN_ISSUE→RESOLVED]: `check:links` 標的 404 不能只當「連結爛了」處理，要先查是打錯字還是服務真的沒了
+
+**發生了什麼**：`npm run check:links` 標出兩個確認 404：
+`service.berlin.de/dienstleistung/120336/`（Berlin Abmeldung）與
+Deutsche Bank Sperrkonto 頁面。
+
+**根本原因**：兩者表面現象一樣（都是 404），但成因完全不同——前者是
+單一數字打錯（正確是 120335，WebFetch 已驗證該頁確實是「Abmeldung
+einer Wohnung」官方頁面），後者是 Deutsche Bank 已於 2026-07-01
+全面停止對國際學生提供 Sperrkonto 服務（多方獨立來源交叉確認，不是
+只憑 404 本身推論），不是網址錯字。兩種成因的正確處置完全不同：
+前者改對數字即可，後者若隨便塞一個「看起來像」的替代網址/服務商，
+等於推薦使用者去申辦一個已經不存在的服務，比留著死連結更糟。
+
+**修正方式**：120336→120335（改對數字）；Deutsche Bank Sperrkonto
+整筆移除（procedure items、official_sources、references 三處），
+不塞入未經驗證的替代方案——`visa.ts` 該步驟本來就已經同時列
+Fintiba/Expatrio/Coracle 三家仍在運作的服務商，移除失效項目後
+清單依然完整可用，不需要新增替代者。兩處異動都同步更新 `updated_at`
+為修正當日日期（見 `check-content-freshness.mjs`）。
+
+**規則**：`check:links` 抓到的每一筆 404，動手改之前先查證是「打錯字」
+還是「服務/頁面已經真的不存在」——後者不能自己猜一個替代方案填進去
+（零虛構原則），能刪則刪（尤其原本就有其他仍有效的選項並列時），
+真的需要新增替代方案時才需要向使用者確認（見
+GOVERNANCE.md 第 13 節「零虛構原則的例外需要顯式治理標記」）。
