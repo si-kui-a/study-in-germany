@@ -32,7 +32,11 @@ export default function ReportButton({ targetType, targetId }: Props) {
 
   const submit = async (e: FormEvent) => {
     e.preventDefault();
-    const signature = `${targetType}|${targetId}|${reason}`;
+    // signature 必須含 note——2026-09-11稽核發現只比對 reason 會讓
+    // 「相同內容已經送出」誤判：同一 target 用相同 reason 但完全不同的
+    // note 內容（例如先後檢舉同一房源的兩個不相干問題）會被當成重複
+    // 攔下，但 note 才是檢舉的實際內容，reason 只是分類。
+    const signature = `${targetType}|${targetId}|${reason}|${note.trim()}`;
     const blocked = communityActionBlockReason('report', signature);
     if (blocked) {
       push('error', blocked);

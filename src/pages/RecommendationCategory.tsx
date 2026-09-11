@@ -79,6 +79,20 @@ export default function RecommendationCategory() {
   // 共用的卡片渲染路徑（含 housing 的篩選結果）。
   const { statsMap, submitRating } = useCardRatingsMap(slug ?? '');
 
+  /**
+   * 費用篩選選項改為依 housingData 實際使用的值動態產生，而非列出型別
+   * 全部靜態值——比照 GermanLearningBoard.tsx 的 feeOptions/PAT-185 做法
+   * （原本這裡是靜態 FEE_STATUS_OPTIONS，housing 目前 10 筆資料無任何
+   * 一筆是 unknown，篩選選單會留一個永遠 0 筆結果的死選項，2026-09-11
+   * 稽核發現兩處「費用篩選」實作已各自長歪，這裡補齊比照）。
+   */
+  const feeStatusOptions = useMemo(
+    () => FEE_STATUS_OPTIONS
+      .filter((f): f is HousingFeeStatus => f !== 'all')
+      .filter((f) => (items ?? []).some((item) => item.fee_status === f)),
+    [items],
+  );
+
   const visibleItems = useMemo(() => {
     if (!items || !isHousing) return items ?? [];
     return items.filter((item) => {
@@ -167,7 +181,7 @@ export default function RecommendationCategory() {
                        hover:border-brand-gold transition-colors"
           >
             <option value="all">FEE：任意</option>
-            {FEE_STATUS_OPTIONS.filter((f) => f !== 'all').map((f) => (
+            {feeStatusOptions.map((f) => (
               <option key={f} value={f}>{HOUSING_FEE_STATUS_LABEL[f]}</option>
             ))}
           </select>
