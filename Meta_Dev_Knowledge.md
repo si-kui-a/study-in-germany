@@ -3387,3 +3387,30 @@ useMemo，比照 `GermanLearningBoard.tsx` 的 `feeOptions` 寫法，從
 自由文字內容（不只是分類/ID 這類結構化欄位）；新增使用同一個
 `communityActionBlockReason`/`recordCommunityAction` 機制的呼叫點時，
 先看 `SubmissionForm.tsx` 既有簽章組成方式當範本，不要重新發明。
+
+## PAT-192 [KNOWN_ISSUE→RESOLVED]: `check:links` 標的 404 不能只當「連結爛了」處理，要先查是打錯字還是服務真的沒了
+
+**發生了什麼**：`npm run check:links` 標出兩個確認 404：
+`service.berlin.de/dienstleistung/120336/`（Berlin Abmeldung）與
+Deutsche Bank Sperrkonto 頁面。
+
+**根本原因**：兩者表面現象一樣（都是 404），但成因完全不同——前者是
+單一數字打錯（正確是 120335，WebFetch 已驗證該頁確實是「Abmeldung
+einer Wohnung」官方頁面），後者是 Deutsche Bank 已於 2026-07-01
+全面停止對國際學生提供 Sperrkonto 服務（多方獨立來源交叉確認，不是
+只憑 404 本身推論），不是網址錯字。兩種成因的正確處置完全不同：
+前者改對數字即可，後者若隨便塞一個「看起來像」的替代網址/服務商，
+等於推薦使用者去申辦一個已經不存在的服務，比留著死連結更糟。
+
+**修正方式**：120336→120335（改對數字）；Deutsche Bank Sperrkonto
+整筆移除（procedure items、official_sources、references 三處），
+不塞入未經驗證的替代方案——`visa.ts` 該步驟本來就已經同時列
+Fintiba/Expatrio/Coracle 三家仍在運作的服務商，移除失效項目後
+清單依然完整可用，不需要新增替代者。兩處異動都同步更新 `updated_at`
+為修正當日日期（見 `check-content-freshness.mjs`）。
+
+**規則**：`check:links` 抓到的每一筆 404，動手改之前先查證是「打錯字」
+還是「服務/頁面已經真的不存在」——後者不能自己猜一個替代方案填進去
+（零虛構原則），能刪則刪（尤其原本就有其他仍有效的選項並列時），
+真的需要新增替代方案時才需要向使用者確認（見
+GOVERNANCE.md 第 13 節「零虛構原則的例外需要顯式治理標記」）。

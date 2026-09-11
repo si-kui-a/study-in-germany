@@ -190,6 +190,7 @@
 | PAT-189 | 方法論 | 全站數據/數值呈現格式標準（不限 Edu workflow，只約束新增/改寫內容）：日期用 ISO `YYYY-MM-DD`；數字區間阿拉伯數字＋`-`不加空格（`1-2`）；數字＋中文單位間留一個半形空格（`14 天`、`3 個月`）；純數字組合不加空格（`100%`）；金額千分位逗號＋半形空格＋幣別（`1,000 歐元`）；法規條號`§`後留空格（`§ 54 BMG`） |
 | PAT-190 | KNOWN_ISSUE→RESOLVED | 找房 fee_status 篩選選項改依 housing.json 實際值動態產生（比照 GermanLearningBoard.tsx feeOptions/PAT-185），修掉「未知」永遠 0 筆的死選項 |
 | PAT-191 | CORE_IMMUTABLE | 社群防濫用去重簽章須含使用者實際輸入內容（note/content），不能只含分類欄位——ReportButton.tsx 補齊比照 SubmissionForm.tsx 既有做法 |
+| PAT-192 | KNOWN_ISSUE→RESOLVED | check:links 抓到的 404 先查是打錯字還是服務真的沒了：Berlin Abmeldung 改對數字（120336→120335）；Deutsche Bank Sperrkonto 服務已停辦，整筆移除不塞未驗證替代方案 |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance
