@@ -75,6 +75,8 @@ VITE_* 環境變數。anon key 進 bundle 為預期（RLS 才是權限層）。
 - PAT-11 [KNOWN_ISSUE]: `deletePhoto` 為 best-effort，失敗不阻斷 row 刪除 → 孤兒照片會累積 → 記於 DEBT。
 - PAT-12 [KNOWN_ISSUE]: tsconfig `verbatimModuleSyntax: true`——所有 type-only import（ReactNode/FormEvent 等）必須 `import type`，否則編譯失敗。外來 spec 程式碼須先過此檢查。
 - PAT-13 [CORE_IMMUTABLE]: Tailwind v4 `@apply` 不能引用自訂 component class（v3 可）——共用基底改用群組選擇器 `.btn, .btn-primary, ... { @apply ... }`。
+- PAT-14 [CORE_IMMUTABLE]: Mock Mode 隔離（`src/lib/mockMode.ts`）。`MOCK_MODE` 只在 `.env.local` 設 `VITE_MOCK_MODE=1` 時為 true，正式 build 因無此變數自動為 false；`AuthGate`/`DevBadge`/`MockBanner`/`SchoolDetail`/`Board.tsx` 皆讀同一個 flag，不得各自重寫判斷式。
+- PAT-15 [CORE_IMMUTABLE]: `__APP_VERSION__` build-time 注入。`vite.config.ts` 的 `define` 於建置時把它塞成 `<日期>-<GITHUB_SHA前7碼或local>` 字串常量，`vite-env.d.ts` 宣告型別，`DevBadge`/`Footer` 讀取顯示版本；本機建置無 `GITHUB_SHA` 時退回 `local`。
 
 ## PAT-16 [CORE_IMMUTABLE]: 錯誤翻譯層集中於 errorMessages.ts
 所有 Supabase 錯誤透過 translateError() 過濾，避免生 raw 錯誤直接展示給使用者。
