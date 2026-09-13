@@ -191,6 +191,7 @@
 | PAT-190 | KNOWN_ISSUE→RESOLVED | 找房 fee_status 篩選選項改依 housing.json 實際值動態產生（比照 GermanLearningBoard.tsx feeOptions/PAT-185），修掉「未知」永遠 0 筆的死選項 |
 | PAT-191 | CORE_IMMUTABLE | 社群防濫用去重簽章須含使用者實際輸入內容（note/content），不能只含分類欄位——ReportButton.tsx 補齊比照 SubmissionForm.tsx 既有做法 |
 | PAT-192 | KNOWN_ISSUE→RESOLVED | check:links 抓到的 404 先查是打錯字還是服務真的沒了：Berlin Abmeldung 改對數字（120336→120335）；Deutsche Bank Sperrkonto 服務已停辦，整筆移除不塞未驗證替代方案 |
+| PAT-193 | KNOWN_ISSUE→RESOLVED | Dependabot #1/#2/#3（GHSA-82fw-gwwq-j7x9，vitest/@vitest/mocker path traversal，3.x 無回溯修補）：直接升級 `vitest ^3.2.4→^5.0.0` 實測 test(34 passed)/typecheck/build 全綠、`npm audit` 0 vulnerabilities，非破壞性升級，直接採用修補版本而非風險接受；升級 PR merge 前先手動 dismiss 3 alerts（reason: fix_started，附註本 PR）避免懸而未決 |
 
 ## 分類語意
 - **CORE_IMMUTABLE**: 動搖此決策會連鎖影響多檔，須整輪重新 governance
