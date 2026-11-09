@@ -2,7 +2,7 @@
 # 安裝位置: C:\Projects\10-101_Study_in_Germany_留學德國社群網站\CLAUDE.md
 
 ## Stack
-Vite + React 18 + TypeScript + Tailwind v4 + Supabase + GitHub Pages
+見 `~/.claude/CLAUDE.md` Active Projects 表的 sig 列（唯一來源；版本以 `package.json` 為準）
 Deploy: `npm run build` → `gh-pages` branch → auto-deploy
 
 ## Protected Files (NEVER TOUCH without explicit written authorization)
