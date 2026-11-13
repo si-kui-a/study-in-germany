@@ -43,7 +43,8 @@
 
 ```bash
 npm install
-npm run dev        # http://localhost:5173/
+# 背景啟動（不開視窗、不自動開瀏覽器）：雙擊 start-hidden.vbs，再手動開 http://localhost:5173/
+npm run dev        # 前景模式 http://localhost:5173/
 npm run build      # production build（tsc -b + vite build）
 npm run typecheck  # tsc -b（noEmit）
 npm run test       # 核心規則單元測試
