@@ -1,0 +1,18 @@
+# 留德華站
+
+> 德國留學生活資訊入口（繁體中文，台灣用語）：語校評價、赴德作戰手冊、生活佈告欄、常見問答。
+
+本站是單頁應用，頁面網址使用 `#/` 路由；內容由前端載入。以下為各區用途。
+
+## 主要頁面
+
+- [語校列表](https://si-kui-a.github.io/study-in-germany/#/schools): 語言學校清單，含 6 維評分（教學品質、學習環境、教材、行政效率、交通便利性、性價比）與住宿資訊
+- [作戰手冊](https://si-kui-a.github.io/study-in-germany/#/edu): 簽證、抵德、續簽、申請、獎學金、政策、離境，共 7 個主題的步驟流程
+- [簽證選擇器](https://si-kui-a.github.io/study-in-germany/#/edu/visa-selector): 依問答挑選適合的簽證類型
+- [生活佈告欄](https://si-kui-a.github.io/study-in-germany/#/board): 二手交易、出租、求租、討論區
+- [常見問答](https://si-kui-a.github.io/study-in-germany/#/faq): 留學常見問題
+- [留德資源入口](https://si-kui-a.github.io/study-in-germany/#/recommendation): 分類整理的資源清單
+
+## 備註
+
+- 評價與貼文為使用者投稿；簽證與法規請以德國官方機構公告為準，本站步驟僅供整理參考。
